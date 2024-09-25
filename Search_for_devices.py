@@ -1,5 +1,15 @@
-import tkinter as tk
 
+import subprocess
+import tkinter as tk
+try:
+	import wx
+except:
+	subprocess.run("powershell", text = True, input = "pip install wxpython")
+try:
+	import wx
+except:
+	input("could not find the wx module. Press enter to exit")
+app = wx.App()
 #Fake list of devices
 smart_devices = [
     "Philips Hue",
@@ -10,35 +20,13 @@ smart_devices = [
     "iRobot Roomba s9+",
     "August Smart Lock Pro"
 ]
-
-
-#Function for what is displayed when search is complete
-def search_for_devices():
-    devices = ''
-    for device in smart_devices:
-        devices += device + '\n'
-
-    completed_search.config(text=devices)
-
-
-
-#Initializing window
-root = tk.Tk()
-#Setting window size
-root.geometry('600x400')
-
-#Label above the "search for devices" button
-search_label = tk.Label(root, text='Search for devices on your network')
-#Adds padding
-search_label.pack(pady=20)
-
-#Adds button that executes function above
-button = tk.Button(root, text="Search", command=search_for_devices)
-button.pack()
-
-#Creating empty label for devices
-completed_search = tk.Label(root, text='')
-completed_search.pack(pady=20)
-
-
-root.mainloop()
+searchList = []
+mainDialog = wx.Dialog(None, title = "main")
+listBox = wx.ListBox(mainDialog, choices = [])
+# Function for listing up all available devices
+def searchForDevices(evt):
+	listBox.SetItems(smart_devices)
+searchButton = wx.Button(mainDialog, label = "search", pos = [100, 100])
+searchButton.Bind(wx.EVT_BUTTON, searchForDevices)
+mainDialog.Show()
+app.MainLoop()
