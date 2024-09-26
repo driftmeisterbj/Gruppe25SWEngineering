@@ -21,8 +21,11 @@ smart_devices = [
     "August Smart Lock Pro"
 ]
 searchList = []
+def onDestroy(evt):
+	exit()
 mainDialog = wx.Dialog(None, title = "main", size = [500, 500])
 mainDialog.Center()
+mainDialog.Bind(wx.EVT_CLOSE, onDestroy)
 listBox = wx.ListBox(mainDialog, size = [150, 200], choices = [])
 listBox.Center()
 # Function for listing up all available devices
