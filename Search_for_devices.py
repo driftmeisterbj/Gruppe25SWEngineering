@@ -21,9 +21,9 @@ smart_devices = [
     "August Smart Lock Pro"
 ]
 searchList = []
-mainDialog = wx.Dialog(None, title = "main", size = [1000, 1000])
+mainDialog = wx.Dialog(None, title = "main", size = [500, 500])
 mainDialog.Center()
-listBox = wx.ListBox(mainDialog, size = [500, 500], choices = [])
+listBox = wx.ListBox(mainDialog, size = [100, 100], choices = [])
 listBox.Center()
 # Function for listing up all available devices
 def searchForDevices(evt):
