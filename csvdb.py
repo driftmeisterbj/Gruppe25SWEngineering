@@ -165,12 +165,12 @@ def readCSV(filename):
 
 
 resetCSV("userdb")
-addUserToCSV("userdb", "Arne", "Passord123", "as!s@mail.com")
-addUserToCSV("userdb", "Erne", "Passord123", "ass@mail.com")
-addUserToCSV("userdb", "Arne", "Passord123", "ass1@mail.com")
-addUserToCSV("userdb", "geir", "passord", "ass2@mail.com")
-addUserToCSV("userdb", "geir", "Passord1234", "a.s.s.2@mail.com")
-addUserToCSV("userdb", "geir2", "Passord1234", "ass2.mail@com")
+addUserToCSV("userdb", "Test1", "Passord123", "ma!i?l@mail.com")
+addUserToCSV("userdb", "Test2", "Pa123", "mail.m@mail.com")
+addUserToCSV("userdb", "Test3", "Passord123", "mail44@mail.com")
+addUserToCSV("userdb", "geir", "passord", "mail@mail.com")
+addUserToCSV("userdb", "gEiR2", "Passord1234", "m.a.i.l.2@mail.com")
+addUserToCSV("userdb", "geir3", "Passord1234", "mini_mail.mail@com")
 
 
 
