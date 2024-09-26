@@ -7,19 +7,37 @@ def resetCSV(filename):
 
 #resetCSV("userdb")
 
-def addUserToCSV(username, password):
-    with open("userdb.csv", "a", newline="") as file:
-        writer = csv.DictWriter(file, ["username", "password"])
-        writer.writerows([{"username": username, "password": password}])
+def isUsernameTaken(username, filename):
+    listOfUsernames = []
+    with open(filename+".csv", "r") as file:
+        csvFile = csv.reader(file)
+        for line in csvFile:
+            listOfUsernames.append(line[0])
 
-#addUserToCSV("arne", "passord123")
-#addUserToCSV("user2", "69")
-#addUserToCSV("1", "2")
+    if username in listOfUsernames:
+        return True
+    else:
+        return False
+
+
+def addUserToCSV(filename, username, password):
+    if isUsernameTaken(username, filename) == False:
+         with open(filename+".csv", "a", newline="") as file:
+            writer = csv.DictWriter(file, ["username", "password"])
+            writer.writerows([{"username": username, "password": password}])
+    else:
+        print("Username is already taken")
+
+addUserToCSV("userdb", "arne", "passord123")
+#addUserToCSV("userdb", "user2", "69")
+#addUserToCSV("userdb", "1", "2")
 
 def readCSV(filename):
     with open(filename+".csv", "r") as file:
         csvFile = csv.reader(file)
         for line in csvFile:
             print(line)
+
+
 
 readCSV("userdb")
