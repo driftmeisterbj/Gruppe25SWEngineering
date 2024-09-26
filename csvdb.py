@@ -5,7 +5,6 @@ def resetCSV(filename):
         writer = csv.DictWriter(file, ["username", "password"])
         writer.writeheader()
 
-#resetCSV("userdb")
 
 def isUsernameTaken(username, filename):
     listOfUsernames = []
@@ -21,29 +20,70 @@ def isUsernameTaken(username, filename):
 
 def isUsernameValid(username):
     isValid = True
-    illegalChar=["'", '"', ","]
+    illegalChars=["'", '"', ",", "!", "@", "$", "€", "{", "}",
+                 "[", "]", "(", ")", "^", "¨", "~", "*", ".",
+                 "&", "%", "¤", "#", "!", "?", "+", " "]
+    
     if len(username) < 3:
         isValid = False
-        print("Username has to be 3 or more characters")
+        print(f'Name: "{username}" failed - Username can not be shorter than 3 characters')
+
+    elif len(username) > 25:
+        isValid = False
+        print(f'Name: "{username}" failed - Username can not be longer than 25 characters')
+
     else:
         for char in username:
-            if char in illegalChar:
+            if char in illegalChars:
                 isValid = False
-                print(f"Username contains illegal character: {char}")
+                print(f'Username contains illegal character: " {char} "')
 
     return isValid
 
+def isPasswordValid(password):
+    isValid = True   
+    containsUppercase = False
+    containsLowercase = False
+    containsNumber = False
+
+    if len(password) < 4:
+        print("Password cannot be shorter than 4 characters")
+
+    elif len(password) > 45:
+        print("Password cannot be longer than 45 characters")
+
+    else:
+        for char in password:
+            if char.isupper():
+                containsUppercase = True
+            if char.islower():
+                containsLowercase = True
+            if char in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]:
+                containsNumber = True
+    
+    if (containsUppercase and containsLowercase and containsNumber):
+        isValid = True
+    
+    else:
+        isValid = False
+
+    return isValid
+
+
 def addUserToCSV(filename, username, password):
     if isUsernameTaken(username, filename) == False:
-         with open(filename+".csv", "a", newline="") as file:
-            writer = csv.DictWriter(file, ["username", "password"])
-            writer.writerows([{"username": username, "password": password}])
+        if isUsernameValid(username):
+            if isPasswordValid(password):
+                with open(filename+".csv", "a", newline="") as file:
+                    writer = csv.DictWriter(file, ["username", "password"])
+                    writer.writerows([{"username": username.lower(), "password": password}])
+            else:
+                print("Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number")
+        else:
+            print("Username is invalid. Check error messages in console.")
     else:
         print("Username is already taken")
 
-addUserToCSV("userdb", "arne", "passord123")
-#addUserToCSV("userdb", "user2", "69")
-#addUserToCSV("userdb", "1", "2")
 
 def readCSV(filename):
     with open(filename+".csv", "r") as file:
@@ -51,6 +91,11 @@ def readCSV(filename):
         for line in csvFile:
             print(line)
 
+
+resetCSV("userdb")
+addUserToCSV("userdb", "Arne", "Passord123")
+addUserToCSV("userdb", "user2", "69")
+addUserToCSV("userdb", "1", "2")
 print(isUsernameValid("arne'2"))
 
 readCSV("userdb")
