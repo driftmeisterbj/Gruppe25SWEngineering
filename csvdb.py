@@ -84,6 +84,7 @@ def isEmailValid(email):
     containsPunctuation = False
     containsNoDuplicates = False
     containsOnlyLegalChars = True
+    legalPunctuationAfterAt = False
 
     illegalChars=["'", '"', ",", "!", "$", "€", "{", "}",
                  "[", "]", "(", ")", "^", "¨", "~", "*",
@@ -95,6 +96,7 @@ def isEmailValid(email):
         if char in illegalChars:
             containsOnlyLegalChars = False
             print(f'ERROR - Illegal character " {char} " in email adress')
+            """
         if char not in dupeDict.keys():
             dupeDict[char] = 1
         else:
@@ -114,21 +116,42 @@ def isEmailValid(email):
             print('Email contains too many instances of the char " @ ", you can only use this character ONCE')
     else:
         print('Email MUST contain the character " @ "')
-    
-    if containsAt and containsPunctuation and containsNoDuplicates and containsOnlyLegalChars:
-        punctuationLastIndex = 0
-        counter = 0
-        
-        for char in email:
-            if char == ".":
-                punctuationLastIndex = counter    
-            counter += 1
+    """
 
-
-        if punctuationLastIndex < email.index("@"):
-            print('ERROR - The character MUST appear at least once after the character " @ " in the email adress')
+    if email.count("@") > 0:
+        if email.count("@") == 1:
+            if email.count(".") > 0:
+                containsPunctuation = True
+                containsNoDuplicates = True
+            else:
+                print('Email MUST contain the character " . "')
         else:
-            isValid = True
+            print('Email contains too many instances of the char " @ ", you can only use this character ONCE')
+    else:
+        print('Email MUST contain the character " @ "')
+
+    if containsAt and containsPunctuation and containsNoDuplicates and containsOnlyLegalChars:
+        charList = []
+        for char in range(email.index("@"), len(email)):
+            charList.append(email[char])
+
+        print(charList)
+        if charList.count(".") > 1:
+            print('ERROR - There can only be a single instance of the character " . " after the " @ "')
+        
+        else:
+            punctuationLastIndex = 0
+            counter = 0
+            
+            for char in email:
+                if char == ".":
+                    punctuationLastIndex = counter    
+                counter += 1
+
+            if punctuationLastIndex < email.index("@"):
+                print('ERROR - The character MUST appear at least once after the character " @ " in the email adress')
+            else:
+                isValid = True
 
     return isValid
 
@@ -171,6 +194,8 @@ addUserToCSV("userdb", "Test3", "Passord123", "mail44@mail.com")
 addUserToCSV("userdb", "geir", "passord", "mail@mail.com")
 addUserToCSV("userdb", "gEiR2", "Passord1234", "m.a.i.l.2@mail.com")
 addUserToCSV("userdb", "geir3", "Passord1234", "mini_mail.mail@com")
+addUserToCSV("userdb", "geir69", "Passord1234", "mail.mail@..com")
+addUserToCSV("userdb", "geir69", "Passord1234", "mail.mail@.com")
 
 
 
