@@ -89,36 +89,16 @@ def isEmailValid(email):
     illegalChars=["'", '"', ",", "!", "$", "€", "{", "}",
                  "[", "]", "(", ")", "^", "¨", "~", "*",
                  "&", "%", "¤", "#", "!", "?", "+", " "]
-
-    dupeDict = {}
-
+    
     for char in email:  
         if char in illegalChars:
             containsOnlyLegalChars = False
             print(f'ERROR - Illegal character " {char} " in email adress')
-            """
-        if char not in dupeDict.keys():
-            dupeDict[char] = 1
-        else:
-            dupeDict[char] += 1
-        
-
-    if "@" in dupeDict.keys():
-        containsAt = True
-        if dupeDict["@"] == 1:
-            if "." in dupeDict.keys():
-                containsPunctuation = True
-                containsNoDuplicates = True
-            else:
-                print('Email MUST contain the character " . "')
-
-        else:
-            print('Email contains too many instances of the char " @ ", you can only use this character ONCE')
-    else:
-        print('Email MUST contain the character " @ "')
-    """
-
+           
+    containsPunctuation = True
+    containsNoDuplicates = True
     if email.count("@") > 0:
+        containsAt = True
         if email.count("@") == 1:
             if email.count(".") > 0:
                 containsPunctuation = True
