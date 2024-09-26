@@ -2,7 +2,7 @@ import csv
 
 def resetCSV(filename):
     with open(filename+".csv", "w", newline="") as file:
-        writer = csv.DictWriter(file, ["username", "password"])
+        writer = csv.DictWriter(file, ["username", "password", "email"])
         writer.writeheader()
 
 
@@ -13,7 +13,7 @@ def isUsernameTaken(username, filename):
         for line in csvFile:
             listOfUsernames.append(line[0])
 
-    if username in listOfUsernames:
+    if username.lower() in listOfUsernames:
         return True
     else:
         return False
@@ -41,7 +41,7 @@ def isUsernameValid(username):
     return isValid
 
 def isPasswordValid(password):
-    isValid = True   
+    isValid = False   
     containsUppercase = False
     containsLowercase = False
     containsNumber = False
@@ -63,26 +63,92 @@ def isPasswordValid(password):
     
     if (containsUppercase and containsLowercase and containsNumber):
         isValid = True
-    
-    else:
-        isValid = False
 
     return isValid
 
+def isEmailTaken(email, filename):
+    listOfEmails = []
+    with open(filename+".csv", "r") as file:
+        csvFile = csv.reader(file)
+        for line in csvFile:
+            listOfEmails.append(line[2])
 
-def addUserToCSV(filename, username, password):
-    if isUsernameTaken(username, filename) == False:
-        if isUsernameValid(username):
-            if isPasswordValid(password):
-                with open(filename+".csv", "a", newline="") as file:
-                    writer = csv.DictWriter(file, ["username", "password"])
-                    writer.writerows([{"username": username.lower(), "password": password}])
-            else:
-                print("Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number")
-        else:
-            print("Username is invalid. Check error messages in console.")
+    if email.lower() in listOfEmails:
+        return True
     else:
-        print("Username is already taken")
+        return False
+    
+def isEmailValid(email):
+    isValid = False
+    containsAt = False
+    containsPunctuation = False
+    containsNoDuplicates = False
+    containsOnlyLegalChars = True
+
+    illegalChars=["'", '"', ",", "!", "$", "€", "{", "}",
+                 "[", "]", "(", ")", "^", "¨", "~", "*",
+                 "&", "%", "¤", "#", "!", "?", "+", " "]
+
+    dupeDict = {}
+
+    for char in email:  
+        if char in illegalChars:
+            containsOnlyLegalChars = False
+            print(f'ERROR - Illegal character " {char} " in email adress')
+        if char not in dupeDict.keys():
+            dupeDict[char] = 1
+        else:
+            dupeDict[char] += 1
+        
+
+    if "@" in dupeDict.keys():
+        containsAt = True
+        if dupeDict["@"] == 1:
+            if "." in dupeDict.keys():
+                containsPunctuation = True
+                if dupeDict["."] == 1:
+                    containsNoDuplicates = True
+                else:
+                    print('Email contains too many instances of the char " . ", you can only use this character ONCE')
+            else:
+                print('Email MUST contain the character " . "')
+
+        else:
+            print('Email contains too many instances of the char " @ ", you can only use this character ONCE')
+    else:
+        print('Email MUST contain the character " @ "')
+    
+    if containsAt and containsPunctuation and containsNoDuplicates and containsOnlyLegalChars:
+        if email.index(".") < email.index("@"):
+            print('ERROR - The character " @ " MUST appear before the character " . " in the email adress')
+        else:
+            isValid = True
+
+    return isValid
+
+    
+    
+
+def addUserToCSV(filename, username, password, email):
+    if isUsernameValid(username):
+        if isUsernameTaken(username, filename) == False:
+                if isPasswordValid(password):
+                    if isEmailValid(email):
+                        if isEmailTaken(email, filename) == False:
+                                with open(filename+".csv", "a", newline="") as file:
+                                    writer = csv.DictWriter(file, ["username", "password", "email"])
+                                    writer.writerows([{"username": username.lower(), "password": password, "email": email.lower()}]) 
+                        else:
+                            print("An account with this email adress already exists")
+                    else:
+                            print("Email is invalid. Check error messages in console.")
+                else:
+                    print("Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number")
+        else:
+            print("Username is already taken")
+    else:
+            print("Username is invalid. Check error messages in console.")
+
 
 
 def readCSV(filename):
@@ -93,9 +159,13 @@ def readCSV(filename):
 
 
 resetCSV("userdb")
-addUserToCSV("userdb", "Arne", "Passord123")
-addUserToCSV("userdb", "user2", "69")
-addUserToCSV("userdb", "1", "2")
-print(isUsernameValid("arne'2"))
+addUserToCSV("userdb", "Arne", "Passord123", "as!s@mail.com")
+addUserToCSV("userdb", "Erne", "Passord123", "ass@mail.com")
+addUserToCSV("userdb", "Arne", "Passord123", "ass1@mail.com")
+addUserToCSV("userdb", "geir", "passord", "ass2@mail.com")
+addUserToCSV("userdb", "geir", "Passord1234", "ass2@mail.com")
+addUserToCSV("userdb", "geir2", "Passord1234", "ass2.mail@com")
+
+
 
 readCSV("userdb")

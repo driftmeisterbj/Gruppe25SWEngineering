@@ -1,2 +1,4 @@
-username,password
-arne,Passord123
+username,password,email
+erne,Passord123,ass@mail.com
+arne,Passord123,ass1@mail.com
+geir,Passord1234,ass2@mail.com
