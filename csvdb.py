@@ -106,10 +106,7 @@ def isEmailValid(email):
         if dupeDict["@"] == 1:
             if "." in dupeDict.keys():
                 containsPunctuation = True
-                if dupeDict["."] == 1:
-                    containsNoDuplicates = True
-                else:
-                    print('Email contains too many instances of the char " . ", you can only use this character ONCE')
+                containsNoDuplicates = True
             else:
                 print('Email MUST contain the character " . "')
 
@@ -119,8 +116,17 @@ def isEmailValid(email):
         print('Email MUST contain the character " @ "')
     
     if containsAt and containsPunctuation and containsNoDuplicates and containsOnlyLegalChars:
-        if email.index(".") < email.index("@"):
-            print('ERROR - The character " @ " MUST appear before the character " . " in the email adress')
+        punctuationLastIndex = 0
+        counter = 0
+        
+        for char in email:
+            if char == ".":
+                punctuationLastIndex = counter    
+            counter += 1
+
+
+        if punctuationLastIndex < email.index("@"):
+            print('ERROR - The character MUST appear at least once after the character " @ " in the email adress')
         else:
             isValid = True
 
@@ -163,7 +169,7 @@ addUserToCSV("userdb", "Arne", "Passord123", "as!s@mail.com")
 addUserToCSV("userdb", "Erne", "Passord123", "ass@mail.com")
 addUserToCSV("userdb", "Arne", "Passord123", "ass1@mail.com")
 addUserToCSV("userdb", "geir", "passord", "ass2@mail.com")
-addUserToCSV("userdb", "geir", "Passord1234", "ass2@mail.com")
+addUserToCSV("userdb", "geir", "Passord1234", "a.s.s.2@mail.com")
 addUserToCSV("userdb", "geir2", "Passord1234", "ass2.mail@com")
 
 
