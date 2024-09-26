@@ -23,12 +23,12 @@ smart_devices = [
 searchList = []
 mainDialog = wx.Dialog(None, title = "main", size = [500, 500])
 mainDialog.Center()
-listBox = wx.ListBox(mainDialog, size = [100, 100], choices = [])
+listBox = wx.ListBox(mainDialog, size = [150, 200], choices = [])
 listBox.Center()
 # Function for listing up all available devices
 def searchForDevices(evt):
 	listBox.SetItems(smart_devices)
-searchButton = wx.Button(mainDialog, label = "search", pos = [100, 100])
+searchButton = wx.Button(mainDialog, label = "search", pos = [200, 100])
 searchButton.Bind(wx.EVT_BUTTON, searchForDevices)
 mainDialog.Show()
 app.MainLoop()
