@@ -19,6 +19,19 @@ def isUsernameTaken(username, filename):
     else:
         return False
 
+def isUsernameValid(username):
+    isValid = True
+    illegalChar=["'", '"', ","]
+    if len(username) < 3:
+        isValid = False
+        print("Username has to be 3 or more characters")
+    else:
+        for char in username:
+            if char in illegalChar:
+                isValid = False
+                print(f"Username contains illegal character: {char}")
+
+    return isValid
 
 def addUserToCSV(filename, username, password):
     if isUsernameTaken(username, filename) == False:
@@ -38,6 +51,6 @@ def readCSV(filename):
         for line in csvFile:
             print(line)
 
-
+print(isUsernameValid("arne'2"))
 
 readCSV("userdb")
