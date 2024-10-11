@@ -1,4 +1,13 @@
-import wx
+import subprocess
+try:
+    import wx
+except:
+    subprocess.run("powershell", text = True, input = "pip install wxpython")
+try:
+    import wx
+except:
+    input("could not find the wx module. Press enter to exit")
+app = wx.App()
 
 class ConnectToDevice(wx.Frame):
     def __init__(self, *args, **kw):
