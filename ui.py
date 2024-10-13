@@ -50,14 +50,15 @@ def createLoginPage():
 def createUserCreationPage():
     destroyEverything()
     usernameText = wx.StaticText(mainDialog, label="Username:", pos = [80, 100], size=(100, -1), style=wx.ALIGN_RIGHT)
-    emailText = wx.StaticText(mainDialog, label="Email adress:", pos = [100, 130], style=wx.ALIGN_RIGHT)
-    passwordText = wx.StaticText(mainDialog, label="Password:", pos = [100, 160], style=wx.ALIGN_RIGHT)
-    passwordText2 = wx.StaticText(mainDialog, label="Confirm password:", pos = [100, 190], style=wx.ALIGN_RIGHT)
+    usernameInput = wx.TextCtrl(mainDialog, pos = [190, 100], size=(200, -1))
+    emailText = wx.StaticText(mainDialog, label="Email adress:", pos = [80, 130], size=(100, -1), style=wx.ALIGN_RIGHT)
+    emailInput = wx.TextCtrl(mainDialog, pos = [190, 130], size=(200, -1))
+    passwordText = wx.StaticText(mainDialog, label="Password:", pos = [80, 160], size=(100, -1), style=wx.ALIGN_RIGHT)
+    passwordInput = wx.TextCtrl(mainDialog, pos = [190, 160], size=(200, -1), style=wx.TE_PASSWORD)
+    passwordText2 = wx.StaticText(mainDialog, label="Confirm password:", pos = [80, 190], size=(100, -1), style=wx.ALIGN_RIGHT)
+    passwordInput2 = wx.TextCtrl(mainDialog, pos = [190, 190], size=(200, -1), style=wx.TE_PASSWORD)
 
-    usernameInput = wx.TextCtrl(mainDialog, pos = [175, 125], size=(200, -1))
-    passwordInput = wx.TextCtrl(mainDialog, pos = [175, 175], size=(200, -1), style=wx.TE_PASSWORD)
-
-    createBtn = wx.Button(mainDialog, label = "Create user", pos = [125, 250])
+    createBtn = wx.Button(mainDialog, label = "Create user", pos = [310, 220])
 
     def tryCreate(evt):
         createLoginPage()
@@ -85,6 +86,9 @@ def createDeviceListPage():
     searchButton.Bind(wx.EVT_BUTTON, searchForDevices)
     mainDialog.Show()
 
+kjøleskap = smart_kjoleskap.SmartKjøleskap("Kjøleskap 1")
+print(kjøleskap.navn)
+
 #https://discuss.wxpython.org/t/getchildren/27335
 def destroyEverything():
     for child in mainDialog.GetChildren():
@@ -93,5 +97,3 @@ createLoginPage()
 mainDialog.Show()
 app.MainLoop()
 
-kjøleskap = smart_kjoleskap.SmartKjøleskap()
-print(kjøleskap.navn)
