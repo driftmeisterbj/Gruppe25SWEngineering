@@ -35,14 +35,41 @@ def createLoginPage():
     createUserBtn = wx.Button(mainDialog, label = "Create new account", pos = [250, 250])
 
     def loginBtnClick(evt):
-        print(usernameInput.GetValue())
-        createDeviceListPage()
+        tryLoggingIn(usernameInput.GetValue(), passwordInput.GetValue())
 
     def createUserBtnClick(evt):
         createUserCreationPage()
 
+    def loginValid(username, password):
+        users = db.readJSON("userdb")
+
+        for user in users:
+            if user.get("username").lower() == username.lower():
+                if user.get("password") == password:
+                    return True
+
+        return False
+
     def tryLoggingIn(username, password):
-        db.readCSV("userdb")
+        users = db.readJSON("userdb")
+
+        if loginValid(username, password) == True:
+            createDeviceListPage()
+        
+        else:
+            #https://stackoverflow.com/questions/1785227/change-the-colour-of-a-statictext-wxpython
+            errorText = wx.StaticText(mainDialog, label="Wrong username or password")    
+
+            #https://stackoverflow.com/questions/14269880/the-right-way-to-find-the-size-of-text-in-wxpython
+            width, height = errorText.GetTextExtent("Wrong username or password")
+
+            #x = ( (bredde på vinduet) - (bredde på teksten) ) // 2
+            x = (500 - width) // 2
+
+            errorText.SetPosition((x, 340))
+            errorText.SetForegroundColour(wx.Colour(155,17,30))
+
+
 
     loginBtn.Bind(wx.EVT_BUTTON, loginBtnClick)
     createUserBtn.Bind(wx.EVT_BUTTON, createUserBtnClick)
