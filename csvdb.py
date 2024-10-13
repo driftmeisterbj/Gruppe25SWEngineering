@@ -166,7 +166,7 @@ def readCSV(filename):
         for line in csvFile:
             print(line)
 
-
+"""
 resetCSV("userdb")
 addUserToCSV("userdb", "Test1", "Passord123", "ma!i?l@mail.com")
 addUserToCSV("userdb", "Test2", "Pa123", "mail.m@mail.com")
@@ -180,3 +180,4 @@ addUserToCSV("userdb", "geir69", "Passord1234", "mail.mail@.com")
 
 
 readCSV("userdb")
+"""

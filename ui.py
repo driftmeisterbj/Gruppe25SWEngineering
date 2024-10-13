@@ -48,7 +48,7 @@ def createLoginPage():
 
 def createUserCreationPage():
     destroyEverything()
-    usernameText = wx.StaticText(mainDialog, label="Username:", pos = [100, 100], style=wx.ALIGN_RIGHT)
+    usernameText = wx.StaticText(mainDialog, label="Username:", pos = [80, 100], size=(100, -1), style=wx.ALIGN_RIGHT)
     emailText = wx.StaticText(mainDialog, label="Email adress:", pos = [100, 130], style=wx.ALIGN_RIGHT)
     passwordText = wx.StaticText(mainDialog, label="Password:", pos = [100, 160], style=wx.ALIGN_RIGHT)
     passwordText2 = wx.StaticText(mainDialog, label="Confirm password:", pos = [100, 190], style=wx.ALIGN_RIGHT)
