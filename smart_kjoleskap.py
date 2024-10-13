@@ -6,14 +6,6 @@ class SmartKjøleskap(Enhet):
         self.temperatur = temperatur
         self.på = False  # Start med kjøleskapet av
 
-    def skru_på(self):
-        self.på = True
-        print(f"{self.navn} er nå på.")
-
-    def skru_av(self):
-        self.på = False
-        print(f"{self.navn} er nå av.")
-
     def sett_temperatur(self, ny_temp):
         try:
             ny_temp = int(ny_temp)

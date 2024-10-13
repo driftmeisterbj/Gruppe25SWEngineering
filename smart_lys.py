@@ -6,14 +6,6 @@ class SmartLys(Enhet):
         self.lysstyrke = lysstyrke
         self.på = False
         
-    def skru_på(self):
-        self.på = True
-        print(f"{self.navn} er nå på.")
-
-    def skru_av(self):
-        self.på = False
-        print(f"{self.navn} er nå av.")
-
     def sett_lysstyrke(self, ny_lysstyrke):
         try:
             ny_lysstyrke = int(ny_lysstyrke)  # Konvertere til heltall
