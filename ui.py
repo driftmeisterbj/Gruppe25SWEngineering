@@ -1,4 +1,5 @@
 
+import ctypes
 import subprocess
 import tkinter as tk
 import jsondb as db
@@ -22,6 +23,44 @@ def onDestroy(evt):
 mainDialog = wx.Dialog(None, title = "main", size = [500, 500])
 mainDialog.Center()
 mainDialog.Bind(wx.EVT_CLOSE, onDestroy)
+
+class ErrorText():
+    def __init__(self, text):
+        self.text = text
+        #https://docs.wxpython.org/4.0.7/wx.StaticText.html
+        self.errorText = wx.StaticText(mainDialog, label=text, size=(300, -1))
+        self.errorText.Wrap(300)
+        self.RepositionSelf()
+
+    def ShowSelf(self):
+        self.errorText.Show()
+
+    def HideSelf(self):
+        self.errorText.Hide()
+
+    def RepositionSelf(self):
+        width, height = self.errorText.GetTextExtent(self.text)
+        #x = ( (bredde på vinduet) - (bredde på teksten) ) // 2
+        if(width > 300):
+            width = 300
+        x = (500 - width) // 2
+
+        self.errorText.SetPosition((x, 340))
+        self.errorText.SetForegroundColour(wx.Colour(155,17,30))
+
+    def SetText(self, text):
+        self.text = text
+        self.errorText.SetLabel(text)
+        self.errorText.Wrap(300)
+        self.RepositionSelf()
+
+    def NewError(self, text):
+        self.HideSelf()
+        self.ShowSelf()
+        self.SetText(text)
+        
+    
+
 
 
 def createLoginPage():
@@ -76,6 +115,7 @@ def createLoginPage():
 
 def createUserCreationPage():
     destroyEverything()
+    errorText = ErrorText("")
     usernameText = wx.StaticText(mainDialog, label="Username:", pos = [80, 100], size=(100, -1), style=wx.ALIGN_RIGHT)
     usernameInput = wx.TextCtrl(mainDialog, pos = [190, 100], size=(200, -1))
     emailText = wx.StaticText(mainDialog, label="Email adress:", pos = [80, 130], size=(100, -1), style=wx.ALIGN_RIGHT)
@@ -88,7 +128,29 @@ def createUserCreationPage():
     createBtn = wx.Button(mainDialog, label = "Create user", pos = [310, 220])
 
     def tryCreate(evt):
-        createLoginPage()
+        if db.isUsernameTaken("userdb", usernameInput.GetValue()) != False: 
+            errorText.NewError("An account with this username already exists")
+        else:
+            if db.isUsernameValid(usernameInput.GetValue()) != True:
+                errorText.NewError(db.isUsernameValid(usernameInput.GetValue()))
+            else:
+                if db.isEmailTaken("userdb", emailInput.GetValue()) != False:
+                    errorText.NewError("An account with this email already exists")
+                else:
+                    if db.isEmailValid(emailInput.GetValue()) != True:
+                        errorText.NewError(db.isEmailValid(emailInput.GetValue()))
+                    else:
+                        if db.isPasswordValid(passwordInput.GetValue()) == False:
+                            errorText.NewError(db.isPasswordValid( passwordInput.GetValue()))
+                        else:
+                            if passwordInput.GetValue() != passwordInput2.GetValue():
+                                errorText.NewError("Passwords do not match")
+                            else:
+                                #https://stackoverflow.com/questions/2963263/how-can-i-create-a-simple-message-box-in-python
+                                ctypes.windll.user32.MessageBoxW(0, "Your account was created!", "Success", 1)
+                                db.addUserToJSON("userdb", usernameInput.GetValue(), passwordInput.GetValue(), emailInput.GetValue())
+                                createDeviceListPage()
+
 
     createBtn.Bind(wx.EVT_BUTTON, tryCreate)
 

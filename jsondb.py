@@ -25,26 +25,22 @@ def isUsernameTaken(username, filename):
                 
 
 def isUsernameValid(username):
-    isValid = True
     illegalChars=["'", '"', ",", "!", "@", "$", "€", "{", "}",
                  "[", "]", "(", ")", "^", "¨", "~", "*", ".",
                  "&", "%", "¤", "#", "!", "?", "+", " "]
     
     if len(username) < 3:
-        isValid = False
-        print(f'Name: "{username}" failed - Username can not be shorter than 3 characters')
+        return f'Name: "{username}" failed - Username can not be shorter than 3 characters'
 
     elif len(username) > 25:
-        isValid = False
-        print(f'Name: "{username}" failed - Username can not be longer than 25 characters')
+        return f'Name: "{username}" failed - Username can not be longer than 25 characters'
 
     else:
         for char in username:
             if char in illegalChars:
-                isValid = False
-                print(f'Username contains illegal character: " {char} "')
+                return f'Username contains illegal character: " {char} "'
 
-    return isValid
+    return True
 
 def isPasswordValid(password):
     isValid = False   
@@ -53,10 +49,10 @@ def isPasswordValid(password):
     containsNumber = False
 
     if len(password) < 4:
-        print("Password cannot be shorter than 4 characters")
+        return "Password cannot be shorter than 4 characters"
 
     elif len(password) > 45:
-        print("Password cannot be longer than 45 characters")
+        return "Password cannot be longer than 45 characters"
 
     else:
         for char in password:
@@ -67,6 +63,9 @@ def isPasswordValid(password):
             if char in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]:
                 containsNumber = True
     
+    if (containsNumber == False):
+        return "Password must contain at least one number"
+
     if (containsUppercase and containsLowercase and containsNumber):
         isValid = True
 
@@ -96,7 +95,7 @@ def isEmailValid(email):
     for char in email:  
         if char in illegalChars:
             containsOnlyLegalChars = False
-            print(f'ERROR - Illegal character " {char} " in email adress')
+            return f'ERROR - Illegal character " {char} " in email adress'
            
     containsPunctuation = True
     containsNoDuplicates = True
@@ -107,11 +106,11 @@ def isEmailValid(email):
                 containsPunctuation = True
                 containsNoDuplicates = True
             else:
-                print('Email MUST contain the character " . "')
+                return 'Email MUST contain the character " . "'
         else:
-            print('Email contains too many instances of the char " @ ", you can only use this character ONCE')
+            return 'Email contains too many instances of the char " @ ", you can only use this character ONCE'
     else:
-        print('Email MUST contain the character " @ "')
+        return 'Email MUST contain the character " @ "'
 
     if containsAt and containsPunctuation and containsNoDuplicates and containsOnlyLegalChars:
         charList = []
@@ -120,7 +119,7 @@ def isEmailValid(email):
 
         print(charList)
         if charList.count(".") > 1:
-            print('ERROR - There can only be a single instance of the character " . " after the " @ "')
+            return 'ERROR - There can only be a single instance of the character " . " after the " @ "'
         
         else:
             punctuationLastIndex = 0
@@ -132,37 +131,35 @@ def isEmailValid(email):
                 counter += 1
 
             if punctuationLastIndex < email.index("@"):
-                print('ERROR - The character MUST appear at least once after the character " @ " in the email adress')
+                return 'ERROR - The character " . " MUST appear at least once after the character " @ " in the email adress'
             else:
-                isValid = True
-
-    return isValid
+                return True
 
     
     
 
 def addUserToJSON(filename, username, password, email):
-    if isUsernameValid(username):
+    if isUsernameValid(username) == True:
         if isUsernameTaken(username, filename) == False:
-                if isPasswordValid(password):
-                    if isEmailValid(email):
-                        if isEmailTaken(email, filename) == False:
-                                users = readJSON(filename)
-                                with open(filename+".json", "w") as file:
-                                    data = {
-                                        "username": username,
-                                        "password": password,
-                                        "email": email,
-                                        "devices": []
-                                    }
-                                    users.append(data)
-                                    json.dump(users, file, indent=4)
-                        else:
-                            print("An account with this email adress already exists")
+            if isPasswordValid(password) == True:
+                if isEmailValid(email) == True:
+                    if isEmailTaken(email, filename) == False:
+                            users = readJSON(filename)
+                            with open(filename+".json", "w") as file:
+                                data = {
+                                    "username": username,
+                                    "password": password,
+                                    "email": email,
+                                    "devices": []
+                                }
+                                users.append(data)
+                                json.dump(users, file, indent=4)
                     else:
-                            print("Email is invalid. Check error messages in console.")
+                        print("An account with this email adress already exists")
                 else:
-                    print("Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number")
+                        print("Email is invalid. Check error messages in console.")
+            else:
+                print("Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number")
         else:
             print("Username is already taken")
     else:
