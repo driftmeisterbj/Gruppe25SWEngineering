@@ -2,6 +2,7 @@
 import subprocess
 import tkinter as tk
 import csvdb as db
+import smart_kjoleskap
 
 try:
     import wx
@@ -91,3 +92,6 @@ def destroyEverything():
 createLoginPage()
 mainDialog.Show()
 app.MainLoop()
+
+kjøleskap = smart_kjoleskap.SmartKjøleskap()
+print(kjøleskap.navn)
