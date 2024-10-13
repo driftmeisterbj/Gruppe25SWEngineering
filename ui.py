@@ -1,8 +1,8 @@
 
 import subprocess
 import tkinter as tk
-import csvdb as db
-import enheter.smart_kjoleskap as smart_kjoleskap
+import jsondb as db
+
 
 try:
     import wx
@@ -85,9 +85,6 @@ def createDeviceListPage():
     searchButton = wx.Button(mainDialog, label = "search", pos = [200, 100])
     searchButton.Bind(wx.EVT_BUTTON, searchForDevices)
     mainDialog.Show()
-
-kjøleskap = smart_kjoleskap.SmartKjøleskap("Kjøleskap 1")
-print(kjøleskap.navn)
 
 #https://discuss.wxpython.org/t/getchildren/27335
 def destroyEverything():

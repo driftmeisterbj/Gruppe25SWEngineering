@@ -13,6 +13,14 @@
             {
                 "name": "Vaskemaskin",
                 "brand": "Miele"
+            },
+            {
+                "name": "Vaskemaskin",
+                "brand": "Miele"
+            },
+            {
+                "name": "Vaskemaskin",
+                "brand": "Miele"
             }
         ]
     },
@@ -27,16 +35,5 @@
         "password": "Passord1234",
         "email": "mail.mail@.com",
         "devices": []
-    },
-    {
-        "username": "Test3",
-        "password": "Passord123",
-        "email": "mail44@mail.com",
-        "devices": [
-            {
-                "name": "Vaskemaskin",
-                "brand": "Miele"
-            }
-        ]
     }
 ]

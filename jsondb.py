@@ -198,19 +198,19 @@ def addDeviceToUser(filename, username, device):
                 "devices": deviceList
             }
 
-            users.append(data)
+            user = data
             json.dump(users, file, indent=4)
 
     else:
         print("Userindex not found")
 
-"""
+""""
 dev1 = {
     "name": "Vaskemaskin",
     "brand": "Miele"
 }
 addDeviceToUser("userdb", "Test3", dev1)
-resetJSON("userdb")
+#resetJSON("userdb")
 
 addUserToJSON("userdb", "Test1", "Passord123", "ma!i?l@mail.com")
 addUserToJSON("userdb", "Test2", "Pa123", "mail.m@mail.com")
