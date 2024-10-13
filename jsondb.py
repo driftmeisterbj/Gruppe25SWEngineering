@@ -1,22 +1,28 @@
-import csv
+import json
 
-def resetCSV(filename):
-    with open(filename+".csv", "w", newline="") as file:
-        writer = csv.DictWriter(file, ["username", "password", "email"])
-        writer.writeheader()
+def resetJSON(filename):
+    with open(filename+".json", "w", newline="") as file:
+        json.dump({}, file)
+
+def readJSON(filename):
+    try:
+        with open(filename+".json", "r") as file:
+            return json.load(file)
+
+    except:
+        return []
 
 
 def isUsernameTaken(username, filename):
-    listOfUsernames = []
-    with open(filename+".csv", "r") as file:
-        csvFile = csv.reader(file)
-        for line in csvFile:
-            listOfUsernames.append(line[0])
+    users = readJSON(filename)
 
-    if username.lower() in listOfUsernames:
-        return True
-    else:
-        return False
+    for user in users:
+        for key, value in user.items():
+            if key == "username" and value == username.lower():
+                return True
+    
+    return False
+                
 
 def isUsernameValid(username):
     isValid = True
@@ -67,16 +73,14 @@ def isPasswordValid(password):
     return isValid
 
 def isEmailTaken(email, filename):
-    listOfEmails = []
-    with open(filename+".csv", "r") as file:
-        csvFile = csv.reader(file)
-        for line in csvFile:
-            listOfEmails.append(line[2])
+    users = readJSON(filename)
 
-    if email.lower() in listOfEmails:
-        return True
-    else:
-        return False
+    for user in users:
+        for key, value in user.items():
+            if key == "email" and value == email.lower():
+                return True
+    
+    return False
     
 def isEmailValid(email):
     isValid = False
@@ -84,7 +88,6 @@ def isEmailValid(email):
     containsPunctuation = False
     containsNoDuplicates = False
     containsOnlyLegalChars = True
-    legalPunctuationAfterAt = False
 
     illegalChars=["'", '"', ",", "!", "$", "€", "{", "}",
                  "[", "]", "(", ")", "^", "¨", "~", "*",
@@ -138,15 +141,22 @@ def isEmailValid(email):
     
     
 
-def addUserToCSV(filename, username, password, email):
+def addUserToJSON(filename, username, password, email):
     if isUsernameValid(username):
         if isUsernameTaken(username, filename) == False:
                 if isPasswordValid(password):
                     if isEmailValid(email):
                         if isEmailTaken(email, filename) == False:
-                                with open(filename+".csv", "a", newline="") as file:
-                                    writer = csv.DictWriter(file, ["username", "password", "email"])
-                                    writer.writerows([{"username": username.lower(), "password": password, "email": email.lower()}]) 
+                                users = readJSON(filename)
+                                with open(filename+".json", "w") as file:
+                                    data = {
+                                        "username": username,
+                                        "password": password,
+                                        "email": email,
+                                        "devices": []
+                                    }
+                                    users.append(data)
+                                    json.dump(users, file, indent=4)
                         else:
                             print("An account with this email adress already exists")
                     else:
@@ -156,28 +166,58 @@ def addUserToCSV(filename, username, password, email):
         else:
             print("Username is already taken")
     else:
-            print("Username is invalid. Check error messages in console.")
+        print("Username is invalid. Check error messages in console.")
 
 
+def findUserIndex(filename, username):
+    users = readJSON(filename)
+    
+    counter = 0
+    for user in users:
+        if user.get("username").lower() == username.lower():
+            return counter
+        counter+=1
 
-def readCSV(filename):
-    with open(filename+".csv", "r") as file:
-        csvFile = csv.reader(file)
-        for line in csvFile:
-            print(line)
+    return -1
+
+
+def addDeviceToUser(filename, username, device):
+    userIndex = findUserIndex(filename, username)
+
+    if userIndex != -1:
+        users = readJSON(filename)
+        user = users[userIndex]
+        deviceList = user["devices"]
+        deviceList.append(device)
+
+        with open(filename+".json", "w") as file:
+            data = {
+                "username": user["username"],
+                "password": user["password"],
+                "email": user["email"],
+                "devices": deviceList
+            }
+
+            users.append(data)
+            json.dump(users, file, indent=4)
+
+    else:
+        print("Userindex not found")
 
 """
-resetCSV("userdb")
-addUserToCSV("userdb", "Test1", "Passord123", "ma!i?l@mail.com")
-addUserToCSV("userdb", "Test2", "Pa123", "mail.m@mail.com")
-addUserToCSV("userdb", "Test3", "Passord123", "mail44@mail.com")
-addUserToCSV("userdb", "geir", "passord", "mail@mail.com")
-addUserToCSV("userdb", "gEiR2", "Passord1234", "m.a.i.l.2@mail.com")
-addUserToCSV("userdb", "geir3", "Passord1234", "mini_mail.mail@com")
-addUserToCSV("userdb", "geir69", "Passord1234", "mail.mail@..com")
-addUserToCSV("userdb", "geir69", "Passord1234", "mail.mail@.com")
+dev1 = {
+    "name": "Vaskemaskin",
+    "brand": "Miele"
+}
+addDeviceToUser("userdb", "Test3", dev1)
+resetJSON("userdb")
 
-
-
-readCSV("userdb")
+addUserToJSON("userdb", "Test1", "Passord123", "ma!i?l@mail.com")
+addUserToJSON("userdb", "Test2", "Pa123", "mail.m@mail.com")
+addUserToJSON("userdb", "Test3", "Passord123", "mail44@mail.com")
+addUserToJSON("userdb", "geir", "passord", "mail@mail.com")
+addUserToJSON("userdb", "gEiR2", "Passord1234", "m.a.i.l.2@mail.com")
+addUserToJSON("userdb", "geir3", "Passord1234", "mini_mail.mail@com")
+addUserToJSON("userdb", "geir69", "Passord1234", "mail.mail@..com")
+addUserToJSON("userdb", "geir69", "Passord1234", "mail.mail@.com")
 """
