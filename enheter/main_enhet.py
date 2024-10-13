@@ -1,4 +1,4 @@
-from smart_kjoleskap import SmartKjøleskap
+from enheter.smart_kjoleskap import SmartKjøleskap
 from smart_lys import SmartLys
 from smart_varmeovn import SmartVarmeovn
 

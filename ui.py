@@ -2,7 +2,7 @@
 import subprocess
 import tkinter as tk
 import csvdb as db
-import smart_kjoleskap
+import enheter.smart_kjoleskap as smart_kjoleskap
 
 try:
     import wx

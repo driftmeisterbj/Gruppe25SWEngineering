@@ -1,0 +1,42 @@
+[
+    {
+        "username": "Test2",
+        "password": "Pa123",
+        "email": "mail.m@mail.com",
+        "devices": []
+    },
+    {
+        "username": "Test3",
+        "password": "Passord123",
+        "email": "mail44@mail.com",
+        "devices": [
+            {
+                "name": "Vaskemaskin",
+                "brand": "Miele"
+            }
+        ]
+    },
+    {
+        "username": "gEiR2",
+        "password": "Passord1234",
+        "email": "m.a.i.l.2@mail.com",
+        "devices": []
+    },
+    {
+        "username": "geir69",
+        "password": "Passord1234",
+        "email": "mail.mail@.com",
+        "devices": []
+    },
+    {
+        "username": "Test3",
+        "password": "Passord123",
+        "email": "mail44@mail.com",
+        "devices": [
+            {
+                "name": "Vaskemaskin",
+                "brand": "Miele"
+            }
+        ]
+    }
+]
