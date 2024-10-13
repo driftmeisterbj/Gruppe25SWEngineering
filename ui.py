@@ -24,11 +24,10 @@ mainDialog.Bind(wx.EVT_CLOSE, onDestroy)
 
 
 def createLoginPage():
-    hideEverything()
+    destroyEverything()
     usernameText = wx.StaticText(mainDialog, label="Username:", pos = [100, 125])
-    passwordText = wx.StaticText(mainDialog, label="Password:", pos = [100, 175])
-
     usernameInput = wx.TextCtrl(mainDialog, pos = [175, 125], size=(200, -1))
+    passwordText = wx.StaticText(mainDialog, label="Password:", pos = [100, 175])
     passwordInput = wx.TextCtrl(mainDialog, pos = [175, 175], size=(200, -1), style=wx.TE_PASSWORD)
 
     loginBtn = wx.Button(mainDialog, label = "Log in", pos = [125, 250])
@@ -48,9 +47,11 @@ def createLoginPage():
     createUserBtn.Bind(wx.EVT_BUTTON, createUserBtnClick)
 
 def createUserCreationPage():
-    hideEverything()
-    usernameText = wx.StaticText(mainDialog, label="Username:", pos = [100, 125])
-    passwordText = wx.StaticText(mainDialog, label="Password:", pos = [100, 175])
+    destroyEverything()
+    usernameText = wx.StaticText(mainDialog, label="Username:", pos = [100, 100], style=wx.ALIGN_RIGHT)
+    emailText = wx.StaticText(mainDialog, label="Email adress:", pos = [100, 130], style=wx.ALIGN_RIGHT)
+    passwordText = wx.StaticText(mainDialog, label="Password:", pos = [100, 160], style=wx.ALIGN_RIGHT)
+    passwordText2 = wx.StaticText(mainDialog, label="Confirm password:", pos = [100, 190], style=wx.ALIGN_RIGHT)
 
     usernameInput = wx.TextCtrl(mainDialog, pos = [175, 125], size=(200, -1))
     passwordInput = wx.TextCtrl(mainDialog, pos = [175, 175], size=(200, -1), style=wx.TE_PASSWORD)
@@ -63,7 +64,7 @@ def createUserCreationPage():
     createBtn.Bind(wx.EVT_BUTTON, tryCreate)
 
 def createDeviceListPage():
-    hideEverything()
+    destroyEverything()
     smart_devices = [
         "Philips Hue",
         "Google Nest Home",
@@ -84,10 +85,9 @@ def createDeviceListPage():
     mainDialog.Show()
 
 #https://discuss.wxpython.org/t/getchildren/27335
-def hideEverything():
+def destroyEverything():
     for child in mainDialog.GetChildren():
-        child.Hide()
-
+        child.Destroy()
 createLoginPage()
 mainDialog.Show()
 app.MainLoop()

@@ -1,6 +1,8 @@
 
 import subprocess
 import tkinter as tk
+import csvdb as db
+
 try:
 	import wx
 except:
@@ -31,6 +33,9 @@ createUserButton = wx.Button(mainDialog, label = "Create new account", pos = [25
 
 def loginClick(evt):
 	print(usernameInput.GetValue())
+
+def tryLoggingIn(username, password):
+	db.readCSV("userdb")
 
 loginButton.Bind(wx.EVT_BUTTON, loginClick)
 
