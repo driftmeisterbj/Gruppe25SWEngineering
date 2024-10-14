@@ -202,7 +202,7 @@ def addDeviceToUser(filename, username, device):
         print("Userindex not found")
 
 
-def FindDeviceListUser(filename, username):
+def findDeviceListUser(filename, username):
     userIndex = findUserIndex(filename, username)
     
     if userIndex != -1:
@@ -213,6 +213,33 @@ def FindDeviceListUser(filename, username):
 
     else:
         print("Userindex not found")
+
+def removeDuplicateDevicesFromUser(filename, username):
+    userIndex = findUserIndex(filename, username)
+
+    if userIndex == -1:
+        print("Userindex not found")
+
+    else:
+        users = readJSON(filename)
+        devices = findDeviceListUser("userdb", username)
+
+        #https://stackoverflow.com/questions/9427163/remove-duplicate-dict-in-list-in-python
+        noDupes = set()
+        newList = []
+
+        for device in devices:
+            t = tuple(device.items())
+            if t not in noDupes:
+                noDupes.add(t)
+                newList.append(device)
+
+        users[userIndex]["devices"] = newList
+
+        with open(filename+".json", "w") as file:
+            json.dump(users, file, indent=4)
+
+
 """"
 dev1 = {
     "name": "Vaskemaskin",

@@ -176,6 +176,7 @@ def createDeviceListPage(username):
     ]
 
     def makeListBoxDeviceList(list):
+        db.removeDuplicateDevicesFromUser("userdb", username)
         newList = []
         for device in list:
             newList.append(device.get("name") + " " + device.get("brand"))
