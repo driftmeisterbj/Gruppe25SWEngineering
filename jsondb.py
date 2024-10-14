@@ -244,13 +244,13 @@ def remove_duplicate_devices_from_user(filename, username):
         devices = find_device_list_user("userdb", username)
 
         #https://stackoverflow.com/questions/9427163/remove-duplicate-dict-in-list-in-python
-        noDupes = set()
+        no_dupes = set()
         new_list = []
 
         for device in devices:
             t = tuple(device.items())
-            if t not in noDupes:
-                noDupes.add(t)
+            if t not in no_dupes:
+                no_dupes.add(t)
                 new_list.append(device)
 
         users[user_index]["devices"] = new_list
