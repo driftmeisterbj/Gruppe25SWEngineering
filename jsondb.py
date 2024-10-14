@@ -201,6 +201,18 @@ def addDeviceToUser(filename, username, device):
     else:
         print("Userindex not found")
 
+
+def FindDeviceListUser(filename, username):
+    userIndex = findUserIndex(filename, username)
+    
+    if userIndex != -1:
+        users = readJSON(filename)
+        user = users[userIndex]
+        deviceList = user["devices"]
+        return deviceList
+
+    else:
+        print("Userindex not found")
 """"
 dev1 = {
     "name": "Vaskemaskin",

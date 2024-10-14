@@ -25,12 +25,12 @@ mainDialog.Center()
 mainDialog.Bind(wx.EVT_CLOSE, onDestroy)
 
 class ErrorText():
-    def __init__(self, text):
+    def __init__(self, text, y):
         self.text = text
         #https://docs.wxpython.org/4.0.7/wx.StaticText.html
         self.errorText = wx.StaticText(mainDialog, label=text, size=(300, -1))
         self.errorText.Wrap(300)
-        self.RepositionSelf()
+        self.RepositionSelf(y)
 
     def ShowSelf(self):
         self.errorText.Show()
@@ -38,28 +38,47 @@ class ErrorText():
     def HideSelf(self):
         self.errorText.Hide()
 
-    def RepositionSelf(self):
+    def RepositionSelf(self, y):
+        #https://stackoverflow.com/questions/14269880/the-right-way-to-find-the-size-of-text-in-wxpython
         width, height = self.errorText.GetTextExtent(self.text)
         #x = ( (bredde på vinduet) - (bredde på teksten) ) // 2
         if(width > 300):
             width = 300
         x = (500 - width) // 2
 
-        self.errorText.SetPosition((x, 340))
-        self.errorText.SetForegroundColour(wx.Colour(155,17,30))
+        self.errorText.SetPosition((x, y))
+        #https://stackoverflow.com/questions/1785227/change-the-colour-of-a-statictext-wxpython
+        self.errorText.SetForegroundColour(colourFinder("red"))
 
-    def SetText(self, text):
+    def SetText(self, text, y):
         self.text = text
         self.errorText.SetLabel(text)
         self.errorText.Wrap(300)
-        self.RepositionSelf()
+        self.RepositionSelf(y)
 
-    def NewError(self, text):
+    def NewError(self, text, y):
         self.HideSelf()
         self.ShowSelf()
-        self.SetText(text)
+        self.SetText(text, y)
         
-    
+def colourFinder(colourString):
+    #https://html-color.codes/
+    colourDict = {
+        "red": "rgb(255,0,0)",
+        "brown": "rgb(111,78,55)",
+        "orange": "rgb(204,85,0)",
+        "yellow": "rgb(255,255,0)",
+        "green": "rgb(0,128,0)",
+        "cyan": "rgb(0,255,255)",
+        "blue": "rgb(0,0,255)",
+        "purple": "rgb(128,0,128)",
+        "pink": "rgb(255,192,203)",
+        "grey": "rgb(128,128,128)",
+        "black": "rgb(0,0,0)",
+        "white": "rgb(255,255,255)"
+    }
+
+    return colourDict.get(colourString)
 
 
 
@@ -93,20 +112,10 @@ def createLoginPage():
         users = db.readJSON("userdb")
 
         if loginValid(username, password) == True:
-            createDeviceListPage()
+            createDeviceListPage(username)
         
         else:
-            #https://stackoverflow.com/questions/1785227/change-the-colour-of-a-statictext-wxpython
-            errorText = wx.StaticText(mainDialog, label="Wrong username or password")    
-
-            #https://stackoverflow.com/questions/14269880/the-right-way-to-find-the-size-of-text-in-wxpython
-            width, height = errorText.GetTextExtent("Wrong username or password")
-
-            #x = ( (bredde på vinduet) - (bredde på teksten) ) // 2
-            x = (500 - width) // 2
-
-            errorText.SetPosition((x, 340))
-            errorText.SetForegroundColour(wx.Colour(155,17,30))
+            errText = ErrorText("Wrong username or password", 340)
 
 
 
@@ -115,7 +124,7 @@ def createLoginPage():
 
 def createUserCreationPage():
     destroyEverything()
-    errorText = ErrorText("")
+    errorText = ErrorText("", 340)
     usernameText = wx.StaticText(mainDialog, label="Username:", pos = [80, 100], size=(100, -1), style=wx.ALIGN_RIGHT)
     usernameInput = wx.TextCtrl(mainDialog, pos = [190, 100], size=(200, -1))
     emailText = wx.StaticText(mainDialog, label="Email adress:", pos = [80, 130], size=(100, -1), style=wx.ALIGN_RIGHT)
@@ -129,32 +138,32 @@ def createUserCreationPage():
 
     def tryCreate(evt):
         if db.isUsernameTaken("userdb", usernameInput.GetValue()) != False: 
-            errorText.NewError("An account with this username already exists")
+            errorText.NewError("An account with this username already exists", 340)
         else:
             if db.isUsernameValid(usernameInput.GetValue()) != True:
-                errorText.NewError(db.isUsernameValid(usernameInput.GetValue()))
+                errorText.NewError(db.isUsernameValid(usernameInput.GetValue()), 340)
             else:
                 if db.isEmailTaken("userdb", emailInput.GetValue()) != False:
-                    errorText.NewError("An account with this email already exists")
+                    errorText.NewError("An account with this email already exists", 340)
                 else:
                     if db.isEmailValid(emailInput.GetValue()) != True:
-                        errorText.NewError(db.isEmailValid(emailInput.GetValue()))
+                        errorText.NewError(db.isEmailValid(emailInput.GetValue()), 340)
                     else:
                         if db.isPasswordValid(passwordInput.GetValue()) == False:
-                            errorText.NewError(db.isPasswordValid( passwordInput.GetValue()))
+                            errorText.NewError(db.isPasswordValid(passwordInput.GetValue()), 340)
                         else:
                             if passwordInput.GetValue() != passwordInput2.GetValue():
-                                errorText.NewError("Passwords do not match")
+                                errorText.NewError("Passwords do not match", 340)
                             else:
                                 #https://stackoverflow.com/questions/2963263/how-can-i-create-a-simple-message-box-in-python
                                 ctypes.windll.user32.MessageBoxW(0, "Your account was created!", "Success", 1)
                                 db.addUserToJSON("userdb", usernameInput.GetValue(), passwordInput.GetValue(), emailInput.GetValue())
-                                createDeviceListPage()
+                                createDeviceListPage(usernameInput.GetValue())
 
 
     createBtn.Bind(wx.EVT_BUTTON, tryCreate)
 
-def createDeviceListPage():
+def createDeviceListPage(username):
     destroyEverything()
     smart_devices = [
         "Philips Hue",
@@ -165,11 +174,19 @@ def createDeviceListPage():
         "iRobot Roomba s9+",
         "August Smart Lock Pro"
     ]
+
+    def makeListBoxDeviceList(list):
+        newList = []
+        for device in list:
+            newList.append(device.get("name") + " " + device.get("brand"))
+
+        return newList
+
     listBox = wx.ListBox(mainDialog, size = [150, 200], choices = [])
     listBox.Center()
 
     def searchForDevices(evt):
-        listBox.SetItems(smart_devices)
+        listBox.SetItems(makeListBoxDeviceList(db.FindDeviceListUser("userdb", username)))
 
     searchButton = wx.Button(mainDialog, label = "search", pos = [200, 100])
     searchButton.Bind(wx.EVT_BUTTON, searchForDevices)
