@@ -1,6 +1,8 @@
 import json
 
-def resetJSON(filename):
+# Skriver til JSON-filen med tomt innhold, altså full reset.
+# KUN for testing, kan fjernes når vi har ferdigstilt struktur i databasen.
+def reset_json(filename):
     with open(filename+".json", "w", newline="") as file:
         json.dump({}, file)
 
