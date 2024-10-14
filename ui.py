@@ -186,11 +186,11 @@ def create_device_list_page(username):
     listbox = wx.ListBox(main_dialog, size = [150, 200], choices = [])
     listbox.Center()
 
-    def searchForDevices(evt):
+    def search_for_devices(evt):
         listbox.SetItems(make_listbox_device_list(db.find_device_list_user("userdb", username)))
 
     search_btn = wx.Button(main_dialog, label = "search", pos = [200, 100])
-    search_btn.Bind(wx.EVT_BUTTON, searchForDevices)
+    search_btn.Bind(wx.EVT_BUTTON, search_for_devices)
     main_dialog.Show()
 
 #https://discuss.wxpython.org/t/getchildren/27335
