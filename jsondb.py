@@ -1,18 +1,24 @@
 import json
 
+# Nullstiller hele JSON-filen, altså full reset.
+# Kan fjernes i fremtiden.
 def reset_json(filename):
     with open(filename+".json", "w", newline="") as file:
         json.dump({}, file)
 
+# Leser ut innholdet på JSON-filen. Dersom filen ikke finnes returneres en tom liste.
+# Dersom noe annet skjer som gjør at den feiler, vil programmet crashe.
 def read_json(filename):
     try:
         with open(filename+".json", "r") as file:
             return json.load(file)
 
-    except:
+    except FileNotFoundError:
         return []
 
 
+# Itererer gjennom alle brukernavnene til de ulike brukerne på filen og sjekker om det gitte brukernavnet
+# allerede eksisterer. Returnerer True hvis brukernavnet eksisterer, False hvis ikke.
 def is_username_taken(username, filename):
     users = read_json(filename)
 
@@ -23,7 +29,8 @@ def is_username_taken(username, filename):
     
     return False
                 
-
+# Sjekker stringen til brukernavn for å passe på at det er gyldig.
+# Returnerer True hvis gyldig, hvis ikke returneres en feilmelding (string).
 def is_username_valid(username):
     illegal_chars=["'", '"', ",", "!", "@", "$", "€", "{", "}",
                  "[", "]", "(", ")", "^", "¨", "~", "*", ".",
@@ -42,6 +49,8 @@ def is_username_valid(username):
 
     return True
 
+# Sjekker om passordet er gyldig. Dersom passordet er gyldig returneres True.
+# Dersom passordet ikke er gyldig returneres en feilmelding.
 def is_password_valid(password):
     is_valid = False   
     contains_uppercase = False
@@ -71,6 +80,8 @@ def is_password_valid(password):
 
     return is_valid
 
+# Itererer gjennom alle epostene til de ulike brukerene i databasen.
+# Dersom eposten er lik en av disse returneres True. Dersom ikke, returneres False
 def is_email_taken(email, filename):
     users = read_json(filename)
 
@@ -80,7 +91,8 @@ def is_email_taken(email, filename):
                 return True
     
     return False
-    
+
+ 
 def is_email_valid(email):
     is_valid = False
     contains_at = False
