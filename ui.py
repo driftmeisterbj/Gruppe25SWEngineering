@@ -99,7 +99,7 @@ def createLoginPage():
         createUserCreationPage()
 
     def loginValid(username, password):
-        users = db.readJSON("userdb")
+        users = db.read_json("userdb")
 
         for user in users:
             if user.get("username").lower() == username.lower():
@@ -109,10 +109,10 @@ def createLoginPage():
         return False
 
     def tryLoggingIn(username, password):
-        users = db.readJSON("userdb")
+        users = db.read_json("userdb")
 
         if loginValid(username, password) == True:
-            createDeviceListPage(username)
+            createdevice_listPage(username)
         
         else:
             errText = ErrorText("Wrong username or password", 340)
@@ -137,33 +137,33 @@ def createUserCreationPage():
     createBtn = wx.Button(mainDialog, label = "Create user", pos = [310, 220])
 
     def tryCreate(evt):
-        if db.isUsernameTaken("userdb", usernameInput.GetValue()) != False: 
+        if db.is_username_taken("userdb", usernameInput.GetValue()) != False: 
             errorText.NewError("An account with this username already exists", 340)
         else:
-            if db.isUsernameValid(usernameInput.GetValue()) != True:
-                errorText.NewError(db.isUsernameValid(usernameInput.GetValue()), 340)
+            if db.is_username_valid(usernameInput.GetValue()) != True:
+                errorText.NewError(db.is_username_valid(usernameInput.GetValue()), 340)
             else:
-                if db.isEmailTaken("userdb", emailInput.GetValue()) != False:
+                if db.is_email_taken("userdb", emailInput.GetValue()) != False:
                     errorText.NewError("An account with this email already exists", 340)
                 else:
-                    if db.isEmailValid(emailInput.GetValue()) != True:
-                        errorText.NewError(db.isEmailValid(emailInput.GetValue()), 340)
+                    if db.is_email_valid(emailInput.GetValue()) != True:
+                        errorText.NewError(db.is_email_valid(emailInput.GetValue()), 340)
                     else:
-                        if db.isPasswordValid(passwordInput.GetValue()) == False:
-                            errorText.NewError(db.isPasswordValid(passwordInput.GetValue()), 340)
+                        if db.is_password_valid(passwordInput.GetValue()) == False:
+                            errorText.NewError(db.is_password_valid(passwordInput.GetValue()), 340)
                         else:
                             if passwordInput.GetValue() != passwordInput2.GetValue():
                                 errorText.NewError("Passwords do not match", 340)
                             else:
                                 #https://stackoverflow.com/questions/2963263/how-can-i-create-a-simple-message-box-in-python
                                 ctypes.windll.user32.MessageBoxW(0, "Your account was created!", "Success", 1)
-                                db.addUserToJSON("userdb", usernameInput.GetValue(), passwordInput.GetValue(), emailInput.GetValue())
-                                createDeviceListPage(usernameInput.GetValue())
+                                db.add_user_to_json("userdb", usernameInput.GetValue(), passwordInput.GetValue(), emailInput.GetValue())
+                                createdevice_listPage(usernameInput.GetValue())
 
 
     createBtn.Bind(wx.EVT_BUTTON, tryCreate)
 
-def createDeviceListPage(username):
+def createdevice_listPage(username):
     destroyEverything()
     smart_devices = [
         "Philips Hue",
@@ -175,8 +175,8 @@ def createDeviceListPage(username):
         "August Smart Lock Pro"
     ]
 
-    def makeListBoxDeviceList(list):
-        db.removeDuplicateDevicesFromUser("userdb", username)
+    def makeListBoxdevice_list(list):
+        db.remove_duplicate_devices_from_user("userdb", username)
         newList = []
         for device in list:
             newList.append(device.get("name") + " " + device.get("brand"))
@@ -187,7 +187,7 @@ def createDeviceListPage(username):
     listBox.Center()
 
     def searchForDevices(evt):
-        listBox.SetItems(makeListBoxDeviceList(db.FindDeviceListUser("userdb", username)))
+        listBox.SetItems(makeListBoxdevice_list(db.find_device_list_user("userdb", username)))
 
     searchButton = wx.Button(mainDialog, label = "search", pos = [200, 100])
     searchButton.Bind(wx.EVT_BUTTON, searchForDevices)
