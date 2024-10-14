@@ -6,7 +6,7 @@ def resetCSV(filename):
         writer.writeheader()
 
 
-def isUsernameTaken(username, filename):
+def is_username_taken(username, filename):
     listOfUsernames = []
     with open(filename+".csv", "r") as file:
         csvFile = csv.reader(file)
@@ -18,33 +18,33 @@ def isUsernameTaken(username, filename):
     else:
         return False
 
-def isUsernameValid(username):
-    isValid = True
-    illegalChars=["'", '"', ",", "!", "@", "$", "€", "{", "}",
+def is_username_valid(username):
+    is_valid = True
+    illegal_chars=["'", '"', ",", "!", "@", "$", "€", "{", "}",
                  "[", "]", "(", ")", "^", "¨", "~", "*", ".",
                  "&", "%", "¤", "#", "!", "?", "+", " "]
     
     if len(username) < 3:
-        isValid = False
+        is_valid = False
         print(f'Name: "{username}" failed - Username can not be shorter than 3 characters')
 
     elif len(username) > 25:
-        isValid = False
+        is_valid = False
         print(f'Name: "{username}" failed - Username can not be longer than 25 characters')
 
     else:
         for char in username:
-            if char in illegalChars:
-                isValid = False
+            if char in illegal_chars:
+                is_valid = False
                 print(f'Username contains illegal character: " {char} "')
 
-    return isValid
+    return is_valid
 
-def isPasswordValid(password):
-    isValid = False   
-    containsUppercase = False
-    containsLowercase = False
-    containsNumber = False
+def is_password_valid(password):
+    is_valid = False   
+    contains_uppercase = False
+    contains_lowercase = False
+    contains_number = False
 
     if len(password) < 4:
         print("Password cannot be shorter than 4 characters")
@@ -55,18 +55,18 @@ def isPasswordValid(password):
     else:
         for char in password:
             if char.isupper():
-                containsUppercase = True
+                contains_uppercase = True
             if char.islower():
-                containsLowercase = True
+                contains_lowercase = True
             if char in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]:
-                containsNumber = True
+                contains_number = True
     
-    if (containsUppercase and containsLowercase and containsNumber):
-        isValid = True
+    if (contains_uppercase and contains_lowercase and contains_number):
+        is_valid = True
 
-    return isValid
+    return is_valid
 
-def isEmailTaken(email, filename):
+def is_email_taken(email, filename):
     listOfEmails = []
     with open(filename+".csv", "r") as file:
         csvFile = csv.reader(file)
@@ -78,31 +78,31 @@ def isEmailTaken(email, filename):
     else:
         return False
     
-def isEmailValid(email):
-    isValid = False
-    containsAt = False
-    containsPunctuation = False
-    containsNoDuplicates = False
-    containsOnlyLegalChars = True
+def is_email_valid(email):
+    is_valid = False
+    contains_at = False
+    contains_punctuation = False
+    contains_no_duplicates = False
+    contains_only_legal_chars = True
     legalPunctuationAfterAt = False
 
-    illegalChars=["'", '"', ",", "!", "$", "€", "{", "}",
+    illegal_chars=["'", '"', ",", "!", "$", "€", "{", "}",
                  "[", "]", "(", ")", "^", "¨", "~", "*",
                  "&", "%", "¤", "#", "!", "?", "+", " "]
     
     for char in email:  
-        if char in illegalChars:
-            containsOnlyLegalChars = False
+        if char in illegal_chars:
+            contains_only_legal_chars = False
             print(f'ERROR - Illegal character " {char} " in email adress')
            
-    containsPunctuation = True
-    containsNoDuplicates = True
+    contains_punctuation = True
+    contains_no_duplicates = True
     if email.count("@") > 0:
-        containsAt = True
+        contains_at = True
         if email.count("@") == 1:
             if email.count(".") > 0:
-                containsPunctuation = True
-                containsNoDuplicates = True
+                contains_punctuation = True
+                contains_no_duplicates = True
             else:
                 print('Email MUST contain the character " . "')
         else:
@@ -110,7 +110,7 @@ def isEmailValid(email):
     else:
         print('Email MUST contain the character " @ "')
 
-    if containsAt and containsPunctuation and containsNoDuplicates and containsOnlyLegalChars:
+    if contains_at and contains_punctuation and contains_no_duplicates and contains_only_legal_chars:
         charList = []
         for char in range(email.index("@"), len(email)):
             charList.append(email[char])
@@ -120,30 +120,30 @@ def isEmailValid(email):
             print('ERROR - There can only be a single instance of the character " . " after the " @ "')
         
         else:
-            punctuationLastIndex = 0
+            punctuation_last_index = 0
             counter = 0
             
             for char in email:
                 if char == ".":
-                    punctuationLastIndex = counter    
+                    punctuation_last_index = counter    
                 counter += 1
 
-            if punctuationLastIndex < email.index("@"):
+            if punctuation_last_index < email.index("@"):
                 print('ERROR - The character MUST appear at least once after the character " @ " in the email adress')
             else:
-                isValid = True
+                is_valid = True
 
-    return isValid
+    return is_valid
 
     
     
 
 def addUserToCSV(filename, username, password, email):
-    if isUsernameValid(username):
-        if isUsernameTaken(username, filename) == False:
-                if isPasswordValid(password):
-                    if isEmailValid(email):
-                        if isEmailTaken(email, filename) == False:
+    if is_username_valid(username):
+        if is_username_taken(username, filename) == False:
+                if is_password_valid(password):
+                    if is_email_valid(email):
+                        if is_email_taken(email, filename) == False:
                                 with open(filename+".csv", "a", newline="") as file:
                                     writer = csv.DictWriter(file, ["username", "password", "email"])
                                     writer.writerows([{"username": username.lower(), "password": password, "email": email.lower()}]) 
