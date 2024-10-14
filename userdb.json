@@ -11,16 +11,10 @@
         "email": "mail44@mail.com",
         "devices": [
             {
-                "name": "Vaskemaskin",
-                "brand": "Miele"
-            },
-            {
-                "name": "Vaskemaskin",
-                "brand": "Miele"
-            },
-            {
-                "name": "Vaskemaskin",
-                "brand": "Miele"
+                "prod_id": "11564",
+                "name": "Hue 2.0",
+                "brand": "phillips",
+                "category": "light"
             }
         ]
     },

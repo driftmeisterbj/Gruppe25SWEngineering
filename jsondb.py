@@ -180,15 +180,33 @@ def findUserIndex(filename, username):
 
     return -1
 
+#Check if device is valid
+def isDeviceValid(device):
+    required_keys = ['prod_id','name','brand','category']
+    for key in required_keys:
+        if key not in device:
+            return False
+    return True
 
 def addDeviceToUser(filename, username, device):
+    if not isDeviceValid(device):
+        print('Device invalid')
+        return
+
+
     userIndex = findUserIndex(filename, username)
 
     if userIndex != -1:
         users = readJSON(filename)
         user = users[userIndex]
         deviceList = user["devices"]
-        deviceList.append(device)
+
+        #Checks if the device exists already
+        device_exists = any(d['prod_id'] == device['prod_id'] for d in deviceList)
+        if not device_exists:
+            deviceList.append(device)
+        else:
+            print('device already added')
 
         with open(filename+".json", "w") as file:
             data = {
@@ -204,20 +222,39 @@ def addDeviceToUser(filename, username, device):
     else:
         print("Userindex not found")
 
-""""
 dev1 = {
     "name": "Vaskemaskin",
     "brand": "Miele"
 }
-addDeviceToUser("userdb", "Test3", dev1)
+dev2 = {
+    "name":"Hue",
+    "brand":"phillips",
+    "category":'light'
+}
+dev3 = {
+    "name":"Hue",
+    "brand":"phillips",
+    "category":'light'
+}
+dev4 = {
+    "prod_id":'11564',
+    "name":"Hue 2.0",
+    "brand":"phillips",
+    "category":'light'
+}
+addDeviceToUser("userdb", "Test3", dev2)
+addDeviceToUser("userdb", "Test3", dev3)
+addDeviceToUser("userdb", "Test3", dev4)
+
 #resetJSON("userdb")
 
-addUserToJSON("userdb", "Test1", "Passord123", "ma!i?l@mail.com")
-addUserToJSON("userdb", "Test2", "Pa123", "mail.m@mail.com")
-addUserToJSON("userdb", "Test3", "Passord123", "mail44@mail.com")
-addUserToJSON("userdb", "geir", "passord", "mail@mail.com")
-addUserToJSON("userdb", "gEiR2", "Passord1234", "m.a.i.l.2@mail.com")
-addUserToJSON("userdb", "geir3", "Passord1234", "mini_mail.mail@com")
-addUserToJSON("userdb", "geir69", "Passord1234", "mail.mail@..com")
-addUserToJSON("userdb", "geir69", "Passord1234", "mail.mail@.com")
-"""
+# addUserToJSON("userdb", "Test1", "Passord123", "ma!i?l@mail.com")
+
+# addUserToJSON("userdb", "Test2", "Pa123", "mail.m@mail.com")
+# addUserToJSON("userdb", "Test3", "Passord123", "mail44@mail.com")
+# addUserToJSON("userdb", "geir", "passord", "mail@mail.com")
+# addUserToJSON("userdb", "gEiR2", "Passord1234", "m.a.i.l.2@mail.com")
+# addUserToJSON("userdb", "geir3", "Passord1234", "mini_mail.mail@com")
+# addUserToJSON("userdb", "geir69", "Passord1234", "mail.mail@..com")
+# addUserToJSON("userdb", "geir69", "Passord1234", "mail.mail@.com")
+# addDeviceToUser("userdb","Test3",)
