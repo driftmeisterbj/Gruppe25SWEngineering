@@ -186,14 +186,14 @@ def find_user_index(filename, username):
 
 
 def add_device_to_user(filename, username, device):
-    userIndex = find_user_index(filename, username)
+    user_index = find_user_index(filename, username)
 
     if not is_device_valid(device):
         return 'Device invalid'
 
-    if userIndex != -1:
+    if user_index != -1:
         users = read_json(filename)
-        user = users[userIndex]
+        user = users[user_index]
         device_list = user["devices"]
         device_list.append(device)
 
@@ -216,26 +216,26 @@ def add_device_to_user(filename, username, device):
             json.dump(users, file, indent=4)
 
     else:
-        print("Userindex not found")
+        print("user_index not found")
 
 
 def find_device_list_user(filename, username):
-    userIndex = find_user_index(filename, username)
+    user_index = find_user_index(filename, username)
     
-    if userIndex != -1:
+    if user_index != -1:
         users = read_json(filename)
-        user = users[userIndex]
+        user = users[user_index]
         device_list = user["devices"]
         return device_list
 
     else:
-        print("Userindex not found")
+        print("user_index not found")
 
 def remove_duplicate_devices_from_user(filename, username):
-    userIndex = find_user_index(filename, username)
+    user_index = find_user_index(filename, username)
 
-    if userIndex == -1:
-        print("Userindex not found")
+    if user_index == -1:
+        print("user_index not found")
 
     else:
         users = read_json(filename)
@@ -243,15 +243,15 @@ def remove_duplicate_devices_from_user(filename, username):
 
         #https://stackoverflow.com/questions/9427163/remove-duplicate-dict-in-list-in-python
         noDupes = set()
-        newList = []
+        new_list = []
 
         for device in devices:
             t = tuple(device.items())
             if t not in noDupes:
                 noDupes.add(t)
-                newList.append(device)
+                new_list.append(device)
 
-        users[userIndex]["devices"] = newList
+        users[user_index]["devices"] = new_list
 
         with open(filename+".json", "w") as file:
             json.dump(users, file, indent=4)
