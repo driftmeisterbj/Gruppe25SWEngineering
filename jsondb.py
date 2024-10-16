@@ -2,10 +2,13 @@ import json
 
 # Skriver til JSON-filen med tomt innhold, altså full reset.
 # KUN for testing, kan fjernes når vi har ferdigstilt struktur i databasen.
+# Mangler feilhåndering
 def reset_json(filename):
     with open(filename+".json", "w", newline="") as file:
         json.dump({}, file)
 
+# Åpner json-filen for lesing og returnerer innholdet i en liste.
+# Dersom en feil skjer ved lesing, returneres en tom liste
 def read_json(filename):
     try:
         with open(filename+".json", "r") as file:
@@ -14,7 +17,8 @@ def read_json(filename):
     except:
         return []
 
-
+# Databasen leses ved bruk av read_json() og denne listen gås gjennom.
+# Dersom brukernavnet eksisterer i databasen allerede returneres True, ellers returneres False
 def is_username_taken(username, filename):
     users = read_json(filename)
 
@@ -25,7 +29,9 @@ def is_username_taken(username, filename):
     
     return False
                 
-
+# Funksjonen kjører en rekke med sjekker på stringen "username" for validering av brukernavn.
+# Dersom brukernavnet går gjennom alle sjekkene er brukernavnet gyldig, og funksjonen returnerer True.
+# Dersom brukernavnet feiler på en av sjekkene returneres en string med feilmelding.
 def is_username_valid(username):
     illegal_chars=["'", '"', ",", "!", "@", "$", "€", "{", "}",
                  "[", "]", "(", ")", "^", "¨", "~", "*", ".",
@@ -44,6 +50,9 @@ def is_username_valid(username):
 
     return True
 
+
+# Funksjonen kjører en rekke med sjekker på stringen "password" for validering av passord.
+# Dersom passordet går gjennom alle sjekkene returneres True, ellers returneres en feilmelding
 def is_password_valid(password):
     is_valid = False   
     contains_uppercase = False
@@ -73,6 +82,8 @@ def is_password_valid(password):
 
     return is_valid
 
+# Henter ut innholdet i databasen og sjekker om eposten eksisterer her allerede.
+# Dersom eposten eksisterer er eposten i bruk, og True returneres. Ellers returneres False.
 def is_email_taken(email, filename):
     users = read_json(filename)
 
@@ -83,6 +94,8 @@ def is_email_taken(email, filename):
     
     return False
     
+# Funksjon for validering av epost. Inneholder en rekke sjekker for at e-post skal være gyldig til bruk.
+# Dersom eposten går gjennom alle sjekkene er den gyldig, og True returneres. Ellers returneres en string med feilmelding.
 def is_email_valid(email):
     is_valid = False
     contains_at = False
@@ -98,9 +111,7 @@ def is_email_valid(email):
         if char in illegal_chars:
             contains_only_legal_chars = False
             return f'ERROR - Illegal character " {char} " in email adress'
-           
-    contains_punctuation = True
-    contains_no_duplicates = True
+
     if email.count("@") > 0:
         contains_at = True
         if email.count("@") == 1:
@@ -139,7 +150,8 @@ def is_email_valid(email):
 
     
     
-
+# Funksjon for å legge til en ny bruker i databasen.
+# Hvis alle sjekkene går gjennom skrives denne brukeren inn til databasen.
 def add_user_to_json(filename, username, password, email):
     if is_username_valid(username) == True:
         if is_username_taken(username, filename) == False:
@@ -167,7 +179,9 @@ def add_user_to_json(filename, username, password, email):
     else:
         print("Username is invalid. Check error messages in console.")
 
-
+# Funksjon for validering av en enhet.
+# Sjekker at alle nøklene stemmer med hva en enhet skal inneholde.
+# Hvis enheten inneholder alle nøklene returneres True. Ellers returneres Falses
 def is_device_valid(device):
     required_keys = ['prod_id','name','brand','category']
     for key in required_keys:
@@ -175,6 +189,8 @@ def is_device_valid(device):
             return False
     return True
 
+# Denne funksjonen finder hvilken index, altså plass i listen, en bruker ligger på.
+# Hvis brukeren blir funnet returneres indexen. Ellers returneres -1
 def find_user_index(filename, username):
     users = read_json(filename)
     
@@ -186,7 +202,7 @@ def find_user_index(filename, username):
 
     return -1
 
-
+# Denne funksjonen legger til en enhet i listen til en bruker, og skriver denne endringen til databasen.
 def add_device_to_user(filename, username, device):
     user_index = find_user_index(filename, username)
 
@@ -199,7 +215,6 @@ def add_device_to_user(filename, username, device):
         device_list = user["devices"]
         device_list.append(device)
 
-        #Ny: Checks if the device exists already
         device_exists = any(d['prod_id'] == device['prod_id'] for d in device_list)
         if not device_exists:
             device_list.append(device)
@@ -258,9 +273,42 @@ def remove_duplicate_devices_from_user(filename, username):
         with open(filename+".json", "w") as file:
             json.dump(users, file, indent=4)
 
-
+# Oprette nytt device
 def create_new_device(name, brand, device_type):
     print()
+
+# Slette et device fra en bruker
+def delete_device_from_user():
+    print()
+
+# Endre på dataen til et device fra bruker sin device-liste
+def modify_device_information():
+    print()
+
+
+dev1 = {
+    "name": "Vaskemaskin",
+    "brand": "Miele"
+}
+dev2 = {
+    "name":"Hue",
+    "brand":"phillips",
+    "category":'light'
+}
+dev3 = {
+    "name":"Hue",
+    "brand":"phillips",
+    "category":'light'
+}
+dev4 = {
+    "prod_id":'11564',
+    "name":"Hue 2.0",
+    "brand":"phillips",
+    "category":'light'
+}
+add_device_to_user("userdb", "Test3", dev2)
+add_device_to_user("userdb", "Test3", dev3)
+add_device_to_user("userdb", "Test3", dev4)
 
 """"
 dev1 = {
