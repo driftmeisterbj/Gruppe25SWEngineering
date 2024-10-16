@@ -6,7 +6,7 @@ def reset_json(filename):
     with open(filename+".json", "w", newline="") as file:
         json.dump({}, file)
 
-def readJSON(filename):
+def read_json(filename):
     try:
         with open(filename+".json", "r") as file:
             return json.load(file)
@@ -15,8 +15,8 @@ def readJSON(filename):
         return []
 
 
-def isUsernameTaken(username, filename):
-    users = readJSON(filename)
+def is_username_taken(username, filename):
+    users = read_json(filename)
 
     for user in users:
         for key, value in user.items():
@@ -26,56 +26,55 @@ def isUsernameTaken(username, filename):
     return False
                 
 
-def isUsernameValid(username):
-    isValid = True
-    illegalChars=["'", '"', ",", "!", "@", "$", "€", "{", "}",
+def is_username_valid(username):
+    illegal_chars=["'", '"', ",", "!", "@", "$", "€", "{", "}",
                  "[", "]", "(", ")", "^", "¨", "~", "*", ".",
                  "&", "%", "¤", "#", "!", "?", "+", " "]
     
     if len(username) < 3:
-        isValid = False
-        print(f'Name: "{username}" failed - Username can not be shorter than 3 characters')
+        return f'Name: "{username}" failed - Username can not be shorter than 3 characters'
 
     elif len(username) > 25:
-        isValid = False
-        print(f'Name: "{username}" failed - Username can not be longer than 25 characters')
+        return f'Name: "{username}" failed - Username can not be longer than 25 characters'
 
     else:
         for char in username:
-            if char in illegalChars:
-                isValid = False
-                print(f'Username contains illegal character: " {char} "')
+            if char in illegal_chars:
+                return f'Username contains illegal character: " {char} "'
 
-    return isValid
+    return True
 
-def isPasswordValid(password):
-    isValid = False   
-    containsUppercase = False
-    containsLowercase = False
-    containsNumber = False
+def is_password_valid(password):
+    is_valid = False   
+    contains_uppercase = False
+    contains_lowercase = False
+    contains_number = False
 
     if len(password) < 4:
-        print("Password cannot be shorter than 4 characters")
+        return "Password cannot be shorter than 4 characters"
 
     elif len(password) > 45:
-        print("Password cannot be longer than 45 characters")
+        return "Password cannot be longer than 45 characters"
 
     else:
         for char in password:
             if char.isupper():
-                containsUppercase = True
+                contains_uppercase = True
             if char.islower():
-                containsLowercase = True
+                contains_lowercase = True
             if char in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]:
-                containsNumber = True
+                contains_number = True
     
-    if (containsUppercase and containsLowercase and containsNumber):
-        isValid = True
+    if (contains_number == False):
+        return "Password must contain at least one number"
 
-    return isValid
+    if (contains_uppercase and contains_lowercase and contains_number):
+        is_valid = True
 
-def isEmailTaken(email, filename):
-    users = readJSON(filename)
+    return is_valid
+
+def is_email_taken(email, filename):
+    users = read_json(filename)
 
     for user in users:
         for key, value in user.items():
@@ -84,95 +83,100 @@ def isEmailTaken(email, filename):
     
     return False
     
-def isEmailValid(email):
-    isValid = False
-    containsAt = False
-    containsPunctuation = False
-    containsNoDuplicates = False
-    containsOnlyLegalChars = True
+def is_email_valid(email):
+    is_valid = False
+    contains_at = False
+    contains_punctuation = False
+    contains_no_duplicates = False
+    contains_only_legal_chars = True
 
-    illegalChars=["'", '"', ",", "!", "$", "€", "{", "}",
+    illegal_chars=["'", '"', ",", "!", "$", "€", "{", "}",
                  "[", "]", "(", ")", "^", "¨", "~", "*",
                  "&", "%", "¤", "#", "!", "?", "+", " "]
     
     for char in email:  
-        if char in illegalChars:
-            containsOnlyLegalChars = False
-            print(f'ERROR - Illegal character " {char} " in email adress')
+        if char in illegal_chars:
+            contains_only_legal_chars = False
+            return f'ERROR - Illegal character " {char} " in email adress'
            
-    containsPunctuation = True
-    containsNoDuplicates = True
+    contains_punctuation = True
+    contains_no_duplicates = True
     if email.count("@") > 0:
-        containsAt = True
+        contains_at = True
         if email.count("@") == 1:
             if email.count(".") > 0:
-                containsPunctuation = True
-                containsNoDuplicates = True
+                contains_punctuation = True
+                contains_no_duplicates = True
             else:
-                print('Email MUST contain the character " . "')
+                return 'Email MUST contain the character " . "'
         else:
-            print('Email contains too many instances of the char " @ ", you can only use this character ONCE')
+            return 'Email contains too many instances of the char " @ ", you can only use this character ONCE'
     else:
-        print('Email MUST contain the character " @ "')
+        return 'Email MUST contain the character " @ "'
 
-    if containsAt and containsPunctuation and containsNoDuplicates and containsOnlyLegalChars:
+    if contains_at and contains_punctuation and contains_no_duplicates and contains_only_legal_chars:
         charList = []
         for char in range(email.index("@"), len(email)):
             charList.append(email[char])
 
         print(charList)
         if charList.count(".") > 1:
-            print('ERROR - There can only be a single instance of the character " . " after the " @ "')
+            return 'ERROR - There can only be a single instance of the character " . " after the " @ "'
         
         else:
-            punctuationLastIndex = 0
+            punctuation_last_index = 0
             counter = 0
             
             for char in email:
                 if char == ".":
-                    punctuationLastIndex = counter    
+                    punctuation_last_index = counter    
                 counter += 1
 
-            if punctuationLastIndex < email.index("@"):
-                print('ERROR - The character MUST appear at least once after the character " @ " in the email adress')
+            if punctuation_last_index < email.index("@"):
+                return 'ERROR - The character " . " MUST appear at least once after the character " @ " in the email adress'
             else:
-                isValid = True
-
-    return isValid
+                return True
 
     
     
 
-def addUserToJSON(filename, username, password, email):
-    if isUsernameValid(username):
-        if isUsernameTaken(username, filename) == False:
-                if isPasswordValid(password):
-                    if isEmailValid(email):
-                        if isEmailTaken(email, filename) == False:
-                                users = readJSON(filename)
-                                with open(filename+".json", "w") as file:
-                                    data = {
-                                        "username": username,
-                                        "password": password,
-                                        "email": email,
-                                        "devices": []
-                                    }
-                                    users.append(data)
-                                    json.dump(users, file, indent=4)
-                        else:
-                            print("An account with this email adress already exists")
+def add_user_to_json(filename, username, password, email):
+    if is_username_valid(username) == True:
+        if is_username_taken(username, filename) == False:
+            if is_password_valid(password) == True:
+                if is_email_valid(email) == True:
+                    if is_email_taken(email, filename) == False:
+                            users = read_json(filename)
+                            with open(filename+".json", "w") as file:
+                                data = {
+                                    "username": username,
+                                    "password": password,
+                                    "email": email,
+                                    "devices": []
+                                }
+                                users.append(data)
+                                json.dump(users, file, indent=4)
                     else:
-                            print("Email is invalid. Check error messages in console.")
+                        print("An account with this email adress already exists")
                 else:
-                    print("Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number")
+                        print("Email is invalid. Check error messages in console.")
+            else:
+                print("Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number")
         else:
             print("Username is already taken")
     else:
         print("Username is invalid. Check error messages in console.")
 
 
-def findUserIndex(filename, username):
-    users = readJSON(filename)
+def is_device_valid(device):
+    required_keys = ['prod_id','name','brand','category']
+    for key in required_keys:
+        if key not in device:
+            return False
+    return True
+
+def find_user_index(filename, username):
+    users = read_json(filename)
     
     counter = 0
     for user in users:
@@ -182,31 +186,23 @@ def findUserIndex(filename, username):
 
     return -1
 
-#Check if device is valid
-def isDeviceValid(device):
-    required_keys = ['prod_id','name','brand','category']
-    for key in required_keys:
-        if key not in device:
-            return False
-    return True
 
-def addDeviceToUser(filename, username, device):
-    if not isDeviceValid(device):
-        print('Device invalid')
-        return
+def add_device_to_user(filename, username, device):
+    user_index = find_user_index(filename, username)
 
+    if not is_device_valid(device):
+        return 'Device invalid'
 
-    userIndex = findUserIndex(filename, username)
+    if user_index != -1:
+        users = read_json(filename)
+        user = users[user_index]
+        device_list = user["devices"]
+        device_list.append(device)
 
-    if userIndex != -1:
-        users = readJSON(filename)
-        user = users[userIndex]
-        deviceList = user["devices"]
-
-        #Checks if the device exists already
-        device_exists = any(d['prod_id'] == device['prod_id'] for d in deviceList)
+        #Ny: Checks if the device exists already
+        device_exists = any(d['prod_id'] == device['prod_id'] for d in device_list)
         if not device_exists:
-            deviceList.append(device)
+            device_list.append(device)
         else:
             print('device already added')
 
@@ -215,48 +211,71 @@ def addDeviceToUser(filename, username, device):
                 "username": user["username"],
                 "password": user["password"],
                 "email": user["email"],
-                "devices": deviceList
+                "devices": device_list
             }
 
             user = data
             json.dump(users, file, indent=4)
 
     else:
-        print("Userindex not found")
+        print("user_index not found")
 
+
+def find_device_list_user(filename, username):
+    user_index = find_user_index(filename, username)
+    
+    if user_index != -1:
+        users = read_json(filename)
+        user = users[user_index]
+        device_list = user["devices"]
+        return device_list
+
+    else:
+        print("user_index not found")
+
+def remove_duplicate_devices_from_user(filename, username):
+    user_index = find_user_index(filename, username)
+
+    if user_index == -1:
+        print("user_index not found")
+
+    else:
+        users = read_json(filename)
+        devices = find_device_list_user("userdb", username)
+
+        #https://stackoverflow.com/questions/9427163/remove-duplicate-dict-in-list-in-python
+        no_dupes = set()
+        new_list = []
+
+        for device in devices:
+            t = tuple(device.items())
+            if t not in no_dupes:
+                no_dupes.add(t)
+                new_list.append(device)
+
+        users[user_index]["devices"] = new_list
+
+        with open(filename+".json", "w") as file:
+            json.dump(users, file, indent=4)
+
+
+def create_new_device(name, brand, device_type):
+    print()
+
+""""
 dev1 = {
     "name": "Vaskemaskin",
     "brand": "Miele"
 }
-dev2 = {
-    "name":"Hue",
-    "brand":"phillips",
-    "category":'light'
-}
-dev3 = {
-    "name":"Hue",
-    "brand":"phillips",
-    "category":'light'
-}
-dev4 = {
-    "prod_id":'11564',
-    "name":"Hue 2.0",
-    "brand":"phillips",
-    "category":'light'
-}
-addDeviceToUser("userdb", "Test3", dev2)
-addDeviceToUser("userdb", "Test3", dev3)
-addDeviceToUser("userdb", "Test3", dev4)
+add_device_to_user("userdb", "Test3", dev1)
+#reset_json("userdb")
 
-#resetJSON("userdb")
-
-# addUserToJSON("userdb", "Test1", "Passord123", "ma!i?l@mail.com")
-
-# addUserToJSON("userdb", "Test2", "Pa123", "mail.m@mail.com")
-# addUserToJSON("userdb", "Test3", "Passord123", "mail44@mail.com")
-# addUserToJSON("userdb", "geir", "passord", "mail@mail.com")
-# addUserToJSON("userdb", "gEiR2", "Passord1234", "m.a.i.l.2@mail.com")
-# addUserToJSON("userdb", "geir3", "Passord1234", "mini_mail.mail@com")
-# addUserToJSON("userdb", "geir69", "Passord1234", "mail.mail@..com")
-# addUserToJSON("userdb", "geir69", "Passord1234", "mail.mail@.com")
-# addDeviceToUser("userdb","Test3",)
+add_user_to_json("userdb", "Test1", "Passord123", "ma!i?l@mail.com")
+add_user_to_json("userdb", "Test2", "Pa123", "mail.m@mail.com")
+add_user_to_json("userdb", "Test3", "Passord123", "mail44@mail.com")
+add_user_to_json("userdb", "geir", "passord", "mail@mail.com")
+add_user_to_json("userdb", "gEiR2", "Passord1234", "m.a.i.l.2@mail.com")
+add_user_to_json("userdb", "geir3", "Passord1234", "mini_mail.mail@com")
+add_user_to_json("userdb", "geir69", "Passord1234", "mail.mail@..com")
+add_user_to_json("userdb", "geir69", "Passord1234", "mail.mail@.com")
+"""
