@@ -2,10 +2,13 @@ import json
 
 # Skriver til JSON-filen med tomt innhold, altså full reset.
 # KUN for testing, kan fjernes når vi har ferdigstilt struktur i databasen.
+# Mangler feilhåndering
 def reset_json(filename):
     with open(filename+".json", "w", newline="") as file:
         json.dump({}, file)
 
+# Åpner json-filen for lesing og returnerer innholdet i en liste.
+# Dersom en feil skjer ved lesing, returneres en tom liste
 def read_json(filename):
     try:
         with open(filename+".json", "r") as file:
@@ -14,7 +17,8 @@ def read_json(filename):
     except:
         return []
 
-
+# Databasen leses ved bruk av read_json() og denne listen gås gjennom.
+# Dersom brukernavnet eksisterer i databasen allerede returneres True, ellers returneres False
 def is_username_taken(username, filename):
     users = read_json(filename)
 
@@ -25,7 +29,9 @@ def is_username_taken(username, filename):
     
     return False
                 
-
+# Funksjonen kjører en rekke med sjekker på stringen "username" for validering av brukernavn.
+# Dersom brukernavnet går gjennom alle sjekkene er brukernavnet gyldig, og funksjonen returnerer True.
+# Dersom brukernavnet feiler på en av sjekkene returneres en string med feilmelding.
 def is_username_valid(username):
     illegal_chars=["'", '"', ",", "!", "@", "$", "€", "{", "}",
                  "[", "]", "(", ")", "^", "¨", "~", "*", ".",
@@ -44,6 +50,9 @@ def is_username_valid(username):
 
     return True
 
+
+# Funksjonen kjører en rekke med sjekker på stringen "password" for validering av passord.
+# Dersom passordet går gjennom alle sjekkene returneres True, ellers returneres en feilmelding
 def is_password_valid(password):
     is_valid = False   
     contains_uppercase = False
@@ -199,7 +208,6 @@ def add_device_to_user(filename, username, device):
         device_list = user["devices"]
         device_list.append(device)
 
-        #Ny: Checks if the device exists already
         device_exists = any(d['prod_id'] == device['prod_id'] for d in device_list)
         if not device_exists:
             device_list.append(device)
@@ -258,9 +266,42 @@ def remove_duplicate_devices_from_user(filename, username):
         with open(filename+".json", "w") as file:
             json.dump(users, file, indent=4)
 
-
+# Oprette nytt device
 def create_new_device(name, brand, device_type):
     print()
+
+# Slette et device fra en bruker
+def delete_device_from_user():
+    print()
+
+# Endre på dataen til et device fra bruker sin device-liste
+def modify_device_information():
+    print()
+
+
+dev1 = {
+    "name": "Vaskemaskin",
+    "brand": "Miele"
+}
+dev2 = {
+    "name":"Hue",
+    "brand":"phillips",
+    "category":'light'
+}
+dev3 = {
+    "name":"Hue",
+    "brand":"phillips",
+    "category":'light'
+}
+dev4 = {
+    "prod_id":'11564',
+    "name":"Hue 2.0",
+    "brand":"phillips",
+    "category":'light'
+}
+add_device_to_user("userdb", "Test3", dev2)
+add_device_to_user("userdb", "Test3", dev3)
+add_device_to_user("userdb", "Test3", dev4)
 
 """"
 dev1 = {
