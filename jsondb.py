@@ -82,6 +82,8 @@ def is_password_valid(password):
 
     return is_valid
 
+# Henter ut innholdet i databasen og sjekker om eposten eksisterer her allerede.
+# Dersom eposten eksisterer er eposten i bruk, og True returneres. Ellers returneres False.
 def is_email_taken(email, filename):
     users = read_json(filename)
 
@@ -92,6 +94,8 @@ def is_email_taken(email, filename):
     
     return False
     
+# Funksjon for validering av epost. Inneholder en rekke sjekker for at e-post skal være gyldig til bruk.
+# Dersom eposten går gjennom alle sjekkene er den gyldig, og True returneres. Ellers returneres en string med feilmelding.
 def is_email_valid(email):
     is_valid = False
     contains_at = False
@@ -107,9 +111,7 @@ def is_email_valid(email):
         if char in illegal_chars:
             contains_only_legal_chars = False
             return f'ERROR - Illegal character " {char} " in email adress'
-           
-    contains_punctuation = True
-    contains_no_duplicates = True
+
     if email.count("@") > 0:
         contains_at = True
         if email.count("@") == 1:
@@ -148,7 +150,8 @@ def is_email_valid(email):
 
     
     
-
+# Funksjon for å legge til en ny bruker i databasen.
+# Hvis alle sjekkene går gjennom skrives denne brukeren inn til databasen.
 def add_user_to_json(filename, username, password, email):
     if is_username_valid(username) == True:
         if is_username_taken(username, filename) == False:
@@ -176,7 +179,9 @@ def add_user_to_json(filename, username, password, email):
     else:
         print("Username is invalid. Check error messages in console.")
 
-
+# Funksjon for validering av en enhet.
+# Sjekker at alle nøklene stemmer med hva en enhet skal inneholde.
+# Hvis enheten inneholder alle nøklene returneres True. Ellers returneres Falses
 def is_device_valid(device):
     required_keys = ['prod_id','name','brand','category']
     for key in required_keys:
@@ -184,6 +189,8 @@ def is_device_valid(device):
             return False
     return True
 
+# Denne funksjonen finder hvilken index, altså plass i listen, en bruker ligger på.
+# Hvis brukeren blir funnet returneres indexen. Ellers returneres -1
 def find_user_index(filename, username):
     users = read_json(filename)
     
@@ -195,7 +202,7 @@ def find_user_index(filename, username):
 
     return -1
 
-
+# Denne funksjonen legger til en enhet i listen til en bruker, og skriver denne endringen til databasen.
 def add_device_to_user(filename, username, device):
     user_index = find_user_index(filename, username)
 
