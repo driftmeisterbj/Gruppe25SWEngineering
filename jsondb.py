@@ -53,8 +53,7 @@ def is_username_valid(username):
 
 # Funksjonen kjører en rekke med sjekker på stringen "password" for validering av passord.
 # Dersom passordet går gjennom alle sjekkene returneres True, ellers returneres en feilmelding
-def is_password_valid(password):
-    is_valid = False   
+def is_password_valid(password):  
     contains_uppercase = False
     contains_lowercase = False
     contains_number = False
@@ -74,13 +73,17 @@ def is_password_valid(password):
             if char in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]:
                 contains_number = True
     
+    if(contains_uppercase == False):
+        return "Password must contain at least one uppercase letter"
+
+    if(contains_lowercase == False):
+        return "Password must contain at least one lowercase letter"
+
     if (contains_number == False):
         return "Password must contain at least one number"
 
-    if (contains_uppercase and contains_lowercase and contains_number):
-        is_valid = True
 
-    return is_valid
+    return True
 
 # Henter ut innholdet i databasen og sjekker om eposten eksisterer her allerede.
 # Dersom eposten eksisterer er eposten i bruk, og True returneres. Ellers returneres False.
