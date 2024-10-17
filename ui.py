@@ -200,4 +200,3 @@ def destroy_everything():
 create_login_page()
 main_dialog.Show()
 app.MainLoop()
-

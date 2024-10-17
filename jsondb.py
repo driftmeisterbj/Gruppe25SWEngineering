@@ -216,7 +216,7 @@ def add_device_to_user(filename, username, device):
         users = read_json(filename)
         user = users[user_index]
         device_list = user["devices"]
-        device_list.append(device)
+        # device_list.append(device)
 
         device_exists = any(d['prod_id'] == device['prod_id'] for d in device_list)
         if not device_exists:
@@ -288,6 +288,31 @@ def delete_device_from_user():
 def modify_device_information():
     print()
 
+#Gets current user object
+def get_current_user(filename, username):
+    user_index = find_user_index(filename, username)
+    if user_index != -1:
+        users = read_json(filename)
+        user = users[user_index]
+        current_user = {
+            'username':user['username'],
+            'email':user['email'],
+            'devices':user['devices']
+        }
+        return current_user
+
+    else:
+        return none
+
+#Updates current user object
+def add_device_to_current_user(current_user, new_device):
+    if not is_device_valid(new_device):
+        print('Device is not valid')
+        return
+    current_user['devices'].append(new_device)
+    print(new_device['brand'],new_device['name'],'Added')
+
+
 
 dev1 = {
     "name": "Vaskemaskin",
@@ -312,7 +337,12 @@ dev4 = {
 add_device_to_user("userdb", "Test3", dev2)
 add_device_to_user("userdb", "Test3", dev3)
 add_device_to_user("userdb", "Test3", dev4)
-
+#test get_current_user
+current_user = get_current_user('userdb','Test3')
+#Returnerer kun device-listen
+#print(current_user['devices'])
+#Returnerer hele objektet
+#print(current_user)
 """"
 dev1 = {
     "name": "Vaskemaskin",
@@ -330,3 +360,13 @@ add_user_to_json("userdb", "geir3", "Passord1234", "mini_mail.mail@com")
 add_user_to_json("userdb", "geir69", "Passord1234", "mail.mail@..com")
 add_user_to_json("userdb", "geir69", "Passord1234", "mail.mail@.com")
 """
+
+
+#Test 
+example_device = {
+    'prod_id':11845,
+    'name':'Playstation 5',
+    'brand':'Sony',
+    'category':'console'
+}
+add_device_to_current_user(current_user, example_device)
