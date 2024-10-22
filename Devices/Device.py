@@ -1,5 +1,5 @@
 class Device:
-    def __init__(self, prod_id, name, brand, category, on):
+    def __init__(self, prod_id, name, brand, category):
         self.prod_id = prod_id
         self.name = name
         self.brand = brand
