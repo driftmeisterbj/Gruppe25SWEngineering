@@ -1,7 +1,8 @@
 import unittest
 from unittest.mock import patch
+import sys
+sys.path.append('../')
 from Light import Light
-
 #--------- Tests being done ---------#
 
 # setUp: Sets up a Light object for each test method
