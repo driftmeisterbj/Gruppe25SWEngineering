@@ -4,7 +4,7 @@ class Device:
         self.name = name
         self.brand = brand
         self.category = category
-        #self.on = False
+        self.on = False
 
     def turn_off_device(self):
         self.on = False
