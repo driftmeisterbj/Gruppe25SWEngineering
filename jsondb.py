@@ -1,5 +1,33 @@
 import json
 
+class ReadWrite():
+	def read(self, fileName):
+		pass
+	def write(self, fileName, text):
+		pass
+	def reset(self, fileName):
+		pass
+class jsonReadWrite(self)
+	def read(self, fileName):
+		try:
+			with open(fileName, "r") as file:
+				return json.load(file)
+		except:
+			return([])
+	def write(self, fileName, text):
+		data = []
+		try:
+			with open("fileName", "w") as file:
+				data = json.load(file)
+		except:
+			pass
+		return(data)
+	def reset(self, fileName):
+		try:
+			with open(fileName, "w") as file:
+				file.write("")
+		except:
+			pass
 # Skriver til JSON-filen med tomt innhold, altså full reset.
 # KUN for testing, kan fjernes når vi har ferdigstilt struktur i databasen.
 # Mangler feilhåndering
