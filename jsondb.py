@@ -7,7 +7,7 @@ class ReadWrite():
 		pass
 	def reset(self, fileName):
 		pass
-class jsonReadWrite(self)
+class jsonReadWrite():
 	def read(self, fileName):
 		try:
 			with open(fileName, "r") as file:
