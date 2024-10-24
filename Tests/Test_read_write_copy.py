@@ -1,10 +1,11 @@
 import unittest
 from unittest.mock import patch, mock_open
 
+from Temp_Read_write_copy import JsonReadWrite
 
-import sys
-sys.path.append('../')
-from jsondb import JsonReadWrite
+#import sys
+#sys.path.append('../')
+#from jsondb import JsonReadWrite
 
 #Test for read and write functions in JSONdb.py
 

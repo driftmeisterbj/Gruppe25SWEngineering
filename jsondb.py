@@ -20,6 +20,7 @@ class JsonReadWrite(ReadWrite):
 				return json.load(file)
 		except:
 			return([])
+
 	@staticmethod
 	def write(fileName, data):
 
@@ -30,6 +31,7 @@ class JsonReadWrite(ReadWrite):
 		except:
 			pass
 		return False
+
 	@staticmethod
 	def reset(fileName):
 		try:
