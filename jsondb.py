@@ -360,7 +360,7 @@ def add_device_to_current_user(current_user, new_device):
 
 ################
 #test get_current_user
-current_user = get_current_user('userdb','Test3')
+#current_user = get_current_user('userdb','Test3')
 
 
 dev1 = {
@@ -383,9 +383,9 @@ dev4 = {
 	"brand":"phillips",
 	"category":'light'
 }
-add_device_to_user("userdb", "Test3", dev2)
-add_device_to_user("userdb", "Test3", dev3)
-add_device_to_user("userdb", "Test3", dev4)
+#add_device_to_user("userdb", "Test3", dev2)
+#add_device_to_user("userdb", "Test3", dev3)
+#add_device_to_user("userdb", "Test3", dev4)
 
 #Returnerer kun device-listen
 #print(current_user['devices'])
