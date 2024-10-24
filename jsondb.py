@@ -1,13 +1,18 @@
 import json
+from abc import ABC,abstractmethod
 
-class ReadWrite():
+
+class ReadWrite(ABC):
+	@abstractmethod
 	def read(self, fileName):
 		pass
+	@abstractmethod
 	def write(self, fileName, text):
 		pass
+	@abstractmethod
 	def reset(self, fileName):
 		pass
-class JsonReadWrite:
+class JsonReadWrite(ReadWrite):
 	@staticmethod
 	def read(fileName):
 		try:
@@ -16,19 +21,21 @@ class JsonReadWrite:
 		except:
 			return([])
 	@staticmethod
-	def write(fileName, text):
-		data = []
+	def write(fileName, data):
+
 		try:
-			with open("fileName", "w") as file:
-				data = json.load(file)
+			with open(fileName, "w") as file:
+				json.dump(data,file)
+			return True
 		except:
 			pass
-		return(data)
+		return False
 	@staticmethod
 	def reset(fileName):
 		try:
 			with open(fileName, "w") as file:
-				file.write("")
+				file.write("{}")
+			return True
 		except:
 			pass
 # Skriver til JSON-filen med tomt innhold, altså full reset.
