@@ -325,15 +325,19 @@ def get_current_user(filename, username):
 	if user_index != -1:
 		users = read_json(filename)
 		user = users[user_index]
-		current_user = {
+		return {
 			'username':user['username'],
 			'email':user['email'],
 			'devices':user['devices']
 		}
-		return current_user
+
 
 	else:
-		return none
+		return {
+			'username': None,
+			'email': None,
+			'devices': []
+		}
 
 #Updates current user object
 def add_device_to_current_user(current_user, new_device):
@@ -343,6 +347,11 @@ def add_device_to_current_user(current_user, new_device):
 	current_user['devices'].append(new_device)
 	print(new_device['brand'],new_device['name'],'Added')
 
+
+
+################
+#test get_current_user
+current_user = get_current_user('userdb','Test3')
 
 
 dev1 = {
@@ -368,8 +377,7 @@ dev4 = {
 add_device_to_user("userdb", "Test3", dev2)
 add_device_to_user("userdb", "Test3", dev3)
 add_device_to_user("userdb", "Test3", dev4)
-#test get_current_user
-current_user = get_current_user('userdb','Test3')
+
 #Returnerer kun device-listen
 #print(current_user['devices'])
 #Returnerer hele objektet
@@ -400,4 +408,4 @@ example_device = {
 	'brand':'Sony',
 	'category':'console'
 }
-add_device_to_current_user(current_user, example_device)
+# add_device_to_current_user(current_user, example_device)

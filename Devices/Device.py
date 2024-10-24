@@ -1,14 +1,10 @@
 class Device:
-    def __init__(self, prod_id, name, brand, category, on):
+    def __init__(self, prod_id, name, brand, category):
         self.prod_id = prod_id
         self.name = name
         self.brand = brand
         self.category = category
-<<<<<<<< HEAD:enheter/Device.py
-        self.on = on
-========
         self.on = False
->>>>>>>> Enhet:Devices/Device.py
 
     def turn_off_device(self):
         self.on = False
