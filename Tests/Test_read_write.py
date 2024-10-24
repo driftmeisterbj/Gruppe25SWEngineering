@@ -12,7 +12,7 @@ from jsondb import JsonReadWrite
 
 # Test for read and write functions in JSONdb.py
 class TestReadWrite(unittest.TestCase):
-    @patch('builtins.open', mock_open(read_data='{"name":"Test"}'))
+    @patch('jsondb.open', mock_open(read_data='{"name":"Test"}'))
     def test_read_file_exists(self):
         result = JsonReadWrite.read('dummy.json')
         self.assertEqual(result, {'name': 'Test'})
