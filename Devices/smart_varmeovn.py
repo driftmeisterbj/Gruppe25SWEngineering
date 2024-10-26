@@ -4,6 +4,15 @@ class SmartVarmeovn(Enhet):
     def __init__(self, navn, temperatur=20):
         super().__init__(navn)
         self.temperatur = temperatur
+        self.på = False
+        
+    def skru_på(self):
+        self.på = True
+        print(f"{self.navn} er nå på.")
+
+    def skru_av(self):
+        self.på = False
+        print(f"{self.navn} er nå av.")
 
     def sett_temperatur(self, ny_temp):
         try:
