@@ -1,22 +1,30 @@
 import unittest
 from unittest.mock import patch, mock_open
 import sys
-sys.path.append('../')
-from jsondb import ReadWrite
+import os
+import trace
 
-#Test for read and write functions in JSONdb.py
+# Add the parent directory to sys.path so Python can find jsondb.py
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+# Now you can import from jsondb
+from jsondb import JsonReadWrite
+
+# Test for read and write functions in JSONdb.py
 class TestReadWrite(unittest.TestCase):
+    @patch('jsondb.open', mock_open(read_data='{"name":"Test"}'))
     def test_read_file_exists(self):
-        mock_data = '{"name":"Test"}'
-        with patch('builtins.open',mock_open(read_data=mock_data)) as mocked_file:
-            reader = ReadWrite()
-            result = reader.read('dummy.json')
-            mocked_file.assert_called_once_with('dummy.json', 'r')
-            self.assertEqual(result, {'name': 'Test'})
-            #print(result)
-
-
+        result = JsonReadWrite.read('dummy.json')
+        self.assertEqual(result, {'name': 'Test'})
 
 if __name__ == '__main__':
-    unittest.main()
+    # Create a tracer that will trace only the relevant file
+    tracer = trace.Trace(
+        trace=True,
+        count=False,
+        ignoremods=('sys', '_parser', 'os', 'unittest', 'builtins', 're'),  # Ignore these modules
+        ignoredirs=[sys.prefix]  # Ignore system-wide libraries
+    )
+
+    # Run the test with the trace
+    tracer.run('unittest.main()')
