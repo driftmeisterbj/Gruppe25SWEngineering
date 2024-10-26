@@ -1,10 +1,19 @@
 from enhet import Enhet
 
 class SmartKjøleskap(Enhet):
-    def __init__(self, navn, temperatur=4):
+    def __init__(self, navn, brand, temperatur=4):
         super().__init__(navn)
+        self.brand = brand
         self.temperatur = temperatur
-        self.på = False  # Start med kjøleskapet av
+        self.på = False
+
+    def skru_på(self):
+        self.på = True
+        print(f"{self.navn} er nå på.")
+
+    def skru_av(self):
+        self.på = False
+        print(f"{self.navn} er nå av.")
 
     def sett_temperatur(self, ny_temp):
         try:
@@ -19,6 +28,6 @@ class SmartKjøleskap(Enhet):
 
     def status(self):
         if self.på:
-            print(f"{self.navn} er på, temperatur: {self.temperatur} grader.")
+            print(f"{self.navn} ({self.brand}) er på, temperatur: {self.temperatur} grader.")
         else:
-            print(f"{self.navn} er av.")
+            print(f"{self.navn} ({self.brand}) er av.")
