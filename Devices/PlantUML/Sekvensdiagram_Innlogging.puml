@@ -1,0 +1,31 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+actor Bruker
+Bruker -> Applikasjon ++: Åpner applikasjonen
+
+Applikasjon -> Brukergrensesnitt: Applikasjonen har startet
+
+Applikasjon <-- Brukergrensesnitt: Viser innloggingsside
+
+Bruker -> Brukergrensesnitt: Skriver inn innloggingsinformasjonen
+
+Bruker -> Brukergrensesnitt: Trykker "Logg inn"
+
+Applikasjon <-- Brukergrensesnitt: Sender innloggingsinformasjonen
+
+Applikasjon -> Database ++: Innloggingsforespørsel
+
+Database --> Database: Finner innloggingsinformasjon
+
+Applikasjon <-- Database --: Innlogging verifisert
+
+Applikasjon -> Brukergrensesnitt : Innlogging verifisert
+
+Applikasjon <-- Brukergrensesnitt: Bytter til brukersiden
+
+Bruker <-- Applikasjon --: Login fullført, viser siden til brukeren
+
+
+@enduml
