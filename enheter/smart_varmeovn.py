@@ -16,7 +16,7 @@ class SmartVarmeovn(Device):
                 print("Ugyldig temperatur! Temperaturen må være mellom 15 og 30 grader.")
                 
         except ValueError:
-            raise ValueError("Vennligst skriv inn en gyldig heltallverdi for temperaturen.")
+            print("Vennligst skriv inn en gyldig heltallverdi for temperaturen.")
 
     def status(self):
         if self.on:
