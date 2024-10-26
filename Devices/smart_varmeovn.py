@@ -1,4 +1,4 @@
-from deivce import Devices
+from Deivce import Devices
 
 class SmartVarmeovn(Enhet):
     def __init__(self, prod_id, navn, brand, temperatur=20):
