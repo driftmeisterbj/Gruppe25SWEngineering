@@ -1,4 +1,8 @@
 import unittest
+import sys
+
+sys.path.append('../')
+sys.path.append('Devices/')
 from smart_kjoleskap import SmartKjøleskap
 
 class TestSmartKjøleskap(unittest.TestCase):
@@ -33,7 +37,7 @@ class TestSmartKjøleskap(unittest.TestCase):
         self.assertEqual(self.kjoleskap.temperatur, 4)
 
     def test_status_på(self):
-        self.kjoleskap.skru_på()
+        self.kjoleskap.turn_on_device()
         self.assertEqual(self.kjoleskap.status(), "TestKjøleskap er på, temperatur: 4 grader.")
 
     def test_status_av(self):
