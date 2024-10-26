@@ -1,8 +1,9 @@
 from enhet import Enhet
 
 class SmartVarmeovn(Enhet):
-    def __init__(self, navn, temperatur=20):
+    def __init__(self, navn, brand, temperatur=20):
         super().__init__(navn)
+        self.brand = brand
         self.temperatur = temperatur
         self.på = False
         
@@ -27,6 +28,6 @@ class SmartVarmeovn(Enhet):
 
     def status(self):
         if self.på:
-            print(f"{self.navn} er på, temperatur: {self.temperatur} grader.")
+            print(f"{self.navn} ({self.brand}) er på, temperatur: {self.temperatur} grader.")
         else:
-            print(f"{self.navn} er av.")
+            print(f"{self.navn} ({self.brand}) er av.")
