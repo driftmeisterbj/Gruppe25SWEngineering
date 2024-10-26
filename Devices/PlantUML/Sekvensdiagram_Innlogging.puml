@@ -2,18 +2,17 @@
 'https://plantuml.com/sequence-diagram
 
 autonumber
+
 actor Bruker
-Bruker -> Applikasjon ++: Åpner applikasjonen
+Bruker -> Applikasjon ++: Starter applikasjonen
 
 Applikasjon -> Brukergrensesnitt: Applikasjonen har startet
 
 Applikasjon <-- Brukergrensesnitt: Viser innloggingsside
 
-Bruker -> Brukergrensesnitt: Skriver inn innloggingsinformasjonen
+Applikasjon -> Brukergrensesnitt: Skriver inn innloggingsinformasjon
 
-Bruker -> Brukergrensesnitt: Trykker "Logg inn"
-
-Applikasjon <-- Brukergrensesnitt: Sender innloggingsinformasjonen
+Applikasjon <-- Brukergrensesnitt: "Logg inn" blir trykket på
 
 Applikasjon -> Database ++: Innloggingsforespørsel
 
@@ -26,6 +25,4 @@ Applikasjon -> Brukergrensesnitt : Innlogging verifisert
 Applikasjon <-- Brukergrensesnitt: Bytter til brukersiden
 
 Bruker <-- Applikasjon --: Login fullført, viser siden til brukeren
-
-
 @enduml

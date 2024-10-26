@@ -3,9 +3,22 @@
 
 autonumber
 
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
+actor Bruker
+Bruker -> Applikasjon ++: Går inn på siden\ntil en enhet
 
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+Applikasjon -> Brukergrensesnitt ++: Send informasjon om enhet
+
+Applikasjon <-- Brukergrensesnitt --: Vis imformasjonen til enheten
+
+Applikasjon -> Database ++: Skrur på enheten
+
+Database --> Database: Oppdaterer status til enheten
+
+Applikasjon <-- Database --: Statusen til enheten returneres
+
+Applikasjon -> Brukergrensesnitt : Dataen til enheten sendes
+
+Applikasjon <-- Brukergrensesnitt: Oppdaterer siden for enheten
+
+Bruker <-- Applikasjon --: Lukker applikasjonen
 @enduml
