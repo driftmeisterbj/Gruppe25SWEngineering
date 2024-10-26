@@ -5,14 +5,6 @@ class SmartVarmeovn(Device):
         super().__init__(prod_id, name, brand)
         self.temperatur = temperatur
         self.on = False
-        
-    def skru_på(self):
-        self.on = True
-        print(f"{self.navn} er nå på.")
-
-    def skru_av(self):
-        self.on = False
-        print(f"{self.navn} er nå av.")
 
     def sett_temperatur(self, ny_temp):
         try:
