@@ -48,7 +48,7 @@ class JsonDatabase():
     def reset_json(self, filename):
         with open(filename+".json", "w", newline="") as file:
             json.dump({}, file)
-
+    
     # Åpner json-filen for lesing og returnerer innholdet i en liste.
     # Dersom en feil skjer ved lesing, returneres en tom liste
     def read_json(self, filename):
@@ -203,7 +203,7 @@ class JsonDatabase():
                 if self.is_password_valid(password) == True:
                     if self.is_email_valid(email) == True:
                         if self.is_email_taken(email, filename) == False:
-                                users = read_json(filename)
+                                users = self.read_json(filename)
                                 with open(filename+".json", "w") as file:
                                     data = {
                                         "username": username,

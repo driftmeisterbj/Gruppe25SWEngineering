@@ -2,8 +2,9 @@ import unittest
 from unittest.mock import patch
 import sys
 import os
-sys.path.append(os.path.abspath('../Devices'))
-#print(sys.path)
+sys.path.append(os.path.abspath('Devices/'))
+print("Sys path : ", sys.path)
+
 from Light import Light
 
 #--------- Tests being done ---------#
