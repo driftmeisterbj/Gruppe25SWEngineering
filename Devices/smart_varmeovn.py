@@ -1,9 +1,8 @@
-from enhet import Enhet
+from deivce import Devices
 
 class SmartVarmeovn(Enhet):
-    def __init__(self, navn, brand, temperatur=20):
-        super().__init__(navn)
-        self.brand = brand
+    def __init__(self, prod_id, navn, brand, temperatur=20):
+        super().__init__(prod_id, navn, brand)
         self.temperatur = temperatur
         self.på = False
         
