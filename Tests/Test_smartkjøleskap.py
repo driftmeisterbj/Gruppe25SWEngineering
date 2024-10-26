@@ -36,11 +36,11 @@ class TestSmartKjøleskap(unittest.TestCase):
 
     def test_status_på(self):
         self.kjoleskap.turn_on_device()
-        self.assertEqual(self.kjoleskap.status(), "TestKjøleskap Miele er på, temperatur: 4 grader.")
+        self.assertEqual(self.kjoleskap.status(), "TestKjøleskap (Brand) er på, temperatur: 4 grader.")
 
     def test_status_av(self):
         self.kjoleskap.turn_off_device()
-        self.assertEqual(self.kjoleskap.status(), "TestKjøleskap Miele er av.")
+        self.assertEqual(self.kjoleskap.status(), "TestKjøleskap (Brand) er av.")
 
 if __name__ == '__main__':
     unittest.main()

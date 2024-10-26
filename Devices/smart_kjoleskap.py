@@ -11,7 +11,7 @@ class SmartKjøleskap(Device):
             ny_temp = int(ny_temp)
             if 2 <= ny_temp <= 12:
                 self.temperatur = ny_temp
-                print(f"{self.navn} er nå satt til {self.temperatur} grader.")
+                print(f"{self.name} er nå satt til {self.temperatur} grader.")
             else:
                 print("Ugyldig temperatur! Temperaturen må være mellom 2 og 12 grader.")
         except ValueError:
