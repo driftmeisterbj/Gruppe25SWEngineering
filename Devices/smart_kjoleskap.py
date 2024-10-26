@@ -14,8 +14,10 @@ class SmartKjøleskap(Device):
                 print(f"{self.name} er nå satt til {self.temperatur} grader.")
             else:
                 print("Ugyldig temperatur! Temperaturen må være mellom 2 og 12 grader.")
+                
         except ValueError:
-            print("Vennligst skriv inn en gyldig heltallverdi for temperaturen.")
+            raise ValueError("Vennligst skriv inn en gyldig heltallverdi for temperaturen.")
+            
 
     def status(self):
         if self.on:

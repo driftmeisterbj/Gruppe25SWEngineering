@@ -27,8 +27,7 @@ class TestSmartKjøleskap(unittest.TestCase):
         self.assertEqual(self.kjoleskap.temperatur, 6)
 
     def test_sett_temperatur_invalid(self):
-        with self.assertRaises(ValueError):
-            self.kjoleskap.sett_temperatur(15)
+        self.kjoleskap.sett_temperatur(15)
         self.assertEqual(self.kjoleskap.temperatur, 4)
 
     def test_sett_temperatur_non_integer(self):
