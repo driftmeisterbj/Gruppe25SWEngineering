@@ -1,4 +1,4 @@
-from device import Devices
+from Device import Devices
 
 class SmartKjøleskap(Enhet):
     def __init__(self, prod_id, navn, brand, temperatur=4):
