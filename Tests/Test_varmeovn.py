@@ -3,6 +3,7 @@ import sys
 
 sys.path.append('../')
 sys.path.append('Devices/')
+print("path: ", sys.path)
 from smart_varmeovn import SmartVarmeovn
 
 class TestSmartVarmeovn(unittest.TestCase):

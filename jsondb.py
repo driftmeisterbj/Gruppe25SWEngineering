@@ -78,7 +78,7 @@ class JsonDatabase():
 
         for user in users:
             for key, value in user.items():
-                if key == "username" and value == username.lower():
+                if key == "username" and value.lower() == username.lower():
                     return True
 
         return False

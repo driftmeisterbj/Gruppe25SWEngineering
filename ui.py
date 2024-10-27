@@ -2,7 +2,7 @@
 import ctypes
 import subprocess
 import tkinter as tk
-from jsondb import JsonDatabase, JsonReadWrite
+from App.jsondb import JsonDatabase, JsonReadWrite
 
 
 try:

@@ -1,8 +1,8 @@
-from Deivce import Device
+from Device import Device
 
 class SmartVarmeovn(Device):
-    def __init__(self, prod_id, name, brand, temperatur=20):
-        super().__init__(prod_id, name, brand)
+    def __init__(self, prod_id, name, brand, category, temperatur=20):
+        super().__init__(prod_id, name, brand, category)
         self.temperatur = temperatur
         self.on = False
 
