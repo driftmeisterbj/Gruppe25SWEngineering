@@ -146,7 +146,7 @@ class JsonDatabase():
 
         for user in users:
             for key, value in user.items():
-                if key == "email" and value == email.lower():
+                if key == "email" and value.lower() == email.lower():
                     return True
 
         return False
@@ -186,24 +186,19 @@ class JsonDatabase():
             charList = []
             for char in range(email.index("@"), len(email)):
                 charList.append(email[char])
+ 
+            punctuation_last_index = 0
+            counter = 0
 
-            print(charList)
-            if charList.count(".") > 1:
-                return 'ERROR - There can only be a single instance of the character " . " after the " @ "'
+            for char in email:
+                if char == ".":
+                    punctuation_last_index = counter
+                counter += 1
 
+            if punctuation_last_index < email.index("@"):
+                return 'ERROR - The character " . " MUST appear at least once after the character " @ " in the email adress'
             else:
-                punctuation_last_index = 0
-                counter = 0
-
-                for char in email:
-                    if char == ".":
-                        punctuation_last_index = counter
-                    counter += 1
-
-                if punctuation_last_index < email.index("@"):
-                    return 'ERROR - The character " . " MUST appear at least once after the character " @ " in the email adress'
-                else:
-                    return True
+                return True
 
 
 

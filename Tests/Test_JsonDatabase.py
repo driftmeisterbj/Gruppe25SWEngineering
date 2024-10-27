@@ -14,6 +14,8 @@ class TestJsonDatabase(unittest.TestCase):
         self.database = JsonDatabase("test")
 
     # -------------------------------------------------------------------------------------------
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -------------------------------------------------------------------------------------------
     # Tester for is_username_taken()
     @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
             {
@@ -112,11 +114,131 @@ class TestJsonDatabase(unittest.TestCase):
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
-    def test_add_user_to_json(self):
-        pass
+    # Tester for is_email_taken()
+
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+            {
+                "username": "TakenName",
+                "password": "p",
+                "email": "epost@epost.com",
+                "devices": []
+            }
+        ])
+    def test_is_email_taken_false(self, mock):
+        check_email = self.database.is_email_taken("epost123@mail.com")
+        self.assertEqual(check_email, False)
+
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+            {
+                "username": "TakenName",
+                "password": "p",
+                "email": "epost@epost.com",
+                "devices": []
+            }
+        ])
+    def test_is_email_taken_true(self, mock):
+        check_email = self.database.is_email_taken("epost@epost.com")
+        self.assertEqual(check_email, True)
+
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+            {
+                "username": "TakenName",
+                "password": "p",
+                "email": "epost@epost.com",
+                "devices": []
+            }
+        ])
+    def test_is_email_taken_uppercase(self, mock):
+        check_email = self.database.is_email_taken("EPOST@EPOST.COM")
+        self.assertEqual(check_email, True)   
 
     # -------------------------------------------------------------------------------------------
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -------------------------------------------------------------------------------------------
+    # Tester for is_email_valid()
+    def test_is_email_valid_true(self):
+        email = "gyldig@epost.yep"
+        email_check = self.database.is_email_valid(email)
+        self.assertEqual(email_check, True)
 
+    def test_is_email_valid_illegal_char(self):
+        email = "nesten]gyldig@epost.yep"
+        email_check = self.database.is_email_valid(email)
+        self.assertEqual(email_check, 'ERROR - Illegal character " ] " in email adress')
+
+    def test_is_email_valid_no_at(self):
+        email = "nestengyldigepost.yep"
+        email_check = self.database.is_email_valid(email)
+        self.assertEqual(email_check, 'Email MUST contain the character " @ "')
+
+    def test_is_email_valid_too_many_at(self):
+        email = "nesten@gyldig@epost.yep"
+        email_check = self.database.is_email_valid(email)
+        self.assertEqual(email_check, 'Email contains too many instances of the char " @ ", you can only use this character ONCE')
+
+    def test_is_email_valid_true_no_puntuation(self):
+        email = "nestengyldig@epostyep"
+        email_check = self.database.is_email_valid(email)
+        self.assertEqual(email_check, 'Email MUST contain the character " . "')
+
+    def test_is_email_valid_wrong_punctuation(self):
+        email = "nesten.gyldig@epostyep"
+        email_check = self.database.is_email_valid(email)
+        self.assertEqual(email_check, 'ERROR - The character " . " MUST appear at least once after the character " @ " in the email adress')
+    # -------------------------------------------------------------------------------------------
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -------------------------------------------------------------------------------------------
+    # Tests for add_user_to_json()
+
+    # -------------------------------------------------------------------------------------------
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -------------------------------------------------------------------------------------------
+    # Tests for is_device_valid()
+
+    # -------------------------------------------------------------------------------------------
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -------------------------------------------------------------------------------------------
+    # Tests for find_user_index()
+
+    # -------------------------------------------------------------------------------------------
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -------------------------------------------------------------------------------------------
+    # Tests for add_device_to_user()
+
+    # -------------------------------------------------------------------------------------------
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -------------------------------------------------------------------------------------------
+    # Tests for find_device_list_user()
+
+    # -------------------------------------------------------------------------------------------
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -------------------------------------------------------------------------------------------
+    # Tests for remove_duplicate_devices_from_user()
+
+    # -------------------------------------------------------------------------------------------
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -------------------------------------------------------------------------------------------
+    # Tests for create_new_device()
+
+    # -------------------------------------------------------------------------------------------
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -------------------------------------------------------------------------------------------
+    # Tests for delete_device_from_user()
+
+    # -------------------------------------------------------------------------------------------
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -------------------------------------------------------------------------------------------
+    # Tests for modify_device_information()
+
+    # -------------------------------------------------------------------------------------------
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -------------------------------------------------------------------------------------------
+    # Tests for get_current_user()
+
+    # -------------------------------------------------------------------------------------------
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -------------------------------------------------------------------------------------------
+    # Tests for add_device_to_current_user()
 
 if __name__ == '__main__':
     unittest.main()
