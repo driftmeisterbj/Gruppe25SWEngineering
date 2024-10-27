@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor Bruker
+Bruker -> Applikasjon ++: Går inn på siden\ntil en enhet
+
+Applikasjon -> Brukergrensesnitt ++: Send informasjon om enhet
+
+Applikasjon <-- Brukergrensesnitt --: Vis imformasjonen til enheten
+
+Applikasjon -> Database ++: Skrur på enheten
+
+Database --> Database: Oppdaterer status til enheten
+
+Applikasjon <-- Database --: Statusen til enheten returneres
+
+Applikasjon -> Brukergrensesnitt : Dataen til enheten sendes
+
+Applikasjon <-- Brukergrensesnitt: Oppdaterer siden for enheten
+
+Bruker <-- Applikasjon --: Lukker applikasjonen
+@enduml
