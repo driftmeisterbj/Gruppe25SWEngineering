@@ -26,7 +26,7 @@ class JsonReadWrite(ReadWrite):
 
         try:
             with open(fileName, "w") as file:
-                json.dump(data,file)
+                json.dump(data,file, indent=4)
             return True
         except:
             pass
@@ -42,11 +42,16 @@ class JsonReadWrite(ReadWrite):
             pass
 
 class JsonDatabase():
+    def __init__(self, filename) -> None:
+        self.filename = filename
+        self.data = self.read_json(self.filename)
+        JsonReadWrite.write(self.filename + ".json", self.data)
+
     # Skriver til JSON-filen med tomt innhold, altså full reset.
     # KUN for testing, kan fjernes når vi har ferdigstilt struktur i databasen.
     # Mangler feilhåndering
-    def reset_json(self, filename):
-        with open(filename+".json", "w", newline="") as file:
+    def reset_json(self):
+        with open(self.filename+".json", "w", newline="") as file:
             json.dump({}, file)
     
     # Åpner json-filen for lesing og returnerer innholdet i en liste.
@@ -389,7 +394,7 @@ class JsonDatabase():
 
         # add_device_to_user("userdb", "Test3", dev2)
         # add_device_to_user("userdb", "Test3", dev3)
-        add_device_to_user("userdb", "Test3", dev4)
+        # add_device_to_user("userdb", "Test3", dev4)
 
         # Returnerer kun device-listen
         # print(current_user['devices'])
@@ -409,3 +414,6 @@ class JsonDatabase():
         add_user_to_json("userdb", "Test2", "Pa123", "mail.m@mail.com")
         add_user_to_json("userdb", "Test3", "Passord123", "mail")
         """
+
+
+db = JsonDatabase("test")
