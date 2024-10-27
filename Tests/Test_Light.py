@@ -78,16 +78,18 @@ class TestLight(unittest.TestCase):
     def test_category_being_set_Correctly(self):
         self.assertEqual(self.light.category,'Light')
 
-
-    def test_turn_on_off_light(self):
+    @patch('builtins.print')
+    def test_turn_on_off_light(self,mock_print):
         #Light is initially off check
         self.assertFalse(self.light.on)
         #Turns on light
         self.light.turn_on_device()
+        mock_print.assert_called_with("Philips Desk Lamp has been turned on.")
         #Light should then be on check
         self.assertTrue(self.light.on)
         #Turns off light
         self.light.turn_off_device()
+        mock_print("Philips Desk Lamp has been turned off.")
         #Checks that light is now off
         self.assertFalse(self.light.on)
 
