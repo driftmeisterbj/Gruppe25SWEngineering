@@ -40,6 +40,7 @@ class JsonReadWrite(ReadWrite):
             return True
         except:
             pass
+        return False
 
 class JsonDatabase():
     def __init__(self, filename) -> None:
@@ -50,9 +51,15 @@ class JsonDatabase():
     # Skriver til JSON-filen med tomt innhold, altså full reset.
     # KUN for testing, kan fjernes når vi har ferdigstilt struktur i databasen.
     # Mangler feilhåndering
+
     def reset_json(self):
-        with open(self.filename+".json", "w", newline="") as file:
-            json.dump({}, file)
+        try:
+            with open(self.filename, "w") as file:
+                file.write("{}")
+            return True
+        except:
+            pass
+        return False
     
     # Åpner json-filen for lesing og returnerer innholdet i en liste.
     # Dersom en feil skjer ved lesing, returneres en tom liste
@@ -413,4 +420,4 @@ class JsonDatabase():
         """
 
 
-db = JsonDatabase("test")
+#db = JsonDatabase("test")
