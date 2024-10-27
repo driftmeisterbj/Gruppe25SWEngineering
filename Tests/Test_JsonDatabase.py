@@ -189,17 +189,85 @@ class TestJsonDatabase(unittest.TestCase):
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tests for add_user_to_json()
-
+    
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tests for is_device_valid()
+    def test_is_device_valid_true(self):
+        device = {
+                "prod_id": 123,
+                "name": "Gyldig",
+                "brand": "Enhet",
+                "category": "Test"
+            }
+        device_check = self.database.is_device_valid(device)
+        self.assertEqual(device_check, True)
 
+    def test_is_device_valid_missing_key(self):
+        device = {
+                "name": "Gyldig",
+                "brand": "Enhet",
+                "category": "Test"
+            }
+        device_check = self.database.is_device_valid(device)
+        self.assertEqual(device_check, False)
+
+    # ----------------------------------------
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tests for find_user_index()
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                {
+                    "username": "User1",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }, {
+                    "username": "User2",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }
+            ])
+    def test_find_user_index_0(self, mock):
+        check_index = self.database.find_user_index("User1")
+        self.assertEqual(check_index, 0) 
 
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                    {
+                        "username": "User1",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }, {
+                        "username": "User2",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }
+                ])
+    def test_find_user_index_1(self, mock):
+        check_index = self.database.find_user_index("User2")
+        self.assertEqual(check_index, 1) 
+
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                    {
+                        "username": "User1",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }, {
+                        "username": "User2",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }
+                ])
+    def test_find_user_index_not_found(self, mock):
+        check_index = self.database.find_user_index("User3")
+        self.assertEqual(check_index, -1)   
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
