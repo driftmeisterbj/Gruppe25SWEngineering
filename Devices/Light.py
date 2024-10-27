@@ -3,7 +3,7 @@ class Light(Device):
     def __init__(self,prod_id,name,brand,brightness=5):
         super().__init__(prod_id,name,brand, "Light")
         self.brightness = brightness
-        self.on = False
+        #self.on = False
         
     def set_brightness(self, new_brightness):
         try:

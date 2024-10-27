@@ -4,7 +4,7 @@ class Device:
         self.name = name
         self.brand = brand
         self.category = category
-        #self.on = False
+        self.on = False
 
     def turn_off_device(self):
         self.on = False
@@ -12,4 +12,4 @@ class Device:
 
     def turn_on_device(self):
         self.on = True
-        print(f"{self.brand}{self.name} has been turned on.")
+        print(f"{self.brand} {self.name} has been turned on.")
