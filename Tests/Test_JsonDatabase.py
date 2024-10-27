@@ -50,6 +50,30 @@ class TestJsonDatabase(unittest.TestCase):
     def test_is_username_taken_lowercase(self, mock):
         check_name = self.database.is_username_taken("takenName")
         self.assertEqual(check_name, True)
+    
+    # -------------------------------------------------------------------------------------------
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -------------------------------------------------------------------------------------------
+    # Tester for is_username_valid()
+    def test_is_username_valid_true(self):
+        username = "GyldigBruker33"
+        username_check = self.database.is_username_valid(username)
+        self.assertEqual(username_check, True)
+
+    def test_is_username_valid_short(self):
+        username = "b1"
+        username_check = self.database.is_username_valid(username)
+        self.assertEqual(username_check, 'Name: "b1" failed - Username can not be shorter than 3 characters')
+
+    def test_is_username_valid_long(self):
+        username = "VeeeeeeeeeeeeeeeeeldigLaaaaaaaaaaaaaangtNaaaaaaaaaaaaavn"
+        username_check = self.database.is_username_valid(username)
+        self.assertEqual(username_check, 'Name: "VeeeeeeeeeeeeeeeeeldigLaaaaaaaaaaaaaangtNaaaaaaaaaaaaavn" failed - Username can not be longer than 25 characters')
+
+    def test_is_username_valid_illegal_character(self):
+        username = "NestenGyldigBrukernavn;"
+        username_check = self.database.is_username_valid(username)
+        self.assertEqual(username_check, 'Username contains illegal character: " ; "')
 
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

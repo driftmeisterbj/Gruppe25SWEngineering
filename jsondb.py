@@ -89,7 +89,7 @@ class JsonDatabase():
     def is_username_valid(self, username):
         illegal_chars=["'", '"', ",", "!", "@", "$", "€", "{", "}",
                     "[", "]", "(", ")", "^", "¨", "~", "*", ".",
-                    "&", "%", "¤", "#", "!", "?", "+", " "]
+                    "&", "%", "¤", "#", "!", "?", "+", " ", ";", ":"]
 
         if len(username) < 3:
             return f'Name: "{username}" failed - Username can not be shorter than 3 characters'
