@@ -2,7 +2,7 @@
 import ctypes
 import subprocess
 import tkinter as tk
-import jsondb as db
+from jsondb import JsonDatabase, JsonReadWrite
 
 
 try:
@@ -23,6 +23,8 @@ def on_destroy(evt):
 main_dialog = wx.Dialog(None, title = "main", size = [500, 500])
 main_dialog.Center()
 main_dialog.Bind(wx.EVT_CLOSE, on_destroy)
+
+db = JsonDatabase("jsondb")
 
 class ErrorText():
     def __init__(self, text, y):
