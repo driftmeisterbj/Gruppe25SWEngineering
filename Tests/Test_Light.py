@@ -4,6 +4,7 @@ import sys
 sys.path.append('../')
 sys.path.append('Devices/')
 from Light import Light
+
 #--------- Tests being done ---------#
 
 # setUp: Sets up a Light object for each test method
@@ -16,12 +17,9 @@ from Light import Light
 #6. test_status_when_on: Tests the output message when the light is turned on
 #7. test_status_when_off: Tests the output message when the light is turned off
 #8. test_category_being_set_correctly: Checks that the category attribute is correctly set to 'Light'
-#9. test_turn_on_off_light: Checks that the turn on and off functions from parent class works correctly
+#9. test_turn_on_off_light: Checks that the turn on and off functions from parent class work correctly
 
 #------------------------------------------------------------------------------------#
-
-
-
 
 class TestLight(unittest.TestCase):
 
@@ -41,8 +39,9 @@ class TestLight(unittest.TestCase):
             self.light.set_brightness(7)
             mocked_print.assert_called_with("Philips Desk Lamp brightness set to: 7")
             self.assertEqual(self.light.brightness, 7)
+
     def test_set_brightness_below_zero(self):
-        # Testing setting brightness below 1
+        # Testing setting brightness below 0
         with patch('builtins.print') as mocked_print:
             self.light.set_brightness(-1)
             mocked_print.assert_called_with("Philips Desk Lamp brightness set to: 0")
@@ -63,37 +62,37 @@ class TestLight(unittest.TestCase):
             self.assertEqual(self.light.brightness, 5)  # Brightness remains unchanged
 
     def test_status_when_on(self):
-        # Testing status display when the light is on
+        # Testing status when the light is on
         self.light.on = True
-        with patch('builtins.print') as mocked_print:
-            self.light.status()
-            mocked_print.assert_called_with("Philips Desk Lamp is turned on, brightness: 5")
+        status = self.light.status()
+        expected_status = "Philips Desk Lamp is turned on, brightness: 5"
+        self.assertEqual(status, expected_status)
 
     def test_status_when_off(self):
-        # Testing status display when the light is off
+        # Testing status when the light is off
+        self.light.on = False
+        status = self.light.status()
+        expected_status = "Philips Desk Lamp is off."
+        self.assertEqual(status, expected_status)
+
+    def test_category_being_set_correctly(self):
+        self.assertEqual(self.light.category, 'Light')
+
+    def test_turn_on_off_light(self):
+        # Light is initially off
+        self.assertFalse(self.light.on)
+        # Turn on light
         with patch('builtins.print') as mocked_print:
-            self.light.status()
-            mocked_print.assert_called_with("Philips Desk Lamp is off.")
-
-    def test_category_being_set_Correctly(self):
-        self.assertEqual(self.light.category,'Light')
-
-    @patch('builtins.print')
-    def test_turn_on_off_light(self,mock_print):
-        #Light is initially off check
-        self.assertFalse(self.light.on)
-        #Turns on light
-        self.light.turn_on_device()
-        mock_print.assert_called_with("Philips Desk Lamp has been turned on.")
-        #Light should then be on check
+            self.light.turn_on_device()
+            mocked_print.assert_called_with("Philips Desk Lamp has been turned on.")
+        # Check that light is on
         self.assertTrue(self.light.on)
-        #Turns off light
-        self.light.turn_off_device()
-        mock_print("Philips Desk Lamp has been turned off.")
-        #Checks that light is now off
+        # Turn off light
+        with patch('builtins.print') as mocked_print:
+            self.light.turn_off_device()
+            mocked_print.assert_called_with("Philips Desk Lamp has been turned off.")
+        # Check that light is off
         self.assertFalse(self.light.on)
-
-
 
 if __name__ == '__main__':
     unittest.main()
