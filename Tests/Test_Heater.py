@@ -1,10 +1,10 @@
 import unittest
+from unittest.mock import patch
 import sys
 
 sys.path.append('../')
 sys.path.append('Devices/')
-print("path: ", sys.path)
-from smart_varmeovn import SmartVarmeovn
+from Heater import Heater
 
 class TestSmartVarmeovn(unittest.TestCase):
 
