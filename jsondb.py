@@ -219,16 +219,17 @@ class JsonDatabase():
                                 }
                                 data.append(new_data)
                                 JsonReadWrite.write(self.filename, data)
+                                return True
                         else:
-                            print("An account with this email adress already exists")
+                            return "An account with this email adress already exists"
                     else:
-                            print("Email is invalid. Check error messages in console.")
+                        return "Email is invalid. Check error messages in console."
                 else:
-                    print("Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number")
+                    return "Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number"
             else:
-                print("Username is already taken")
+                return "Username is already taken"
         else:
-            print("Username is invalid. Check error messages in console.")
+            return "Username is invalid. Check error messages in console."
 
     # Funksjon for validering av en enhet.
     # Sjekker at alle nøklene stemmer med hva en enhet skal inneholde.

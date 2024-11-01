@@ -2,7 +2,7 @@
 import ctypes
 import subprocess
 import tkinter as tk
-from App.jsondb import JsonDatabase, JsonReadWrite
+from jsondb import JsonDatabase, JsonReadWrite
 
 
 try:
@@ -101,7 +101,7 @@ def create_login_page():
         create_user_creation_page()
 
     def is_login_valid(username, password):
-        users = db.read_json("userdb")
+        users = db.read_json()
 
         for user in users:
             if user.get("username").lower() == username.lower():
@@ -111,7 +111,7 @@ def create_login_page():
         return False
 
     def try_logging_in(username, password):
-        users = db.read_json("userdb")
+        users = db.read_json()
 
         if is_login_valid(username, password) == True:
             create_device_list_page(username)
