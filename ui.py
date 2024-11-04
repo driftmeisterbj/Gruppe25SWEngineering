@@ -2,7 +2,7 @@
 import ctypes
 import subprocess
 import tkinter as tk
-import jsondb as db
+from jsondb import JsonDatabase, JsonReadWrite
 
 
 try:
@@ -23,6 +23,8 @@ def on_destroy(evt):
 main_dialog = wx.Dialog(None, title = "main", size = [500, 500])
 main_dialog.Center()
 main_dialog.Bind(wx.EVT_CLOSE, on_destroy)
+
+db = JsonDatabase("jsondb")
 
 class ErrorText():
     def __init__(self, text, y):
@@ -99,7 +101,7 @@ def create_login_page():
         create_user_creation_page()
 
     def is_login_valid(username, password):
-        users = db.read_json("userdb")
+        users = db.read_json()
 
         for user in users:
             if user.get("username").lower() == username.lower():
@@ -109,7 +111,7 @@ def create_login_page():
         return False
 
     def try_logging_in(username, password):
-        users = db.read_json("userdb")
+        users = db.read_json()
 
         if is_login_valid(username, password) == True:
             create_device_list_page(username)
@@ -200,4 +202,3 @@ def destroy_everything():
 create_login_page()
 main_dialog.Show()
 app.MainLoop()
-
