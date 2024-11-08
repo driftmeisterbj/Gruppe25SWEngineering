@@ -29,5 +29,29 @@
         "password": "Passord1234",
         "email": "mail.mail@.com",
         "devices": []
+    },
+    {
+        "username": "abc",
+        "password": "Abc123",
+        "email": "abc@gmail.com",
+        "devices": []
+    },
+    {
+        "username": "abc123",
+        "password": "Abc123",
+        "email": "abc@abc.com",
+        "devices": []
+    },
+    {
+        "username": "abc1234",
+        "password": "Abc123",
+        "email": "abc123@.",
+        "devices": []
+    },
+    {
+        "username": "aaa",
+        "password": "Abc123",
+        "email": "@.",
+        "devices": []
     }
 ]

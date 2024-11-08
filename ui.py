@@ -139,28 +139,39 @@ def create_user_creation_page():
     create_btn = wx.Button(main_dialog, label = "Create user", pos = [310, 220])
 
     def try_create(evt):
-        if db.is_username_taken(username_input.GetValue()) != False: 
+        username = username_input.GetValue()
+        email = email_input.GetValue()
+        password = password_input.GetValue()
+
+
+        if db.is_username_taken(username) != False: 
             error_text.NewError("An account with this username already exists", 340)
+            return
         else:
-            if db.is_username_valid(username_input.GetValue()) != True:
-                error_text.NewError(db.is_username_valid(username_input.GetValue()), 340)
+            if db.is_username_valid(username) != True:
+                error_text.NewError(db.is_username_valid(username), 340)
+                return
             else:
-                if db.is_email_taken(email_input.GetValue()) != False:
+                if db.is_email_taken(email) != False:
                     error_text.NewError("An account with this email already exists", 340)
+                    return
                 else:
-                    if db.is_email_valid(email_input.GetValue()) != True:
-                        error_text.NewError(db.is_email_valid(email_input.GetValue()), 340)
+                    if db.is_email_valid(email) != True:
+                        error_text.NewError(db.is_email_valid(email), 340)
                     else:
-                        if db.is_password_valid(password_input.GetValue()) == False:
-                            error_text.NewError(db.is_password_valid(password_input.GetValue()), 340)
+                        password_validation_result = db.is_password_valid(password)
+                        if password_validation_result != True:
+                            error_text.NewError(db.is_password_valid(password), 340)
+                            return
                         else:
-                            if password_input.GetValue() != password_input2.GetValue():
+                            if password != password_input2.GetValue():
                                 error_text.NewError("Passwords do not match", 340)
+                                return
                             else:
                                 #https://stackoverflow.com/questions/2963263/how-can-i-create-a-simple-message-box-in-python
                                 ctypes.windll.user32.MessageBoxW(0, "Your account was created!", "Success", 1)
-                                db.add_user_to_json( username_input.GetValue(), password_input.GetValue(), email_input.GetValue())
-                                create_device_list_page(username_input.GetValue())
+                                db.add_user_to_json( username, password, email)
+                                create_device_list_page(username)
 
 
     create_btn.Bind(wx.EVT_BUTTON, try_create)
