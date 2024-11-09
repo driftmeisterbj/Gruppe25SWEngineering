@@ -178,6 +178,39 @@ def create_user_creation_page():
 
 
 
+
+def create_home_page(username):
+    destroy_everything()
+
+    #functionality for adding new devices which will open 'create_device_list_page'
+    #The function is there to make sure the event isnt executed immideatly, instead its being done on button click
+    def on_add_device(evt):
+        create_device_list_page(username)
+
+    add_device_btn = wx.Button(main_dialog,label="Add device",pos=[360,150])
+    add_device_btn.Bind(wx.EVT_BUTTON, on_add_device)
+
+    #Todo: Button for adjusting a specific devices settings
+
+    #Creates list of already added devices
+    def make_listbox_device_list(list):
+        db.remove_duplicate_devices_from_user( username)
+        new_list = []
+        for device in list:
+            new_list.append(device.get("name") + " " + device.get("brand"))
+
+        return new_list
+
+    welcome_text = wx.StaticText(main_dialog, label=f"Welcome, {username}!", pos=[169, 50])
+
+    device_list = db.find_device_list_user(username)
+    items = make_listbox_device_list(device_list)
+
+    listbox = wx.ListBox(main_dialog, size = [150, 200], choices = items)
+    listbox.Center()
+
+
+
 def create_device_list_page(username):
     destroy_everything()
     smart_devices = [
@@ -190,13 +223,13 @@ def create_device_list_page(username):
         "August Smart Lock Pro"
     ]
 
-    def make_listbox_device_list(list):
-        db.remove_duplicate_devices_from_user( username)
-        new_list = []
-        for device in list:
-            new_list.append(device.get("name") + " " + device.get("brand"))
+    # def make_listbox_device_list(list):
+    #     db.remove_duplicate_devices_from_user( username)
+    #     new_list = []
+    #     for device in list:
+    #         new_list.append(device.get("name") + " " + device.get("brand"))
 
-        return new_list
+    #     return new_list
 
     listbox = wx.ListBox(main_dialog, size = [150, 200], choices = [])
     listbox.Center()
