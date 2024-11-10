@@ -222,7 +222,12 @@ def create_device_list_page(username):
     listbox.Center()
 
     def get_all_devices():
-        device_list = [f"{device.name} {device.brand}" for device in all_devices]
+        #device_list = [f"{device.name} {device.brand}" for device in all_devices]
+        device_list = []
+        user_devices = db.find_device_list_user(username)
+        for device in all_devices:
+            if not device in user_devices:
+                device_list.append(f"{device.name} {device.brand}")
         return device_list
 
     def search_for_devices(evt):
