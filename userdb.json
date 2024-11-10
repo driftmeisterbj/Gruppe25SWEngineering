@@ -13,7 +13,7 @@
         ]
     },
     {
-        "username": "ExamplePerson",
+        "username": "t",
         "password": "",
         "email": "",
         "devices": [
@@ -22,6 +22,24 @@
                 "name": "Hue 2.0",
                 "brand": "phillips",
                 "category": "light"
+            },
+            {
+                "prod_id": 52243,
+                "name": "Smart LED Strip Light",
+                "brand": "Govee",
+                "category": "Light"
+            },
+            {
+                "prod_id": 44232,
+                "name": "Echo Glow",
+                "brand": "Amazon",
+                "category": "Light"
+            },
+            {
+                "prod_id": 39816,
+                "name": "Cync Smart LED",
+                "brand": "GE Lighting",
+                "category": "Light"
             }
         ]
     },

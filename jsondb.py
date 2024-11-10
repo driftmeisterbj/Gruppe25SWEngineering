@@ -241,6 +241,8 @@ class JsonDatabase():
                 return False
         return True
 
+
+
     # Denne funksjonen finder hvilken index, altså plass i listen, en bruker ligger på.
     # Hvis brukeren blir funnet returneres indexen. Ellers returneres -1
     def find_user_index(self, username):
@@ -281,7 +283,8 @@ class JsonDatabase():
             }
 
             user = data
-            JsonReadWrite.write(self.filename, users)
+            users[user_index] = user
+            JsonReadWrite.write(self.filename +".json", users)
 
         else:
             print("user_index not found")

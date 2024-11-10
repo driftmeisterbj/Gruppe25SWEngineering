@@ -3,7 +3,9 @@ import ctypes
 import subprocess
 import tkinter as tk
 from jsondb import JsonDatabase, JsonReadWrite
-
+import sys
+sys.path.append('Devices/')
+from Nearby_devices import lights,fridges,heaters
 
 try:
     import wx
@@ -187,7 +189,7 @@ def create_home_page(username):
     def on_add_device(evt):
         create_device_list_page(username)
 
-    add_device_btn = wx.Button(main_dialog,label="Add device",pos=[360,150])
+    add_device_btn = wx.Button(main_dialog,label="Add new device",pos=[360,150])
     add_device_btn.Bind(wx.EVT_BUTTON, on_add_device)
 
     #Todo: Button for adjusting a specific devices settings
@@ -213,32 +215,43 @@ def create_home_page(username):
 
 def create_device_list_page(username):
     destroy_everything()
-    smart_devices = [
-        "Philips Hue",
-        "Google Nest Home",
-        "LG CX",
-        "Ring Video Doorbell",
-        "Ecobee SmartThermostat",
-        "iRobot Roomba s9+",
-        "August Smart Lock Pro"
-    ]
+    
+    all_devices = lights + fridges + heaters
 
-    # def make_listbox_device_list(list):
-    #     db.remove_duplicate_devices_from_user( username)
-    #     new_list = []
-    #     for device in list:
-    #         new_list.append(device.get("name") + " " + device.get("brand"))
-
-    #     return new_list
-
-    listbox = wx.ListBox(main_dialog, size = [150, 200], choices = [])
+    listbox = wx.ListBox(main_dialog, size = [200, 200], choices = [])
     listbox.Center()
 
+    def get_all_devices():
+        device_list = [f"{device.name} {device.brand}" for device in all_devices]
+        return device_list
+
     def search_for_devices(evt):
-        listbox.SetItems(make_listbox_device_list(db.find_device_list_user( username)))
+        device_list = get_all_devices()
+        listbox.SetItems(device_list)
 
     search_btn = wx.Button(main_dialog, label = "search", pos = [200, 100])
     search_btn.Bind(wx.EVT_BUTTON, search_for_devices)
+    #Todo: vi har en funksjon som heter add deviec to current user, mulig den kan slettes
+    #Todo: må også slette/skjule enheter i listen som er lagt til hos brukeren
+    #Todo: Lage en dropdown-meny for å få en liste med kun lys, kjøleskap eller varmeovner
+
+    def on_add_device_to_user(evt):
+        selected_index = listbox.GetSelection()
+        if selected_index != wx.NOT_FOUND:
+            selected_device = all_devices[selected_index]
+            #Converts object -> dictionary
+            device = {
+                'prod_id': selected_device.prod_id,
+                'name': selected_device.name,
+                'brand': selected_device.brand,
+                'category': selected_device.category
+            }
+            db.add_device_to_user(username,device)
+            create_home_page(username)
+
+    add_device_btn = wx.Button(main_dialog,label="Add selected device",pos=[360,150])
+    add_device_btn.Bind(wx.EVT_BUTTON, on_add_device_to_user)
+
     main_dialog.Show()
 
 #https://discuss.wxpython.org/t/getchildren/27335
