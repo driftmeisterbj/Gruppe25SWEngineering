@@ -222,18 +222,20 @@ class JsonDatabase():
         if self.is_email_valid(email) != True:
             return "Email is invalid. Check error messages in console."
                  
-        if self.is_email_taken(email) == False:
-            data = self.read_json()
-            new_data = {
-                "username": username,
-                "password": password,
-                "email": email,
-                "devices": []
-            }
-            data.append(new_data)
-            JsonReadWrite.write(self.filename, data)
-        else:
+        if self.is_email_taken(email) != False:
             return "An account with this email adress already exists"
+        
+        data = self.read_json()
+        new_data = {
+            "username": username,
+            "password": password,
+            "email": email,
+            "devices": []
+        }
+        data.append(new_data)
+        JsonReadWrite.write(self.filename, data)
+
+        return True
 
     # Funksjon for validering av en enhet.
     # Sjekker at alle nøklene stemmer med hva en enhet skal inneholde.
