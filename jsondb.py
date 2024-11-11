@@ -210,30 +210,30 @@ class JsonDatabase():
     # Funksjon for å legge til en ny bruker i databasen.
     # Hvis alle sjekkene går gjennom skrives denne brukeren inn til databasen.
     def add_user_to_json(self, username, password, email):
-        if self.is_username_valid(username) == True:
-            if self.is_username_taken(username) == False:
-                if self.is_password_valid(password) == True:
-                    if self.is_email_valid(email) == True:
-                        if self.is_email_taken(email) == False:
-                                data = self.read_json()
-                                new_data = {
-                                    "username": username,
-                                    "password": password,
-                                    "email": email,
-                                    "devices": []
-                                }
-                                data.append(new_data)
-                                JsonReadWrite.write(self.filename, data)
-                        else:
-                            return "An account with this email adress already exists"
-                    else:
-                        return "Email is invalid. Check error messages in console."
-                else:
-                    return "Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number"
-            else:
-                return "Username is already taken"
-        else:
+        if self.is_username_valid(username) != True:
             return "Username is invalid. Check error messages in console."
+        
+        if self.is_username_taken(username) != False:
+                return "Username is already taken"
+
+        if self.is_password_valid(password) != True:
+            return "Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number"
+        
+        if self.is_email_valid(email) != True:
+            return "Email is invalid. Check error messages in console."
+                 
+        if self.is_email_taken(email) == False:
+            data = self.read_json()
+            new_data = {
+                "username": username,
+                "password": password,
+                "email": email,
+                "devices": []
+            }
+            data.append(new_data)
+            JsonReadWrite.write(self.filename, data)
+        else:
+            return "An account with this email adress already exists"
 
     # Funksjon for validering av en enhet.
     # Sjekker at alle nøklene stemmer med hva en enhet skal inneholde.
