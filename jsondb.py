@@ -337,8 +337,44 @@ class JsonDatabase():
         print()
 
     # Slette et device fra en bruker
-    def delete_device_from_user():
-        print()
+    def delete_device_from_user(self, username, device):
+        user_index = self.find_user_index(username)
+
+        if user_index != -1:
+            users = self.read_json()
+            user = users[user_index]
+            device_list = user["devices"]
+            
+            """
+            device_index = -1
+            counter = 0
+            for device_in_list in device_list:
+                if device_in_list == device:
+                    device_index = counter
+                counter += 1
+
+            if device_index != -1:
+                device_list.pop(device_index)
+            """
+
+            try:
+                device_list.remove(device)
+            except:
+                print("Device could not be removed")
+            
+            data = {
+                "username": user["username"],
+                "password": user["password"],
+                "email": user["email"],
+                "devices": device_list
+            }
+
+            user = data
+            users[user_index] = user
+            JsonReadWrite.write(self.filename +".json", users)
+
+        else:
+            print("user_index not found")
 
     # Endre på dataen til et device fra bruker sin device-liste
     def modify_device_information():
