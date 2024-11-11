@@ -40,6 +40,7 @@ class JsonReadWrite(ReadWrite):
             return True
         except:
             pass
+        return False
 
 class JsonDatabase():
     def __init__(self, filename) -> None:
@@ -50,9 +51,15 @@ class JsonDatabase():
     # Skriver til JSON-filen med tomt innhold, altså full reset.
     # KUN for testing, kan fjernes når vi har ferdigstilt struktur i databasen.
     # Mangler feilhåndering
+
     def reset_json(self):
-        with open(self.filename+".json", "w", newline="") as file:
-            json.dump({}, file)
+        try:
+            with open(self.filename, "w") as file:
+                file.write("{}")
+            return True
+        except:
+            pass
+        return False
     
     # Åpner json-filen for lesing og returnerer innholdet i en liste.
     # Dersom en feil skjer ved lesing, returneres en tom liste
@@ -71,7 +78,7 @@ class JsonDatabase():
 
         for user in users:
             for key, value in user.items():
-                if key == "username" and value == username.lower():
+                if key == "username" and value.lower() == username.lower():
                     return True
 
         return False
@@ -82,7 +89,7 @@ class JsonDatabase():
     def is_username_valid(self, username):
         illegal_chars=["'", '"', ",", "!", "@", "$", "€", "{", "}",
                     "[", "]", "(", ")", "^", "¨", "~", "*", ".",
-                    "&", "%", "¤", "#", "!", "?", "+", " "]
+                    "&", "%", "¤", "#", "!", "?", "+", " ", ";", ":"]
 
         if len(username) < 3:
             return f'Name: "{username}" failed - Username can not be shorter than 3 characters'
@@ -139,7 +146,7 @@ class JsonDatabase():
 
         for user in users:
             for key, value in user.items():
-                if key == "email" and value == email.lower():
+                if key == "email" and value.lower() == email.lower():
                     return True
 
         return False
@@ -180,7 +187,7 @@ class JsonDatabase():
             for char in range(email.index("@"), len(email)):
                 charList.append(email[char])
 
-            #print(charList)
+            print(charList)
             if charList.count(".") > 1:
                 return 'ERROR - There can only be a single instance of the character " . " after the " @ "'
 
@@ -188,15 +195,15 @@ class JsonDatabase():
                 punctuation_last_index = 0
                 counter = 0
 
-                for char in email:
-                    if char == ".":
-                        punctuation_last_index = counter
-                    counter += 1
+            for char in email:
+                if char == ".":
+                    punctuation_last_index = counter
+                counter += 1
 
-                if punctuation_last_index < email.index("@"):
-                    return 'ERROR - The character " . " MUST appear at least once after the character " @ " in the email adress'
-                else:
-                    return True
+            if punctuation_last_index < email.index("@"):
+                return 'ERROR - The character " . " MUST appear at least once after the character " @ " in the email adress'
+            else:
+                return True
 
 
 
@@ -216,17 +223,17 @@ class JsonDatabase():
                                     "devices": []
                                 }
                                 data.append(new_data)
-                                JsonReadWrite.write('userdb.json',data)
+                                JsonReadWrite.write(self.filename, data)
                         else:
-                            print("An account with this email adress already exists")
+                            return "An account with this email adress already exists"
                     else:
-                            print("Email is invalid. Check error messages in console.")
+                        return "Email is invalid. Check error messages in console."
                 else:
-                    print("Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number")
+                    return "Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number"
             else:
-                print("Username is already taken")
+                return "Username is already taken"
         else:
-            print("Username is invalid. Check error messages in console.")
+            return "Username is invalid. Check error messages in console."
 
     # Funksjon for validering av en enhet.
     # Sjekker at alle nøklene stemmer med hva en enhet skal inneholde.
@@ -237,6 +244,8 @@ class JsonDatabase():
             if key not in device:
                 return False
         return True
+
+
 
     # Denne funksjonen finder hvilken index, altså plass i listen, en bruker ligger på.
     # Hvis brukeren blir funnet returneres indexen. Ellers returneres -1
@@ -278,7 +287,8 @@ class JsonDatabase():
             }
 
             user = data
-            JsonReadWrite.write(self.filename, users)
+            users[user_index] = user
+            JsonReadWrite.write(self.filename +".json", users)
 
         else:
             print("user_index not found")
@@ -318,7 +328,7 @@ class JsonDatabase():
 
             data[user_index]["devices"] = new_list
 
-            JsonReadWrite.write(self.filename, data)
+            JsonReadWrite.write(self.filename + ".json", data)
 
     # Oprette nytt device
     def create_new_device(name, brand, device_type):
@@ -413,4 +423,4 @@ class JsonDatabase():
         """
 
 
-db = JsonDatabase("test")
+#db = JsonDatabase("test")
