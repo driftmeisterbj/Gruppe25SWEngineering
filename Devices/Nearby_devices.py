@@ -3,9 +3,12 @@ from Fridge import Fridge
 from Heater import Heater
 import random
 
+counter = 0
 def id():
-    number = random.randrange(1,99999)
-    return number
+    global counter
+    counter += 1 
+    return counter
+    
 
 lights = [
     Light(id(), "Hue White and Color Ambiance", "Philips"),

@@ -324,7 +324,7 @@ class JsonDatabase():
 
             data[user_index]["devices"] = new_list
 
-            JsonReadWrite.write(self.filename, data)
+            JsonReadWrite.write(self.filename + ".json", data)
 
     # Oprette nytt device
     def create_new_device(name, brand, device_type):

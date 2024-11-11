@@ -225,9 +225,17 @@ def create_device_list_page(username):
         #device_list = [f"{device.name} {device.brand}" for device in all_devices]
         device_list = []
         user_devices = db.find_device_list_user(username)
+
+#fix: det var 2 hovedproblemer - 1. vi sammenlignet et objekt med et dict, 2. prod_id varulik for hver gang programmet startet
         for device in all_devices:
-            if not device in user_devices:
+            device_already_added = False
+            for user_device in user_devices:
+                if device.prod_id == user_device['prod_id']:
+                    device_already_added = True
+                    break
+            if not device_already_added:
                 device_list.append(f"{device.name} {device.brand}")
+            
         return device_list
 
     def search_for_devices(evt):
@@ -236,8 +244,6 @@ def create_device_list_page(username):
 
     search_btn = wx.Button(main_dialog, label = "search", pos = [200, 100])
     search_btn.Bind(wx.EVT_BUTTON, search_for_devices)
-    #Todo: vi har en funksjon som heter add deviec to current user, mulig den kan slettes
-    #Todo: må også slette/skjule enheter i listen som er lagt til hos brukeren
     #Todo: Lage en dropdown-meny for å få en liste med kun lys, kjøleskap eller varmeovner
 
     def on_add_device_to_user(evt):

@@ -18,27 +18,9 @@
         "email": "",
         "devices": [
             {
-                "prod_id": 11564,
-                "name": "Hue 2.0",
-                "brand": "phillips",
-                "category": "light"
-            },
-            {
-                "prod_id": 52243,
-                "name": "Smart LED Strip Light",
-                "brand": "Govee",
-                "category": "Light"
-            },
-            {
-                "prod_id": 44232,
-                "name": "Echo Glow",
-                "brand": "Amazon",
-                "category": "Light"
-            },
-            {
-                "prod_id": 39816,
-                "name": "Cync Smart LED",
-                "brand": "GE Lighting",
+                "prod_id": 2,
+                "name": "LIFX Color A19",
+                "brand": "LIFX",
                 "category": "Light"
             }
         ]
