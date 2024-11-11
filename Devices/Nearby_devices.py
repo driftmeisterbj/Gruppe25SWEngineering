@@ -1,6 +1,7 @@
 from Light import Light
 from Fridge import Fridge
 from Heater import Heater
+from Lock import SmartLock
 import random
 
 counter = 0
@@ -48,4 +49,18 @@ heaters = [
     Heater(id(), "Compact Propane Heater", "Mr. Heater"),
     Heater(id(), "Smart Ceramic Tower Heater", "Govee"),
 ]
+
+locks = [
+    SmartLock(id(), "August Smart Lock Pro + Connect", "August"),
+    SmartLock(id(), "Kwikset Kevo 2nd Gen", "Kwikset"),
+    SmartLock(id(), "Schlage Encode Plus", "Schlage"),
+    SmartLock(id(), "Yale Assure Lock SL", "Yale"),
+    SmartLock(id(), "Level Lock+", "Level"),
+    SmartLock(id(), "Nest x Yale Lock", "Nest"),
+    SmartLock(id(), "Ultraloq U-Bolt Pro", "Ultraloq"),
+    SmartLock(id(), "Eufy Security Smart Lock", "Eufy"),
+    SmartLock(id(), "SimpliSafe Smart Lock", "SimpliSafe"),
+    SmartLock(id(), "Lockly Secure Pro", "Lockly"),
+]
+
 #print(heaters[0].name, heaters[0].brand)
