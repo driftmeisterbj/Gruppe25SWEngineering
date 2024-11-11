@@ -24,6 +24,6 @@ class Light(Device):
 
     def status(self):
         if self.on:
-            print(f"{self.brand} {self.name} is turned on, brightness: {self.brightness}")
+            return f"{self.brand} {self.name} is turned on, brightness: {self.brightness}"
         else:
-            print(f"{self.brand} {self.name} is off.")
+            return f"{self.brand} {self.name} is off."

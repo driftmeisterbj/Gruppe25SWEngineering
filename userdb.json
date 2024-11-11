@@ -1,9 +1,60 @@
 [
     {
+        "username": "",
+        "password": "",
+        "email": "",
+        "devices": [
+            {
+                "prod_id": 11564,
+                "name": "Hue 2.0",
+                "brand": "phillips",
+                "category": "light"
+            }
+        ]
+    },
+    {
+        "username": "t",
+        "password": "",
+        "email": "",
+        "devices": [
+            {
+                "prod_id": 2,
+                "name": "LIFX Color A19",
+                "brand": "LIFX",
+                "category": "Light"
+            }
+        ]
+    },
+    {
         "username": "Test2",
         "password": "Pa123",
         "email": "mail.m@mail.com",
-        "devices": []
+        "devices": [
+            {
+                "prod_id": 10150,
+                "name": "WRF560SEHZ",
+                "brand": "Whirlpool",
+                "category": "Fridge"
+            },
+            {
+                "prod_id": 46943,
+                "name": "Smart LED Strip Light",
+                "brand": "Govee",
+                "category": "Light"
+            },
+            {
+                "prod_id": 16831,
+                "name": "Cync Smart LED",
+                "brand": "GE Lighting",
+                "category": "Light"
+            },
+            {
+                "prod_id": 81225,
+                "name": "Hue White and Color Ambiance",
+                "brand": "Philips",
+                "category": "Light"
+            }
+        ]
     },
     {
         "username": "Test3",

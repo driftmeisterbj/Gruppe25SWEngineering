@@ -1,8 +1,20 @@
 [
     {
-        "username": "Test2",
-        "password": "Pa123",
-        "email": "mail.m@mail.com",
+        "username": "User1",
+        "password": "password",
+        "email": "epost@epost.com",
+        "devices": []
+    },
+    {
+        "username": "User2",
+        "password": "password",
+        "email": "epost@epost.com",
+        "devices": []
+    },
+    {
+        "username": "Username",
+        "password": "Password123",
+        "email": "e@epost.com",
         "devices": []
     }
 ]
