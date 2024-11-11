@@ -8,7 +8,7 @@ import trace
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Now you can import from jsondb
-from App.jsondb import JsonReadWrite
+from jsondb import JsonReadWrite
 
 # Test for read and write functions in JSONdb.py
 class TestReadWrite(unittest.TestCase):

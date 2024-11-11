@@ -187,6 +187,29 @@ class TestJsonDatabase(unittest.TestCase):
     # -------------------------------------------------------------------------------------------
     # Tests for add_user_to_json()
     
+    @mock.patch("jsondb.JsonDatabase.is_username_valid", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.is_username_taken", return_value=False)
+    @mock.patch("jsondb.JsonDatabase.is_password_valid", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.is_email_valid", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.is_email_taken", return_value=False)
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                {
+                    "username": "User1",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }, {
+                    "username": "User2",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }
+            ])
+    def test_add_user_to_json(self, mock1, mock2, mock3, mock4, mock5, mock6):
+        user_added = self.database.add_user_to_json("Username", "Password123", "e@epost.com")
+        self.assertEqual(user_added, True)
+    
+
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
