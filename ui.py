@@ -156,7 +156,7 @@ def create_user_creation_page():
                                 error_text.NewError("Passwords do not match", 340)
                             else:
                                 #https://stackoverflow.com/questions/2963263/how-can-i-create-a-simple-message-box-in-python
-                                ctypes.windll.user32.MessageBoxW(0, "Your account was created!", "Success", 1)
+                                ctypes.windll.user32.MessageBoxW(0, "Your account was created!", "Success", 0)
                                 db.add_user_to_json("userdb", username_input.GetValue(), password_input.GetValue(), email_input.GetValue())
                                 create_device_list_page(username_input.GetValue())
 
