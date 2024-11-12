@@ -110,15 +110,66 @@ def log_out_btn():
     main_dialog.log_out_btn.Bind(wx.EVT_BUTTON, on_log_out_btn)
 
 
+import wx
+
 def create_login_page():
     destroy_everything()
-    username_text = wx.StaticText(main_dialog, label="Username:", pos = [100, 125])
-    username_input = wx.TextCtrl(main_dialog, pos = [175, 125], size=(200, -1))
-    password_text = wx.StaticText(main_dialog, label="Password:", pos = [100, 175])
-    password_input = wx.TextCtrl(main_dialog, pos = [175, 175], size=(200, -1), style=wx.TE_PASSWORD)
 
-    login_btn = wx.Button(main_dialog, label = "Log in", pos = [125, 250])
-    create_user_btn = wx.Button(main_dialog, label = "Create new account", pos = [250, 250])
+    panel = wx.Panel(main_dialog)
+
+    # Create sizers
+    main_sizer = wx.BoxSizer(wx.VERTICAL)
+    form_sizer = wx.GridBagSizer(vgap=20, hgap=10)
+
+    # Add a spacer to move the form down
+    main_sizer.Add((0, 50))
+
+    # Add a logo or title
+    title = wx.StaticText(panel, label="Welcome to MySmartHome")
+    title_font = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+    title.SetFont(title_font)
+    title.SetForegroundColour(wx.Colour(0, 70, 140))
+
+    # Input fields with placeholders
+    username_input = wx.TextCtrl(panel, style=wx.TE_LEFT, value="")
+    username_input.SetHint("username")
+
+    password_input = wx.TextCtrl(panel, style=wx.TE_PASSWORD | wx.TE_LEFT, value="")
+    password_input.SetHint("Password")
+    # Buttons
+    create_user_btn = wx.Button(panel, label="Create new account")
+    login_btn = wx.Button(panel, label="Log in")
+
+    # Arrange items using the form sizer
+    form_sizer.Add(username_input, pos=(0, 0), span=(1, 2), flag=wx.EXPAND)
+    form_sizer.Add(password_input, pos=(1, 0), span=(1, 2), flag=wx.EXPAND)
+    form_sizer.Add(create_user_btn, pos=(2, 0), flag=wx.ALIGN_LEFT)
+    form_sizer.Add(login_btn, pos=(2, 1), flag=wx.EXPAND)
+
+    # Make the input fields column growable
+    form_sizer.AddGrowableCol(0)
+    form_sizer.AddGrowableCol(1)
+
+    # Add the title and form sizer to the main sizer
+    main_sizer.Add(title, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 15)
+    main_sizer.Add(form_sizer, 1, wx.ALL | wx.EXPAND, 20)
+
+    # Set the main sizer and layout
+    panel.SetSizer(main_sizer)
+    main_dialog.Layout()
+
+
+
+
+    def login_btn_click(evt):
+        try_logging_in(username_input.GetValue(), password_input.GetValue())
+
+    def create_user_btn_click(evt):
+        create_user_creation_page()
+
+    login_btn.Bind(wx.EVT_BUTTON, login_btn_click)
+    create_user_btn.Bind(wx.EVT_BUTTON, create_user_btn_click)
+
 
     def login_btn_click(evt):
         try_logging_in(username_input.GetValue(), password_input.GetValue())
