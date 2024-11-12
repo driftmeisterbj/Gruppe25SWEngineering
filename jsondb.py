@@ -44,9 +44,9 @@ class JsonReadWrite(ReadWrite):
 
 class JsonDatabase():
     def __init__(self, filename) -> None:
-        self.filename = filename
+        self.filename = filename + ".json"
         self.data = self.read_json()
-        JsonReadWrite.write(self.filename + ".json", self.data)
+        JsonReadWrite.write(self.filename, self.data)
 
     # Skriver til JSON-filen med tomt innhold, altså full reset.
     # KUN for testing, kan fjernes når vi har ferdigstilt struktur i databasen.
@@ -65,7 +65,7 @@ class JsonDatabase():
     # Dersom en feil skjer ved lesing, returneres en tom liste
     def read_json(self):
         try:
-            with open(self.filename+".json", "r") as file:
+            with open(self.filename, "r") as file:
                 return json.load(file)
 
         except:
@@ -291,7 +291,7 @@ class JsonDatabase():
             user = data
             users[user_index] = user
             
-            JsonReadWrite.write(self.filename +".json", users)
+            JsonReadWrite.write(self.filename, users)
             return True
         else:
             print("user_index not found")
@@ -333,7 +333,7 @@ class JsonDatabase():
 
             data[user_index]["devices"] = new_list
 
-            JsonReadWrite.write(self.filename + ".json", data)
+            JsonReadWrite.write(self.filename, data)
 
     # Oprette nytt device
     def create_new_device(name, brand, device_type):
@@ -374,7 +374,7 @@ class JsonDatabase():
 
             user = data
             users[user_index] = user
-            JsonReadWrite.write(self.filename +".json", users)
+            JsonReadWrite.write(self.filename, users)
 
         else:
             print("user_index not found")
