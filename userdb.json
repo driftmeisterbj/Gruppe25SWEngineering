@@ -141,5 +141,11 @@
                 "category": "Light"
             }
         ]
+    },
+    {
+        "username": "Awdw",
+        "password": "Qwerty123",
+        "email": "aa@aa.b",
+        "devices": []
     }
 ]

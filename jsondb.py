@@ -187,7 +187,6 @@ class JsonDatabase():
             for char in range(email.index("@"), len(email)):
                 charList.append(email[char])
 
-            print(charList)
             if charList.count(".") > 1:
                 return 'ERROR - There can only be a single instance of the character " . " after the " @ "'
 
