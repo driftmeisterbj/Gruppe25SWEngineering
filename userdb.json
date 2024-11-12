@@ -34,6 +34,18 @@
                 "name": "Nanoleaf Shapes",
                 "brand": "Nanoleaf",
                 "category": "Light"
+            },
+            {
+                "prod_id": 4,
+                "name": "Smart LED Strip Light",
+                "brand": "Govee",
+                "category": "Light"
+            },
+            {
+                "prod_id": 1,
+                "name": "Hue White and Color Ambiance",
+                "brand": "Philips",
+                "category": "Light"
             }
         ]
     },
@@ -116,5 +128,18 @@
         "password": "Abc123",
         "email": "@.",
         "devices": []
+    },
+    {
+        "username": "ASdaad",
+        "password": "Tyuio123",
+        "email": "sksk@skksk.v",
+        "devices": [
+            {
+                "prod_id": 2,
+                "name": "LIFX Color A19",
+                "brand": "LIFX",
+                "category": "Light"
+            }
+        ]
     }
 ]
