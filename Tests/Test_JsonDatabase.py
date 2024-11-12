@@ -10,6 +10,9 @@ sys.path.append(project_root)
 from jsondb import JsonDatabase
 
 class TestJsonDatabase(unittest.TestCase):
+    def setUp(self):
+        self.database = JsonDatabase("test")
+    
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
@@ -292,12 +295,132 @@ class TestJsonDatabase(unittest.TestCase):
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tests for add_device_to_user()
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                    {
+                        "username": "User1",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }, {
+                        "username": "User2",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }
+                ])
+    def test_add_device_to_user_added(self, mock):
+        device = {
+                "prod_id": 123,
+                "name": "Gyldig",
+                "brand": "Enhet",
+                "category": "Test"
+            }
+        username = "User1"
+        add_device = self.database.add_device_to_user(username, device)
+        self.assertEqual(add_device, True)
+
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                    {
+                        "username": "User1",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }, {
+                        "username": "User2",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }
+                ])
+    @mock.patch("jsondb.JsonDatabase.is_device_valid", return_value=False)
+    def test_add_device_to_user_invalid_device(self, mock, mock2):
+        device = {
+                
+            }
+        username = "User1"
+        add_device = self.database.add_device_to_user(username, device)
+        self.assertEqual(add_device, "Device invalid")
+
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                    {
+                        "username": "User1",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }, {
+                        "username": "User2",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }
+                ])
+    @mock.patch("jsondb.JsonDatabase.find_user_index", return_value=-1)
+    def test_add_device_to_user_cannot_find_user(self, mock, mock2):
+        device = {
+                "prod_id": 123,
+                "name": "Gyldig",
+                "brand": "Enhet",
+                "category": "Test"
+            }
+        username = "User1"
+        add_device = self.database.add_device_to_user(username, device)
+        self.assertEqual(add_device, False)
 
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tests for find_device_list_user()
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                    {
+                        "username": "User1",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": [{
+                            "prod_id": 123,
+                            "name": "Gyldig",
+                            "brand": "Enhet",
+                            "category": "Test"
+                        }]
+                    }, {
+                        "username": "User2",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }
+                ])
+    def test_find_device_list_user_found(self, mock):
+        device_list=[{
+                        "prod_id": 123,
+                        "name": "Gyldig",
+                        "brand": "Enhet",
+                        "category": "Test"
+                    }]
+        username = "User1"
+        find_device_list = self.database.find_device_list_user(username)
+        self.assertEqual(find_device_list, device_list)
 
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                    {
+                        "username": "User1",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": [{
+                            "prod_id": 123,
+                            "name": "Gyldig",
+                            "brand": "Enhet",
+                            "category": "Test"
+                        }]
+                    }, {
+                        "username": "User2",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }
+                ])
+    def test_find_device_list_user_no_user_found(self, mock):
+        username = "InvalidUser"
+        find_device_list = self.database.find_device_list_user(username)
+        self.assertEqual(find_device_list, False)
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------

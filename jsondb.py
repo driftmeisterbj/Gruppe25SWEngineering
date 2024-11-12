@@ -214,7 +214,7 @@ class JsonDatabase():
             return "Username is invalid. Check error messages in console."
         
         if self.is_username_taken(username) != False:
-                return "Username is already taken"
+            return "Username is already taken"
 
         if self.is_password_valid(password) != True:
             return "Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number"
@@ -290,10 +290,12 @@ class JsonDatabase():
 
             user = data
             users[user_index] = user
+            
             JsonReadWrite.write(self.filename +".json", users)
-
+            return True
         else:
             print("user_index not found")
+            return False
 
 
     def find_device_list_user(self, username):
@@ -307,6 +309,7 @@ class JsonDatabase():
 
         else:
             print("user_index not found")
+            return False
 
     def remove_duplicate_devices_from_user(self, username):
         user_index = self.find_user_index(username)
