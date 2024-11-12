@@ -85,6 +85,30 @@ def colour_finder(colour_string):
     return colour_dict.get(colour_string)
 
 
+#buttons: back, log out
+
+#Tilbakeknapp til innloggingsside fra brukeropprettelsesside
+def back_btn(prev_page):
+    def on_back_btn(evt):
+        prev_page()
+
+    main_dialog.back_btn = wx.Button(main_dialog,label="< Back",pos=[30,400])
+    main_dialog.back_btn.Bind(wx.EVT_BUTTON, on_back_btn)
+
+#Loggut knapp
+def log_out_btn():
+    def on_log_out_btn(evt):
+        confirm_decision = wx.MessageBox(
+            "Are you sure you want to log out?",
+            "Log out",
+            wx.YES_NO | wx.ICON_QUESTION
+        )
+        if confirm_decision == wx.YES:
+            create_login_page()
+
+    main_dialog.log_out_btn = wx.Button(main_dialog,label="Log out",pos=[395,15])
+    main_dialog.log_out_btn.Bind(wx.EVT_BUTTON, on_log_out_btn)
+
 
 def create_login_page():
     destroy_everything()
@@ -138,6 +162,9 @@ def create_user_creation_page():
     password_text2 = wx.StaticText(main_dialog, label="Confirm password:", pos = [80, 190], size=(100, -1), style=wx.ALIGN_RIGHT)
     password_input2 = wx.TextCtrl(main_dialog, pos = [190, 190], size=(200, -1), style=wx.TE_PASSWORD)
 
+
+    back_btn(create_login_page)
+
     create_btn = wx.Button(main_dialog, label = "Create user", pos = [310, 220])
 
     def try_create(evt):
@@ -184,13 +211,15 @@ def create_user_creation_page():
 def create_home_page(username):
     destroy_everything()
 
-    #functionality for adding new devices which will open 'create_device_list_page'
+    #functionality for adding new devices which will open 'create_add_new_device_page'
     #The function is there to make sure the event isnt executed immideatly, instead its being done on button click
     def on_add_device(evt):
-        create_device_list_page(username)
+        create_add_new_device_page(username)
 
     add_device_btn = wx.Button(main_dialog,label="Add new device",pos=[360,150])
     add_device_btn.Bind(wx.EVT_BUTTON, on_add_device)
+
+    log_out_btn()
 
     #Todo: Button for adjusting a specific devices settings
 
@@ -213,13 +242,17 @@ def create_home_page(username):
 
 
 
-def create_device_list_page(username):
+def create_add_new_device_page(username):
     destroy_everything()
     
     all_devices = lights + fridges + heaters
 
     listbox = wx.ListBox(main_dialog, size = [200, 200], choices = [])
     listbox.Center()
+
+    log_out_btn()
+    #Using a lambda function to make sure the functions called when button is clicked
+    back_btn(lambda: create_home_page(username))
 
     def get_all_devices():
         #device_list = [f"{device.name} {device.brand}" for device in all_devices]
