@@ -2,6 +2,7 @@ from Light import Light
 from Fridge import Fridge
 from Heater import Heater
 from Lock import SmartLock
+from Camera import SmartCamera
 import random
 
 counter = 0
@@ -62,5 +63,19 @@ locks = [
     SmartLock(id(), "SimpliSafe Smart Lock", "SimpliSafe"),
     SmartLock(id(), "Lockly Secure Pro", "Lockly"),
 ]
+
+cameras = [
+    SmartCamera(id(), "Nest Cam IQ Outdoor", "Nest", resolution="1080p", motion_detection=True),
+    SmartCamera(id(), "Ring Stick Up Cam Elite", "Ring", resolution="1080p", motion_detection=True),
+    SmartCamera(id(), "Arlo Pro 4", "Arlo", resolution="4K", motion_detection=True),
+    SmartCamera(id(), "Wyze Cam v3", "Wyze", resolution="1080p", motion_detection=False),
+    SmartCamera(id(), "Eufy Security SoloCam E40", "Eufy", resolution="1080p", motion_detection=True),
+    SmartCamera(id(), "SimpliSafe HD Camera", "SimpliSafe", resolution="1080p", motion_detection=False),
+    SmartCamera(id(), "Blink Outdoor Camera", "Blink", resolution="1080p", motion_detection=True),
+    SmartCamera(id(), "Ring Spotlight Cam", "Ring", resolution="1080p", motion_detection=True),
+    SmartCamera(id(), "Google Nest Cam (battery)", "Nest", resolution="1080p", motion_detection=True),
+    SmartCamera(id(), "Lorex 4K Ultra HD IP Camera", "Lorex", resolution="4K", motion_detection=True),
+]
+
 
 #print(heaters[0].name, heaters[0].brand)
