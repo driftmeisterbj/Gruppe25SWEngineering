@@ -112,6 +112,7 @@ def display_app_name():
     return title
 
 
+
 def create_login_page():
     destroy_everything()
 
@@ -124,16 +125,27 @@ def create_login_page():
     # Add a spacer to move the form down
     main_sizer.AddSpacer(50)
 
+    # Header
+    header = wx.StaticText(panel, label="Login")
+    header_font = header.GetFont()
+    header_font.PointSize += 15
+    header_font = header_font.Bold()  
+    header.SetFont(header_font)
+    header.SetForegroundColour(wx.Colour(255, 255, 255))  
+    main_sizer.Add(header, 0, wx.ALIGN_CENTER | wx.BOTTOM, 0)
+
     # Input fields with placeholders
     username_input = wx.TextCtrl(panel, style=wx.TE_LEFT, value="")
-    username_input.SetHint("username")
+    username_input.SetHint("Username")
 
     password_input = wx.TextCtrl(panel, style=wx.TE_PASSWORD | wx.TE_LEFT, value="")
     password_input.SetHint("Password")
 
     # Buttons
-    create_user_btn = wx.Button(panel, label="Create new account")
-    login_btn = wx.Button(panel, label="Log in")
+    create_user_btn = wx.Button(panel, label="Create New Account")
+    login_btn = wx.Button(panel, label="Log In")
+
+    error_text = ErrorText(panel)
 
     # Arrange items using the form sizer
     form_sizer.Add(username_input, pos=(0, 0), span=(1, 2), flag=wx.EXPAND)
@@ -141,12 +153,11 @@ def create_login_page():
     form_sizer.Add(create_user_btn, pos=(2, 0), flag=wx.ALIGN_LEFT)
     form_sizer.Add(login_btn, pos=(2, 1), flag=wx.EXPAND)
 
-    # Make the input fields column growable
+    # Make the input fields columns growable
     form_sizer.AddGrowableCol(0)
     form_sizer.AddGrowableCol(1)
 
     # Error text
-    error_text = ErrorText(panel)
     form_sizer.Add(error_text.error_text, pos=(3, 0), span=(1, 2), flag=wx.EXPAND | wx.ALIGN_CENTER_HORIZONTAL)
 
     # Add the form sizer to the main sizer
@@ -159,6 +170,7 @@ def create_login_page():
 
     # Display the app name
     display_app_name()
+
 
 
     def login_btn_click(evt):
@@ -200,10 +212,19 @@ def create_user_creation_page():
     form_sizer = wx.GridBagSizer(vgap=10, hgap=10)
 
     # Create account header
-    #title = wx.TextCtrl(panel)
 
     # Add a spacer to move the form down
-    main_sizer.AddSpacer(50)  # Equivalent to main_sizer.Add((0, 50))
+    main_sizer.AddSpacer(50)  
+
+
+    # Customize header font
+    header = wx.StaticText(panel, label="Create Account")
+    header_font = header.GetFont()
+    header_font.PointSize += 15
+    header_font = header_font.Bold()  
+    header.SetFont(header_font)
+    header.SetForegroundColour(wx.Colour(255, 255, 255))  
+    main_sizer.Add(header, 0, wx.ALIGN_CENTER | wx.BOTTOM, 0)
 
     # Input fields with placeholders
     username_input = wx.TextCtrl(panel)
@@ -377,7 +398,6 @@ def create_add_new_device_page(username):
         device_list = []
         user_devices = db.find_device_list_user(username)
 
-#fix: det var 2 hovedproblemer - 1. vi sammenlignet et objekt med et dict, 2. prod_id varulik for hver gang programmet startet
         for device in all_devices:
             device_already_added = False
             for user_device in user_devices:
