@@ -133,7 +133,7 @@ def create_login_page():
     # Input fields with placeholders
     username_input = wx.TextCtrl(panel, style=wx.TE_LEFT, value="")
     username_input.SetHint("username")
-
+    username_input.SetFocus()
     password_input = wx.TextCtrl(panel, style=wx.TE_PASSWORD | wx.TE_LEFT, value="")
     password_input.SetHint("Password")
     # Buttons
@@ -206,6 +206,7 @@ def create_user_creation_page():
     error_text = ErrorText("", 340)
     username_text = wx.StaticText(main_dialog, label="Username:", pos = [80, 100], size=(100, -1), style=wx.ALIGN_RIGHT)
     username_input = wx.TextCtrl(main_dialog, pos = [190, 100], size=(200, -1))
+    username_input.SetFocus()
     email_text = wx.StaticText(main_dialog, label="Email adress:", pos = [80, 130], size=(100, -1), style=wx.ALIGN_RIGHT)
     email_input = wx.TextCtrl(main_dialog, pos = [190, 130], size=(200, -1))
     password_text = wx.StaticText(main_dialog, label="Password:", pos = [80, 160], size=(100, -1), style=wx.ALIGN_RIGHT)
@@ -290,6 +291,7 @@ def create_home_page(username):
 
     listbox = wx.ListBox(main_dialog, size = [150, 200], choices = items)
     listbox.Center()
+    listbox.SetFocus()
 
 
 
@@ -300,6 +302,7 @@ def create_add_new_device_page(username):
 
     listbox = wx.ListBox(main_dialog, size = [200, 200], choices = [])
     listbox.Center()
+    listbox.SetFocus()
 
     log_out_btn()
     #Using a lambda function to make sure the functions called when button is clicked
