@@ -15,11 +15,17 @@
                 "name": "B36CT80SNS",
                 "brand": "Bosch",
                 "category": "Fridge"
+            },
+            {
+                "prod_id": 5,
+                "name": "Nanoleaf Shapes",
+                "brand": "Nanoleaf",
+                "category": "Light"
             }
         ]
     },
     {
-        "username": "t",
+        "username": "Fredrik",
         "password": "",
         "email": "",
         "devices": [
