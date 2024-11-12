@@ -452,8 +452,13 @@ class TestJsonDatabase(unittest.TestCase):
     # Tests for add_device_to_current_user()
 
     def test_cleanup(self):
-        if os.path.exists("test.json"):
-            os.remove("test.json")
+        path = os.path.join(os.path.dirname(__file__))
+        pathList = path.split("\\")
+        pathList.pop()
+        pathList.append("test.json")
+        path = pathList.join("\\")
+        if os.path.exists("path"):
+            os.remove(path)
         
 if __name__ == '__main__':
     unittest.main()
