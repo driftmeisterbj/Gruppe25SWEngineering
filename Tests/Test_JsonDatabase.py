@@ -457,8 +457,11 @@ class TestJsonDatabase(unittest.TestCase):
         pathList.pop()
         pathList.append("test.json")
         path = "\\".join(pathList)
-        if os.path.exists("path"):
+        print(path)
+        
+        if os.path.exists(path):
             os.remove(path)
+        
         
 if __name__ == '__main__':
     unittest.main()

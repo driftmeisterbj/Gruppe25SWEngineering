@@ -36,12 +36,6 @@ class ErrorText():
         self.error_text.Wrap(300)
         self.RepositionSelf(y)
 
-    def ShowSelf(self):
-        self.error_text.Show()
-
-    def HideSelf(self):
-        self.error_text.Hide()
-
     def RepositionSelf(self, y):
         #https://stackoverflow.com/questions/14269880/the-right-way-to-find-the-size-of-text-in-wxpython
         width, height = self.error_text.GetTextExtent(self.text)
@@ -61,8 +55,8 @@ class ErrorText():
         self.RepositionSelf(y)
 
     def NewError(self, text, y):
-        self.HideSelf()
-        self.ShowSelf()
+        self.error_text.Hide()
+        self.error_text.Show()
         self.SetText(text, y)
         
 def colour_finder(colour_string):
@@ -172,7 +166,7 @@ def create_user_creation_page():
                             else:
                                 #https://stackoverflow.com/questions/2963263/how-can-i-create-a-simple-message-box-in-python
                                 ctypes.windll.user32.MessageBoxW(0, "Your account was created!", "Success", 1)
-                                db.add_user_to_json("userdb", username_input.GetValue(), password_input.GetValue(), email_input.GetValue())
+                                db.add_user_to_json(username_input.GetValue(), password_input.GetValue(), email_input.GetValue())
                                 create_device_list_page(username_input.GetValue())
 
 
@@ -239,7 +233,7 @@ def create_device_list_page(username):
         return device_list
 
     def search_for_devices(evt):
-        listbox.SetItems(make_listbox_device_list(db.find_device_list_user("userdb", username)))
+        listbox.SetItems(make_listbox_device_list(db.find_device_list_user(username)))
 
     search_btn = wx.Button(main_dialog, label = "search", pos = [200, 100])
     search_btn.Bind(wx.EVT_BUTTON, search_for_devices)
