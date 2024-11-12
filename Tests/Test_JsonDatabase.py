@@ -456,7 +456,7 @@ class TestJsonDatabase(unittest.TestCase):
         pathList = path.split("\\")
         pathList.pop()
         pathList.append("test.json")
-        path = pathList.join("\\")
+        path = "\\".join(pathList)
         if os.path.exists("path"):
             os.remove(path)
         
