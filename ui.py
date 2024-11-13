@@ -30,10 +30,11 @@ userDb = os.path.join(os.path.dirname(__file__), "userdb")
 db = JsonDatabase(userDb)
 
 class ErrorText():
-    def __init__(self, parent):
+    def __init__(self, parent, y):
         self.error_text = wx.StaticText(parent, label="")
         self.error_text.SetForegroundColour(wx.RED)
-        self.error_text.Wrap(300)
+        self.y = y
+        self.error_text.Wrap(y)
         self.error_text.Hide()
 
     def ShowSelf(self):
@@ -54,16 +55,16 @@ class ErrorText():
         #https://stackoverflow.com/questions/1785227/change-the-colour-of-a-statictext-wxpython
         self.error_text.SetForegroundColour(colour_finder("red"))
 
-    def SetText(self, text, y):
+    def SetText(self, text,):
         self.text = text
         self.error_text.SetLabel(text)
         self.error_text.Wrap(300)
-        self.RepositionSelf(y)
+        self.RepositionSelf(self.y)
 
     def NewError(self, text):
         self.HideSelf()
         self.ShowSelf()
-        self.SetText(text, 300)
+        self.SetText(text, self.y)
 
         
 def colour_finder(colour_string):
@@ -160,7 +161,7 @@ def create_login_page():
     create_user_btn = wx.Button(panel, label="Create New Account")
     login_btn = wx.Button(panel, label="Log In")
 
-    error_text = ErrorText(panel)
+    error_text = ErrorText(panel, 300)
 
     # Arrange items using the form sizer
     form_sizer.Add(username_input, pos=(0, 0), span=(1, 2), flag=wx.EXPAND)
@@ -301,39 +302,39 @@ def create_user_creation_page():
 
         # Validation Checks
         if not username:
-            error_text.SetText("Username cannot be empty.")
+            error_text.SetText("Username cannot be empty.", 400)
             panel.Layout()
             return
         if not email:
-            error_text.SetText("Email cannot be empty.")
+            error_text.SetText("Email cannot be empty.", 400)
             panel.Layout()
             return
         if not password:
-            error_text.SetText("Password cannot be empty.")
+            error_text.SetText("Password cannot be empty.", 400)
             panel.Layout()
             return
         if password != confirm_password:
-            error_text.SetText("Passwords do not match.")
+            error_text.SetText("Passwords do not match.", 400)
             panel.Layout()
             return
         if db.is_username_taken(username):
-            error_text.SetText("An account with this username already exists.")
+            error_text.SetText("An account with this username already exists.", 400)
             panel.Layout()
             return
         elif db.is_username_valid(username) != True:
-            error_text.SetText(db.is_username_valid(username))
+            error_text.SetText(db.is_username_valid(username), 400)
             panel.Layout()
             return
         elif db.is_email_taken(email):
-            error_text.SetText("An account with this email already exists.")
+            error_text.SetText("An account with this email already exists.", 400)
             panel.Layout()
             return
         elif db.is_email_valid(email) != True:
-            error_text.SetText(db.is_email_valid(email))
+            error_text.SetText(db.is_email_valid(email), 400)
             panel.Layout()
             return
         elif db.is_password_valid(password) != True:
-            error_text.SetText(db.is_password_valid(password))
+            error_text.SetText(db.is_password_valid(password), 400)
             panel.Layout()
             return
         else:
