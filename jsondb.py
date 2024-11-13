@@ -275,11 +275,30 @@ class JsonDatabase():
             device_list = user["devices"]
             # device_list.append(device)
 
+            device_data = {
+                "prod_id": device.prod_id,
+                "name": device.name,
+                "brand": device.brand,
+                "category": device.category,
+                "on": device.on
+            }
+
+            if device.category == "Fridge":
+                device_data["temperature"] = device.temperature
+            elif device.category == "Heater":
+                device_data["temperature"] = device.temperature
+            elif device.category == "Light":
+                device_data["brightness"] = device.brightness
+            elif device.category == "Lock":
+                device_data["entry_code"] = device.entry_code
+            else:
+                return "Unknown category"
+
             device_exists = any(d['prod_id'] == device['prod_id'] for d in device_list)
             if not device_exists:
-                device_list.append(device)
+                device_list.append(device_data)
             else:
-                print('device already added')
+                return 'Device already added'
 
             data = {
                 "username": user["username"],
