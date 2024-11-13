@@ -19,6 +19,12 @@ except:
 app = wx.App()
 
 search_list = []
+# implements accessibillity for the edit controls
+class Accessible(wx.Accessible):
+
+	def GetName(self, childID):
+		return((wx.ACC_OK, self.GetWindow().GetHint()))
+
 
 def on_destroy(evt):
     exit()
@@ -151,9 +157,11 @@ def create_login_page():
     # Input fields with placeholders
     username_input = wx.TextCtrl(panel, style=wx.TE_LEFT, value="")
     username_input.SetHint("Username")
+    username_input.SetAccessible(Accessible())
 
     password_input = wx.TextCtrl(panel, style=wx.TE_PASSWORD | wx.TE_LEFT, value="")
     password_input.SetHint("Password")
+    password_input.SetAccessible(Accessible())
 
     # Buttons
     create_user_btn = wx.Button(panel, label="Create New Account")
@@ -243,16 +251,18 @@ def create_user_creation_page():
     # Input fields with placeholders
     username_input = wx.TextCtrl(panel)
     username_input.SetHint("Your Username")
+    username_input.SetAccessible(Accessible())
 
     email_input = wx.TextCtrl(panel)
     email_input.SetHint("Your Email")
+    email_input.SetAccessible(Accessible())
 
     password_input = wx.TextCtrl(panel, style=wx.TE_PASSWORD)
     password_input.SetHint("Your Password")
-
+    password_input.SetAccessible(Accessible())
     confirm_password_input = wx.TextCtrl(panel, style=wx.TE_PASSWORD)
     confirm_password_input.SetHint("Confirm Your Password")
-
+    confirm_password_input.SetAccessible(Accessible())
     # Error text
     error_text = ErrorText(panel)
 
@@ -473,11 +483,11 @@ def setFocusOnFirstChild():
 			break
 	if focusableObj:
 		i.SetFocus()
-        
+		print(f"setting focus on {i.GetLabel()}")
 def destroy_everything():
     for child in main_dialog.GetChildren():
         child.Destroy()
-    wx.CallLater(500, setFocusOnFirstChild)
+    wx.CallLater(1000, setFocusOnFirstChild)
 
 create_login_page()
 main_dialog.Show()
