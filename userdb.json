@@ -51,6 +51,30 @@
                 "category": "Fridge",
                 "on": false,
                 "temperature": 4
+            },
+            {
+                "prod_id": 4,
+                "name": "Smart LED Strip Light",
+                "brand": "Govee",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            },
+            {
+                "prod_id": 9,
+                "name": "Sengled Smart LED",
+                "brand": "Sengled",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            },
+            {
+                "prod_id": 1,
+                "name": "Hue White and Color Ambiance",
+                "brand": "Philips",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
             }
         ]
     },
