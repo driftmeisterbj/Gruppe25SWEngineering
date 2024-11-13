@@ -413,11 +413,11 @@ class JsonDatabase():
         print(new_device['brand'],new_device['name'],'Added')
 
 
-    def get_device_object(self, username, device_name):
+    def get_device_object(self, username, device_name, device_brand):
         user = self.get_current_user(username)
 
         for device in user["devices"]:
-            if device.get("name") == device_name:
+            if device.name == device_name and device.brand == device_brand:
                 return device
             
         return False
