@@ -314,7 +314,7 @@ class JsonDatabase():
         user_index = self.find_user_index(username)
 
         if user_index == -1:
-            print("user_index not found")
+            return False
 
         else:
             data = self.read_json()
@@ -333,6 +333,7 @@ class JsonDatabase():
             data[user_index]["devices"] = new_list
 
             JsonReadWrite.write(self.filename, data)
+            return True
 
     # Oprette nytt device
     def create_new_device(name, brand, device_type):
@@ -362,7 +363,7 @@ class JsonDatabase():
             try:
                 device_list.remove(device)
             except:
-                print("Device could not be removed")
+                return "Device could not be found"
             
             data = {
                 "username": user["username"],
@@ -374,9 +375,10 @@ class JsonDatabase():
             user = data
             users[user_index] = user
             JsonReadWrite.write(self.filename, users)
+            return True
 
         else:
-            print("user_index not found")
+            return False
 
     # Endre på dataen til et device fra bruker sin device-liste
     def modify_device_information():
