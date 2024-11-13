@@ -55,16 +55,16 @@ class ErrorText():
         #https://stackoverflow.com/questions/1785227/change-the-colour-of-a-statictext-wxpython
         self.error_text.SetForegroundColour(colour_finder("red"))
 
-    def SetText(self, text,):
+    def SetText(self, text, y):
         self.text = text
         self.error_text.SetLabel(text)
         self.error_text.Wrap(300)
-        self.RepositionSelf(self.y)
+        self.RepositionSelf(y)
 
-    def NewError(self, text):
+    def NewError(self, text, y):
         self.HideSelf()
         self.ShowSelf()
-        self.SetText(text, self.y)
+        self.SetText(text, y)
 
         
 def colour_finder(colour_string):
@@ -215,7 +215,7 @@ def create_login_page():
             create_home_page(username)
         
         else:
-            error_text.NewError("Wrong username or password")
+            error_text.NewError("Wrong username or password", 300)
 
 
 
@@ -256,7 +256,7 @@ def create_user_creation_page():
     confirm_password_input.SetHint("Confirm Your Password")
 
     # Error text
-    error_text = ErrorText(panel)
+    error_text = ErrorText(panel, 400)
 
     # Arrange items using the form sizer
     form_sizer.Add(username_input, pos=(0, 0), span=(1, 2), flag=wx.EXPAND)
