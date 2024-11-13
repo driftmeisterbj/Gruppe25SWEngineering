@@ -1,5 +1,9 @@
 import json
 from abc import ABC,abstractmethod
+import os
+import sys
+path = os.path.join(os.path.dirname(__file__), "Devices")
+sys.path.append(path)
 from Devices import Fridge, Heater, Lock, Light, Device
 
 
