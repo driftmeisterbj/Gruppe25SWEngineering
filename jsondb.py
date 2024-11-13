@@ -334,7 +334,7 @@ class JsonDatabase():
 
         else:
             print("user_index not found")
-            return False
+            return []
 
     def remove_duplicate_devices_from_user(self, username):
         user_index = self.find_user_index(username)
