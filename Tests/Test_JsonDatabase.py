@@ -479,6 +479,89 @@ class TestJsonDatabase(unittest.TestCase):
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tests for delete_device_from_user()
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                    {
+                        "username": "User1",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": [{
+                            "prod_id": 123,
+                            "name": "Gyldig",
+                            "brand": "Enhet",
+                            "category": "Test"
+                        }]
+                    }, {
+                        "username": "User2",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }
+                ])
+    def test_delete_device_from_user_deleted(self, mock):
+        device = {
+                    "prod_id": 123,
+                    "name": "Gyldig",
+                    "brand": "Enhet",
+                    "category": "Test"
+                }
+        delete_device = self.database.delete_device_from_user("User1", device)
+        self.assertEqual(delete_device, True)
+
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                    {
+                        "username": "User1",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": [{
+                            "prod_id": 123,
+                            "name": "Gyldig",
+                            "brand": "Enhet",
+                            "category": "Test"
+                        }]
+                    }, {
+                        "username": "User2",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }
+                ])
+    def test_delete_device_from_user_user_not_found(self, mock):
+        device = {
+                    "prod_id": 123,
+                    "name": "Gyldig",
+                    "brand": "Enhet",
+                    "category": "Test"
+                }
+        delete_device = self.database.delete_device_from_user("NonUser", device)
+        self.assertEqual(delete_device, False)
+
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                    {
+                        "username": "User1",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": [{
+                            "prod_id": 123,
+                            "name": "Gyldig",
+                            "brand": "Enhet",
+                            "category": "Test"
+                        }]
+                    }, {
+                        "username": "User2",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }
+                ])
+    def test_delete_device_from_user_device_not_found(self, mock):
+        device = {
+                    "prod_id": 69,
+                    "name": "Ikke",
+                    "brand": "En",
+                    "category": "Enhet"
+                }
+        delete_device = self.database.delete_device_from_user("User1", device)
+        self.assertEqual(delete_device, "Device could not be found")
 
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
