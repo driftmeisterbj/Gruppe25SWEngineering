@@ -56,6 +56,8 @@ class ErrorText():
         self.error_text.SetForegroundColour(colour_finder("red"))
 
     def SetText(self, text, y):
+        self.HideSelf()
+        self.ShowSelf()
         self.text = text
         self.error_text.SetLabel(text)
         self.error_text.Wrap(300)
