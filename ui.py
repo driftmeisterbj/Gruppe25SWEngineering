@@ -1,8 +1,9 @@
 
 import ctypes
 import subprocess
-import tkinter as tk
+
 from jsondb import JsonDatabase, JsonReadWrite
+import os
 import sys
 sys.path.append('Devices/')
 from Nearby_devices import lights,fridges,heaters
@@ -25,8 +26,8 @@ def on_destroy(evt):
 main_dialog = wx.Dialog(None, title = "main", size = [500, 500])
 main_dialog.Center()
 main_dialog.Bind(wx.EVT_CLOSE, on_destroy)
-
-db = JsonDatabase("userdb")
+userDb = os.path.join(os.path.dirname(__file__), "userdb")
+db = JsonDatabase(userDb)
 
 class ErrorText():
     def __init__(self, parent):
