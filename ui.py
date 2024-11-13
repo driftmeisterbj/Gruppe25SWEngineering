@@ -62,6 +62,7 @@ class ErrorText():
 
     def NewError(self, text):
         self.HideSelf()
+        self.ShowSelf()
         self.SetText(text, 300)
 
         
