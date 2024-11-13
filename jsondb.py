@@ -270,8 +270,10 @@ class JsonDatabase():
     def add_device_to_user(self, username, device):
         user_index = self.find_user_index(username)
 
+        """
         if not self.is_device_valid(device):
             return 'Device invalid'
+            """
 
         if user_index != -1:
             users = self.read_json()
@@ -298,7 +300,7 @@ class JsonDatabase():
             else:
                 return "Unknown category"
 
-            device_exists = any(d['prod_id'] == device['prod_id'] for d in device_list)
+            device_exists = any(d['prod_id'] == device_data['prod_id'] for d in device_list)
             if not device_exists:
                 device_list.append(device_data)
             else:
@@ -362,16 +364,16 @@ class JsonDatabase():
     # Oprette nytt device
     def create_new_device(self, prod_id, name, brand, category):
         if category == "Fridge":
-            return Fridge(prod_id, name, brand)
+            return Fridge.Fridge(prod_id, name, brand)
         
         if category == "Lock":
-            return Lock(prod_id, name, brand)
+            return Lock.Lock(prod_id, name, brand)
         
         if category == "Heater":
-            return Heater(prod_id, name, brand)
+            return Heater.Heater(prod_id, name, brand)
         
         if category == "Light":
-            return Light(prod_id, name, brand)
+            return Light.Light(prod_id, name, brand)
         
         return False
 

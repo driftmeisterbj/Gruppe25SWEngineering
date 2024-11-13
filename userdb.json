@@ -27,6 +27,30 @@
                 "name": "LIFX Color A19",
                 "brand": "LIFX",
                 "category": "Light"
+            },
+            {
+                "prod_id": 6,
+                "name": "Cync Smart LED",
+                "brand": "GE Lighting",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            },
+            {
+                "prod_id": 11,
+                "name": "Family Hub RF28R7551SR",
+                "brand": "Samsung",
+                "category": "Fridge",
+                "on": false,
+                "temperature": 4
+            },
+            {
+                "prod_id": 20,
+                "name": "KMHC319ESS",
+                "brand": "KitchenAid",
+                "category": "Fridge",
+                "on": false,
+                "temperature": 4
             }
         ]
     },

@@ -423,6 +423,7 @@ def create_add_new_device_page(username):
         selected_index = listbox.GetSelection()
         if selected_index != wx.NOT_FOUND:
             selected_device = all_devices[selected_index]
+            """
             #Converts object -> dictionary
             device = {
                 'prod_id': selected_device.prod_id,
@@ -430,6 +431,9 @@ def create_add_new_device_page(username):
                 'brand': selected_device.brand,
                 'category': selected_device.category
             }
+            """
+            device = db.create_new_device(selected_device.prod_id, selected_device.name,
+                                          selected_device.brand, selected_device.category)
             db.add_device_to_user(username,device)
             create_home_page(username)
 
