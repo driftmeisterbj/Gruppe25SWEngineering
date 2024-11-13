@@ -451,9 +451,19 @@ def create_device_page():
 
 
 #https://discuss.wxpython.org/t/getchildren/27335
+def setFocusOnFirstChild():
+	focusableObj = False
+	children = main_dialog.GetChildren()
+	for i in children:
+		if isinstance(i, (wx.Button, wx.CheckBox, wx.TextCtrl,)):
+			focusableObj = True
+			break
+	if focusableObj:
+		i.SetFocus()
 def destroy_everything():
     for child in main_dialog.GetChildren():
         child.Destroy()
+    wx.CallLater(500, setFocusOnFirstChild)
 
 create_login_page()
 main_dialog.Show()
