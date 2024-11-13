@@ -473,6 +473,7 @@ def setFocusOnFirstChild():
 			break
 	if focusableObj:
 		i.SetFocus()
+        
 def destroy_everything():
     for child in main_dialog.GetChildren():
         child.Destroy()
