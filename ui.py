@@ -430,6 +430,9 @@ def create_add_new_device_page(username):
                 'brand': selected_device.brand,
                 'category': selected_device.category
             }
+            #device = db.create_new_device(selected_device.prod_id, selected_device.name, selected_device.brand, selected_device.category)
+
+
             db.add_device_to_user(username,device)
             create_home_page(username)
 
