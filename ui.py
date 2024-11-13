@@ -337,10 +337,6 @@ def create_user_creation_page():
 
 
 
-
-
-
-
 def create_home_page(username):
     destroy_everything()
 
@@ -354,6 +350,10 @@ def create_home_page(username):
     def on_add_device(evt):
         create_add_new_device_page(username)
 
+    def on_configure_device(evt):
+        device_name = ""
+        device = db.get_device(username, device_name)
+
     add_device_btn = wx.Button(main_dialog,label="Add new device",pos=[360,150])
     add_device_btn.Bind(wx.EVT_BUTTON, on_add_device)
 
@@ -362,6 +362,8 @@ def create_home_page(username):
     display_name(username)
 
     #Todo: Button for adjusting a specific devices settings
+    configure_device_btn = wx.Button(main_dialog,label="Configure Device",pos=[360,170])
+    configure_device_btn.Bind(wx.EVT_BUTTON, on_configure_device)
 
     #Creates list of already added devices
     def make_listbox_device_list(list):
@@ -437,6 +439,11 @@ def create_add_new_device_page(username):
     display_app_name()
 
     main_dialog.Show()
+
+def create_device_page():
+    destroy_everything()
+
+
 
 #https://discuss.wxpython.org/t/getchildren/27335
 def destroy_everything():

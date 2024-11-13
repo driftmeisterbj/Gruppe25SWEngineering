@@ -21,6 +21,12 @@
                 "name": "Nanoleaf Shapes",
                 "brand": "Nanoleaf",
                 "category": "Light"
+            },
+            {
+                "prod_id": 2,
+                "name": "LIFX Color A19",
+                "brand": "LIFX",
+                "category": "Light"
             }
         ]
     },
