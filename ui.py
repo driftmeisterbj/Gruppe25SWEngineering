@@ -42,14 +42,27 @@ class ErrorText():
     def HideSelf(self):
         self.error_text.Hide()
 
-    def SetText(self, text):
+    def RepositionSelf(self, y):
+        #https://stackoverflow.com/questions/14269880/the-right-way-to-find-the-size-of-text-in-wxpython
+        width, height = self.error_text.GetTextExtent(self.text)
+        #x = ( (bredde på vinduet) - (bredde på teksten) ) // 2
+        if(width > 300):
+            width = 300
+        x = (500 - width) // 2
+
+        self.error_text.SetPosition((x, y))
+        #https://stackoverflow.com/questions/1785227/change-the-colour-of-a-statictext-wxpython
+        self.error_text.SetForegroundColour(colour_finder("red"))
+
+    def SetText(self, text, y):
+        self.text = text
         self.error_text.SetLabel(text)
         self.error_text.Wrap(300)
-        self.ShowSelf()
+        self.RepositionSelf(y)
 
     def NewError(self, text):
         self.HideSelf()
-        self.SetText(text)
+        self.SetText(text, 300)
 
         
 def colour_finder(colour_string):
