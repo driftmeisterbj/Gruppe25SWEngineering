@@ -1,5 +1,6 @@
 import json
 from abc import ABC,abstractmethod
+from Devices import Fridge, Heater, Lock, Light, Device
 
 
 class ReadWrite(ABC):
@@ -336,8 +337,20 @@ class JsonDatabase():
             return True
 
     # Oprette nytt device
-    def create_new_device(name, brand, device_type):
-        print()
+    def create_new_device(self, prod_id, name, brand, category):
+        if category == "Fridge":
+            return Fridge(prod_id, name, brand)
+        
+        if category == "Lock":
+            return Lock(prod_id, name, brand)
+        
+        if category == "Heater":
+            return Heater(prod_id, name, brand)
+        
+        if category == "Light":
+            return Light(prod_id, name, brand)
+        
+        return False
 
     # Slette et device fra en bruker
     def delete_device_from_user(self, username, device):
