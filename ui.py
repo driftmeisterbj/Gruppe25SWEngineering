@@ -196,7 +196,7 @@ def create_login_page():
     def try_logging_in(username, password):
         users = db.read_json()
 
-        if is_login_valid(username, password) == True:
+        if is_login_valid(username, password):
             create_home_page(username)
         
         else:
