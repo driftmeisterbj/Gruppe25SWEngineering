@@ -315,6 +315,7 @@ class JsonDatabase():
 
         if user_index == -1:
             print("user_index not found")
+            return False
 
         else:
             data = self.read_json()
@@ -333,6 +334,7 @@ class JsonDatabase():
             data[user_index]["devices"] = new_list
 
             JsonReadWrite.write(self.filename, data)
+            return True
 
     # Oprette nytt device
     def create_new_device(name, brand, device_type):

@@ -425,6 +425,50 @@ class TestJsonDatabase(unittest.TestCase):
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tests for remove_duplicate_devices_from_user()
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                    {
+                        "username": "User1",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": [{
+                            "prod_id": 123,
+                            "name": "Gyldig",
+                            "brand": "Enhet",
+                            "category": "Test"
+                        }]
+                    }, {
+                        "username": "User2",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }
+                ])
+    def test_remove_duplicate_devices_from_user_removed(self, mock):
+        remove_duplicates = self.database.remove_duplicate_devices_from_user("User1")
+        self.assertEqual(remove_duplicates, True)
+
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                    {
+                        "username": "User1",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": [{
+                            "prod_id": 123,
+                            "name": "Gyldig",
+                            "brand": "Enhet",
+                            "category": "Test"
+                        }]
+                    }, {
+                        "username": "User2",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }
+                ])
+    def test_remove_duplicate_devices_from_user_not_removed(self, mock):
+        remove_duplicates = self.database.remove_duplicate_devices_from_user("NonUser")
+        self.assertEqual(remove_duplicates, False)
+
 
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
