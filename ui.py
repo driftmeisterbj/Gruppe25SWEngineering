@@ -377,10 +377,9 @@ def create_home_page(username):
     #The function is there to make sure the event isnt executed immideatly, instead its being done on button click
     def on_add_device(evt):
         create_add_new_device_page(username)
-#todo
+
+    #Optimize:------------------------------
     def on_configure_device(evt):
-        #device_name = ""
-        #device = db.get_device(username, device_name)
         index = listbox.GetSelection()
         device_list = db.find_device_list_user(username)
         device = device_list[index]
@@ -393,7 +392,6 @@ def create_home_page(username):
     display_app_name()
     display_name(username)
 
-    #Todo: Button for adjusting a specific devices settings
     configure_device_btn = wx.Button(main_dialog,label="Configure Device",pos=[360,170])
     configure_device_btn.Bind(wx.EVT_BUTTON, on_configure_device)
 
@@ -414,6 +412,7 @@ def create_home_page(username):
     listbox.Center()
 
 
+#Optimize:------------------------------
 def create_configure_device_page(username, device):
     destroy_everything()
 
@@ -427,7 +426,9 @@ def create_configure_device_page(username, device):
     device_brand = device.get("brand", "Unknown")
     device_category = device.get("category", "Unknown")
     device_prod_id = device.get("prod_id", "Unknown")
-    device_brightness = device.get("brightness","unknown")
+    device_temperature = device.get("temperature", None)
+    device_brightness = device.get("brightness", None)
+
 
     # Create labels for each device detail
     name = wx.StaticText(main_dialog, label=f"Name: {device_name}", pos=[100, 80], style=wx.ALIGN_LEFT)
@@ -438,8 +439,12 @@ def create_configure_device_page(username, device):
     category.SetForegroundColour(wx.Colour(255, 255, 255))    
     prodid = wx.StaticText(main_dialog, label=f"Product ID: {device_prod_id}", pos=[100, 170], style=wx.ALIGN_LEFT)
     prodid.SetForegroundColour(wx.Colour(255, 255, 255))
-    brightness = wx.StaticText(main_dialog, label=f"Brightness: {device_brightness}", pos=[100, 200], style=wx.ALIGN_LEFT)
-    brightness.SetForegroundColour(wx.Colour(255, 255, 255))
+    if device_brightness != None:
+        brightness = wx.StaticText(main_dialog, label=f"Brightness: {device_brightness}", pos=[100, 200], style=wx.ALIGN_LEFT)
+        brightness.SetForegroundColour(wx.Colour(255, 255, 255))
+    if device_temperature != None:
+        temperature = wx.StaticText(main_dialog, label=f"Temperature: {device_temperature}", pos=[100, 200], style=wx.ALIGN_LEFT)
+        temperature.SetForegroundColour(wx.Colour(255, 255, 255))
 
 
     # Back button to return to the home page

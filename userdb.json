@@ -11,6 +11,14 @@
                 "category": "Light",
                 "on": false,
                 "brightness": 5
+            },
+            {
+                "prod_id": 21,
+                "name": "AM09 Fan Heater",
+                "brand": "Dyson",
+                "category": "Heater",
+                "on": false,
+                "temperature": 15
             }
         ]
     },
