@@ -19,10 +19,10 @@ class Lock(Device):
     
     def unlock(self, entered_code):
         if entered_code == self.entry_code:
-            self.status = "unlocked"
-            print(f"{self.brand} {self.name} is now locked is now unlocked")
+            self.status = "Unlocked"
+            print(f"{self.brand} {self.name} is now unlocked")
         else:
             print("Incorrect entry code. The lock remains locked")
-    
-    def status(self):
+
+    def get_status(self):
         return f"{self.brand}, {self.name} is currently {self.status}."
