@@ -377,10 +377,14 @@ def create_home_page(username):
     #The function is there to make sure the event isnt executed immideatly, instead its being done on button click
     def on_add_device(evt):
         create_add_new_device_page(username)
-
+#todo
     def on_configure_device(evt):
-        device_name = ""
-        device = db.get_device(username, device_name)
+        #device_name = ""
+        #device = db.get_device(username, device_name)
+        index = listbox.GetSelection()
+        device_list = db.find_device_list_user(username)
+        device = device_list[index]
+        create_configure_device_page(username, device)
 
     add_device_btn = wx.Button(main_dialog,label="Add new device",pos=[360,150])
     add_device_btn.Bind(wx.EVT_BUTTON, on_add_device)
@@ -410,6 +414,42 @@ def create_home_page(username):
     listbox.Center()
 
 
+def create_configure_device_page(username, device):
+    destroy_everything()
+
+    # Title for the configure page
+    title = wx.StaticText(main_dialog, label="Device Configuration", pos=[150, 50], style=wx.ALIGN_CENTER)
+    title.SetFont(wx.Font(12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD))
+    title.SetForegroundColour(wx.Colour(255, 255, 255))
+
+    # Display device details
+    device_name = device.get("name", "Unknown")
+    device_brand = device.get("brand", "Unknown")
+    device_category = device.get("category", "Unknown")
+    device_prod_id = device.get("prod_id", "Unknown")
+    device_brightness = device.get("brightness","unknown")
+
+    # Create labels for each device detail
+    name = wx.StaticText(main_dialog, label=f"Name: {device_name}", pos=[100, 80], style=wx.ALIGN_LEFT)
+    name.SetForegroundColour(wx.Colour(255, 255, 255))    
+    brand = wx.StaticText(main_dialog, label=f"Brand: {device_brand}", pos=[100, 110], style=wx.ALIGN_LEFT)
+    brand.SetForegroundColour(wx.Colour(255, 255, 255))    
+    category = wx.StaticText(main_dialog, label=f"Category: {device_category}", pos=[100, 140], style=wx.ALIGN_LEFT)
+    category.SetForegroundColour(wx.Colour(255, 255, 255))    
+    prodid = wx.StaticText(main_dialog, label=f"Product ID: {device_prod_id}", pos=[100, 170], style=wx.ALIGN_LEFT)
+    prodid.SetForegroundColour(wx.Colour(255, 255, 255))
+    brightness = wx.StaticText(main_dialog, label=f"Brightness: {device_brightness}", pos=[100, 200], style=wx.ALIGN_LEFT)
+    brightness.SetForegroundColour(wx.Colour(255, 255, 255))
+
+
+    # Back button to return to the home page
+    back_btn = wx.Button(main_dialog, label="< Back", pos=[30, 400])
+    back_btn.Bind(wx.EVT_BUTTON, lambda evt: create_home_page(username))
+
+    display_app_name()
+    log_out_btn()
+
+    
 
 def create_add_new_device_page(username):
     destroy_everything()
