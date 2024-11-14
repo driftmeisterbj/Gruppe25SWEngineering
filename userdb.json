@@ -9,11 +9,77 @@
                 "name": "Hue 2.0",
                 "brand": "phillips",
                 "category": "light"
+            },
+            {
+                "prod_id": 14,
+                "name": "B36CT80SNS",
+                "brand": "Bosch",
+                "category": "Fridge"
+            },
+            {
+                "prod_id": 5,
+                "name": "Nanoleaf Shapes",
+                "brand": "Nanoleaf",
+                "category": "Light"
+            },
+            {
+                "prod_id": 2,
+                "name": "LIFX Color A19",
+                "brand": "LIFX",
+                "category": "Light"
+            },
+            {
+                "prod_id": 6,
+                "name": "Cync Smart LED",
+                "brand": "GE Lighting",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            },
+            {
+                "prod_id": 11,
+                "name": "Family Hub RF28R7551SR",
+                "brand": "Samsung",
+                "category": "Fridge",
+                "on": false,
+                "temperature": 4
+            },
+            {
+                "prod_id": 20,
+                "name": "KMHC319ESS",
+                "brand": "KitchenAid",
+                "category": "Fridge",
+                "on": false,
+                "temperature": 4
+            },
+            {
+                "prod_id": 4,
+                "name": "Smart LED Strip Light",
+                "brand": "Govee",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            },
+            {
+                "prod_id": 9,
+                "name": "Sengled Smart LED",
+                "brand": "Sengled",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            },
+            {
+                "prod_id": 1,
+                "name": "Hue White and Color Ambiance",
+                "brand": "Philips",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
             }
         ]
     },
     {
-        "username": "t",
+        "username": "Fredrik",
         "password": "",
         "email": "",
         "devices": [
@@ -21,6 +87,24 @@
                 "prod_id": 2,
                 "name": "LIFX Color A19",
                 "brand": "LIFX",
+                "category": "Light"
+            },
+            {
+                "prod_id": 5,
+                "name": "Nanoleaf Shapes",
+                "brand": "Nanoleaf",
+                "category": "Light"
+            },
+            {
+                "prod_id": 4,
+                "name": "Smart LED Strip Light",
+                "brand": "Govee",
+                "category": "Light"
+            },
+            {
+                "prod_id": 1,
+                "name": "Hue White and Color Ambiance",
+                "brand": "Philips",
                 "category": "Light"
             }
         ]
@@ -79,6 +163,49 @@
         "username": "geir69",
         "password": "Passord1234",
         "email": "mail.mail@.com",
+        "devices": []
+    },
+    {
+        "username": "abc",
+        "password": "Abc123",
+        "email": "abc@gmail.com",
+        "devices": []
+    },
+    {
+        "username": "abc123",
+        "password": "Abc123",
+        "email": "abc@abc.com",
+        "devices": []
+    },
+    {
+        "username": "abc1234",
+        "password": "Abc123",
+        "email": "abc123@.",
+        "devices": []
+    },
+    {
+        "username": "aaa",
+        "password": "Abc123",
+        "email": "@.",
+        "devices": []
+    },
+    {
+        "username": "ASdaad",
+        "password": "Tyuio123",
+        "email": "sksk@skksk.v",
+        "devices": [
+            {
+                "prod_id": 2,
+                "name": "LIFX Color A19",
+                "brand": "LIFX",
+                "category": "Light"
+            }
+        ]
+    },
+    {
+        "username": "Awdw",
+        "password": "Qwerty123",
+        "email": "aa@aa.b",
         "devices": []
     }
 ]

@@ -1,5 +1,10 @@
 import json
 from abc import ABC,abstractmethod
+import os
+import sys
+path = os.path.join(os.path.dirname(__file__), "Devices")
+sys.path.append(path)
+from Devices import Fridge, Heater, Lock, Light, Device
 
 
 class ReadWrite(ABC):
@@ -44,9 +49,9 @@ class JsonReadWrite(ReadWrite):
 
 class JsonDatabase():
     def __init__(self, filename) -> None:
-        self.filename = filename
+        self.filename = filename + ".json"
         self.data = self.read_json()
-        JsonReadWrite.write(self.filename + ".json", self.data)
+        JsonReadWrite.write(self.filename, self.data)
 
     # Skriver til JSON-filen med tomt innhold, altså full reset.
     # KUN for testing, kan fjernes når vi har ferdigstilt struktur i databasen.
@@ -65,7 +70,7 @@ class JsonDatabase():
     # Dersom en feil skjer ved lesing, returneres en tom liste
     def read_json(self):
         try:
-            with open(self.filename+".json", "r") as file:
+            with open(self.filename, "r") as file:
                 return json.load(file)
 
         except:
@@ -186,9 +191,13 @@ class JsonDatabase():
             charList = []
             for char in range(email.index("@"), len(email)):
                 charList.append(email[char])
- 
-            punctuation_last_index = 0
-            counter = 0
+
+            if charList.count(".") > 1:
+                return 'ERROR - There can only be a single instance of the character " . " after the " @ "'
+
+            else:
+                punctuation_last_index = 0
+                counter = 0
 
             for char in email:
                 if char == ".":
@@ -205,31 +214,32 @@ class JsonDatabase():
     # Funksjon for å legge til en ny bruker i databasen.
     # Hvis alle sjekkene går gjennom skrives denne brukeren inn til databasen.
     def add_user_to_json(self, username, password, email):
-        if self.is_username_valid(username) == True:
-            if self.is_username_taken(username) == False:
-                if self.is_password_valid(password) == True:
-                    if self.is_email_valid(email) == True:
-                        if self.is_email_taken(email) == False:
-                                data = self.read_json()
-                                new_data = {
-                                    "username": username,
-                                    "password": password,
-                                    "email": email,
-                                    "devices": []
-                                }
-                                data.append(new_data)
-                                JsonReadWrite.write(self.filename, data)
-                                return True
-                        else:
-                            return "An account with this email adress already exists"
-                    else:
-                        return "Email is invalid. Check error messages in console."
-                else:
-                    return "Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number"
-            else:
-                return "Username is already taken"
-        else:
+        if self.is_username_valid(username) != True:
             return "Username is invalid. Check error messages in console."
+        
+        if self.is_username_taken(username) != False:
+            return "Username is already taken"
+
+        if self.is_password_valid(password) != True:
+            return "Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number"
+        
+        if self.is_email_valid(email) != True:
+            return "Email is invalid. Check error messages in console."
+                 
+        if self.is_email_taken(email) != False:
+            return "An account with this email adress already exists"
+        
+        data = self.read_json()
+        new_data = {
+            "username": username,
+            "password": password,
+            "email": email,
+            "devices": []
+        }
+        data.append(new_data)
+        JsonReadWrite.write(self.filename, data)
+
+        return True
 
     # Funksjon for validering av en enhet.
     # Sjekker at alle nøklene stemmer med hva en enhet skal inneholde.
@@ -260,8 +270,10 @@ class JsonDatabase():
     def add_device_to_user(self, username, device):
         user_index = self.find_user_index(username)
 
+        """
         if not self.is_device_valid(device):
             return 'Device invalid'
+            """
 
         if user_index != -1:
             users = self.read_json()
@@ -269,11 +281,30 @@ class JsonDatabase():
             device_list = user["devices"]
             # device_list.append(device)
 
-            device_exists = any(d['prod_id'] == device['prod_id'] for d in device_list)
-            if not device_exists:
-                device_list.append(device)
+            device_data = {
+                "prod_id": device.prod_id,
+                "name": device.name,
+                "brand": device.brand,
+                "category": device.category,
+                "on": device.on
+            }
+
+            if device.category == "Fridge":
+                device_data["temperature"] = device.temperature
+            elif device.category == "Heater":
+                device_data["temperature"] = device.temperature
+            elif device.category == "Light":
+                device_data["brightness"] = device.brightness
+            elif device.category == "Lock":
+                device_data["entry_code"] = device.entry_code
             else:
-                print('device already added')
+                return "Unknown category"
+
+            device_exists = any(d['prod_id'] == device_data['prod_id'] for d in device_list)
+            if not device_exists:
+                device_list.append(device_data)
+            else:
+                return 'Device already added'
 
             data = {
                 "username": user["username"],
@@ -284,10 +315,12 @@ class JsonDatabase():
 
             user = data
             users[user_index] = user
-            JsonReadWrite.write(self.filename +".json", users)
-
+            
+            JsonReadWrite.write(self.filename, users)
+            return True
         else:
             print("user_index not found")
+            return False
 
 
     def find_device_list_user(self, username):
@@ -301,12 +334,13 @@ class JsonDatabase():
 
         else:
             print("user_index not found")
+            return []
 
     def remove_duplicate_devices_from_user(self, username):
         user_index = self.find_user_index(username)
 
         if user_index == -1:
-            print("user_index not found")
+            return False
 
         else:
             data = self.read_json()
@@ -324,15 +358,65 @@ class JsonDatabase():
 
             data[user_index]["devices"] = new_list
 
-            JsonReadWrite.write(self.filename + ".json", data)
+            JsonReadWrite.write(self.filename, data)
+            return True
 
     # Oprette nytt device
-    def create_new_device(name, brand, device_type):
-        print()
+    def create_new_device(self, prod_id, name, brand, category):
+        if category == "Fridge":
+            return Fridge.Fridge(prod_id, name, brand)
+        
+        if category == "Lock":
+            return Lock.Lock(prod_id, name, brand)
+        
+        if category == "Heater":
+            return Heater.Heater(prod_id, name, brand)
+        
+        if category == "Light":
+            return Light.Light(prod_id, name, brand)
+        
+        return False
 
     # Slette et device fra en bruker
-    def delete_device_from_user():
-        print()
+    def delete_device_from_user(self, username, device):
+        user_index = self.find_user_index(username)
+
+        if user_index != -1:
+            users = self.read_json()
+            user = users[user_index]
+            device_list = user["devices"]
+            
+            """
+            device_index = -1
+            counter = 0
+            for device_in_list in device_list:
+                if device_in_list == device:
+                    device_index = counter
+                counter += 1
+
+            if device_index != -1:
+                device_list.pop(device_index)
+            """
+
+            try:
+                device_list.remove(device)
+            except:
+                return "Device could not be found"
+            
+            data = {
+                "username": user["username"],
+                "password": user["password"],
+                "email": user["email"],
+                "devices": device_list
+            }
+
+            user = data
+            users[user_index] = user
+            JsonReadWrite.write(self.filename, users)
+            return True
+
+        else:
+            return False
 
     # Endre på dataen til et device fra bruker sin device-liste
     def modify_device_information():
@@ -367,6 +451,14 @@ class JsonDatabase():
         print(new_device['brand'],new_device['name'],'Added')
 
 
+    def get_device_object(self, username, device_name, device_brand):
+        user = self.get_current_user(username)
+
+        for device in user["devices"]:
+            if device.name == device_name and device.brand == device_brand:
+                return device
+            
+        return False
 
     ################
     #test get_current_user
