@@ -13,3 +13,4 @@ class Device:
     def turn_on_device(self):
         self.on = True
         print(f"{self.brand} {self.name} has been turned on.")
+
