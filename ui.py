@@ -382,7 +382,9 @@ def create_home_page(username):
     def on_configure_device(evt):
         index = listbox.GetSelection()
         device_list = db.find_device_list_user(username)
-        device = device_list[index]
+        selected_device = device_list[index]
+        #Gjør om til objekt
+        device = db.recreate_object(selected_device)
         create_configure_device_page(username, device)
 
     add_device_btn = wx.Button(main_dialog,label="Add new device",pos=[360,150])
@@ -412,9 +414,9 @@ def create_home_page(username):
     listbox.Center()
 
 
-#Optimize:------------------------------
 def create_configure_device_page(username, device):
     destroy_everything()
+
 
     # Title for the configure page
     title = wx.StaticText(main_dialog, label="Device Configuration", pos=[150, 50], style=wx.ALIGN_CENTER)
@@ -422,51 +424,76 @@ def create_configure_device_page(username, device):
     title.SetForegroundColour(wx.Colour(255, 255, 255))
 
     # Display device details
-    device_name = device.get("name", "Unknown")
-    device_brand = device.get("brand", "Unknown")
-    device_category = device.get("category", "Unknown")
-    device_prod_id = device.get("prod_id", "Unknown")
+    device_name = getattr(device,"name", "Unknown")
+    device_brand = getattr(device,"brand", "Unknown")
+    device_category = getattr(device,"category", "Unknown")
+    device_prod_id = getattr(device,"prod_id", "Unknown")
+    device_on = getattr(device,"on","Unknown")
     #Fridge, Heater
-    device_temperature = device.get("temperature", None)
+    device_temperature = getattr(device,"temperature", None)
     #Light
-    device_brightness = device.get("brightness", None)
+    device_brightness = getattr(device,"brightness", None)
     #Lock, Camera
-    device_status = device.get("status", None)
+    device_status = getattr(device,"status", None)
     #Lock
-    device_entry_code = device.get("entry_code", None)
+    device_entry_code = getattr(device,"entry_code", None)
     #Camera
-    device_resolution = device.get("resolution", None)
+    device_resolution = getattr(device,"resolution", None)
     #Camera
-    device_motion_detection = device.get("motion_detection", None)
+    device_motion_detection = getattr(device,"motion_detection", None)
 
     # Create labels for each device detail
     name = wx.StaticText(main_dialog, label=f"Name: {device_name}", pos=[100, 80], style=wx.ALIGN_LEFT)
     name.SetForegroundColour(wx.Colour(255, 255, 255))    
+    
     brand = wx.StaticText(main_dialog, label=f"Brand: {device_brand}", pos=[100, 110], style=wx.ALIGN_LEFT)
-    brand.SetForegroundColour(wx.Colour(255, 255, 255))    
+    brand.SetForegroundColour(wx.Colour(255, 255, 255))  
+    
     category = wx.StaticText(main_dialog, label=f"Category: {device_category}", pos=[100, 140], style=wx.ALIGN_LEFT)
     category.SetForegroundColour(wx.Colour(255, 255, 255))    
+
     prodid = wx.StaticText(main_dialog, label=f"Product ID: {device_prod_id}", pos=[100, 170], style=wx.ALIGN_LEFT)
     prodid.SetForegroundColour(wx.Colour(255, 255, 255))
+    
+    #Istedenfor å printe True/False
+    on_status = 'On' if device_on else 'Off'
+    on = wx.StaticText(main_dialog, label=f"Power: {on_status}", pos=[100, 200], style=wx.ALIGN_LEFT)
+    on.SetForegroundColour(wx.Colour(255, 255, 255))
+    toggle_power = 'Turn off' if on_status == 'On' else 'Turn on'
+    def on_toggle_power(evt):
+        if device.on:
+            device.turn_off_device()
+        else:
+            device.turn_on_device()
+
+        create_configure_device_page(username, device)
+
+
+
+    power_btn = wx.Button(main_dialog, label=f"{toggle_power}", pos=[180, 195])
+    power_btn.Bind(wx.EVT_BUTTON, on_toggle_power)
+
+
+
     if device_brightness != None:
-        brightness = wx.StaticText(main_dialog, label=f"Brightness: {device_brightness}", pos=[100, 200], style=wx.ALIGN_LEFT)
+        brightness = wx.StaticText(main_dialog, label=f"Brightness: {device_brightness}", pos=[100, 230], style=wx.ALIGN_LEFT)
         brightness.SetForegroundColour(wx.Colour(255, 255, 255))
     if device_temperature != None:
-        temperature = wx.StaticText(main_dialog, label=f"Temperature: {device_temperature}", pos=[100, 200], style=wx.ALIGN_LEFT)
+        temperature = wx.StaticText(main_dialog, label=f"Temperature: {device_temperature}", pos=[100, 230], style=wx.ALIGN_LEFT)
         temperature.SetForegroundColour(wx.Colour(255, 255, 255))
     if device_status != None:
-        status = wx.StaticText(main_dialog, label=f"Status: {device_status}", pos=[100, 200], style=wx.ALIGN_LEFT)
+        status = wx.StaticText(main_dialog, label=f"Status: {device_status}", pos=[100, 230], style=wx.ALIGN_LEFT)
         status.SetForegroundColour(wx.Colour(255, 255, 255))
     if device_entry_code != None:
-        entry_code = wx.StaticText(main_dialog, label=f"Entry code: {device_entry_code}", pos=[100, 230], style=wx.ALIGN_LEFT)
+        entry_code = wx.StaticText(main_dialog, label=f"Entry code: {device_entry_code}", pos=[100, 260], style=wx.ALIGN_LEFT)
         entry_code.SetForegroundColour(wx.Colour(255, 255, 255))
     if device_resolution != None:
-        resolution = wx.StaticText(main_dialog, label=f"Resolution: {device_resolution}", pos=[100, 230], style=wx.ALIGN_LEFT)
+        resolution = wx.StaticText(main_dialog, label=f"Resolution: {device_resolution}", pos=[100, 260], style=wx.ALIGN_LEFT)
         resolution.SetForegroundColour(wx.Colour(255, 255, 255))
     if device_motion_detection != None:
         #Istedenfor å printe True/False
         motion_detection_status = 'On' if device_motion_detection else 'Off'
-        motion_detection = wx.StaticText(main_dialog, label=f"Motion detection: {motion_detection_status}", pos=[100, 230], style=wx.ALIGN_LEFT)
+        motion_detection = wx.StaticText(main_dialog, label=f"Motion detection: {motion_detection_status}", pos=[100, 290], style=wx.ALIGN_LEFT)
         motion_detection.SetForegroundColour(wx.Colour(255, 255, 255))
 
 

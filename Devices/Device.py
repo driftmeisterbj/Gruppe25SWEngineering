@@ -8,8 +8,7 @@ class Device:
 
     def turn_off_device(self):
         self.on = False
-        print(f"{self.brand} {self.name} has been turned off.")
 
     def turn_on_device(self):
         self.on = True
-        print(f"{self.brand} {self.name} has been turned on.")
+        return self.on
