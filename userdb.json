@@ -91,6 +91,14 @@
                 "category": "Fridge",
                 "on": false,
                 "temperature": 4
+            },
+            {
+                "prod_id": 8,
+                "name": "Echo Glow",
+                "brand": "Amazon",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
             }
         ]
     },

@@ -413,7 +413,7 @@ def create_add_new_device_page(username):
 
         for current_device in all_devices:
             for device_user in user_devices:
-                if device_user["prod_id"] == all_devices["prod_id"]:
+                if device_user["prod_id"] == current_device.prod_id:
                     index_list.append(all_devices.index(current_device))
 
         for index in index_list:
