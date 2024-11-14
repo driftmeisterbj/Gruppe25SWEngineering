@@ -4,7 +4,7 @@ import os
 import sys
 path = os.path.join(os.path.dirname(__file__), "Devices")
 sys.path.append(path)
-from Devices import Fridge, Heater, Lock, Light, Device
+from Devices import Fridge, Heater, Lock, Light, Camera, Device
 
 
 class ReadWrite(ABC):
@@ -296,7 +296,14 @@ class JsonDatabase():
             elif device.category == "Light":
                 device_data["brightness"] = device.brightness
             elif device.category == "Lock":
+                device_data["status"] = device.status
                 device_data["entry_code"] = device.entry_code
+            elif device.category == "Camera":
+                device_data["resolution"] = device.resolution
+                device_data["status"] = device.status
+                device_data["motion_detection"] = device.motion_detection
+
+
             else:
                 return "Unknown category"
 
@@ -368,6 +375,9 @@ class JsonDatabase():
         
         if category == "Lock":
             return Lock.Lock(prod_id, name, brand)
+
+        if category == "Camera":
+            return Camera.Camera(prod_id, name, brand)
         
         if category == "Heater":
             return Heater.Heater(prod_id, name, brand)

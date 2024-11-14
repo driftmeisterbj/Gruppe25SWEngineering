@@ -19,6 +19,25 @@
                 "category": "Heater",
                 "on": false,
                 "temperature": 15
+            },
+            {
+                "prod_id": 48,
+                "name": "Ring Spotlight Cam",
+                "brand": "Ring",
+                "category": "Camera",
+                "on": false,
+                "resolution": "1080p",
+                "status": "Inactive",
+                "motion_detection": false
+            },
+            {
+                "prod_id": 34,
+                "name": "Yale Assure Lock SL",
+                "brand": "Yale",
+                "category": "Lock",
+                "on": false,
+                "status": "Unlocked",
+                "entry_code": "0727"
             }
         ]
     },

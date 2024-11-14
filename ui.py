@@ -6,7 +6,7 @@ from jsondb import JsonDatabase, JsonReadWrite
 import os
 import sys
 sys.path.append('Devices/')
-from Nearby_devices import lights,fridges,heaters
+from Nearby_devices import lights,fridges,heaters,locks,cameras
 
 try:
     import wx
@@ -426,9 +426,18 @@ def create_configure_device_page(username, device):
     device_brand = device.get("brand", "Unknown")
     device_category = device.get("category", "Unknown")
     device_prod_id = device.get("prod_id", "Unknown")
+    #Fridge, Heater
     device_temperature = device.get("temperature", None)
+    #Light
     device_brightness = device.get("brightness", None)
-
+    #Lock, Camera
+    device_status = device.get("status", None)
+    #Lock
+    device_entry_code = device.get("entry_code", None)
+    #Camera
+    device_resolution = device.get("resolution", None)
+    #Camera
+    device_motion_detection = device.get("motion_detection", None)
 
     # Create labels for each device detail
     name = wx.StaticText(main_dialog, label=f"Name: {device_name}", pos=[100, 80], style=wx.ALIGN_LEFT)
@@ -445,6 +454,21 @@ def create_configure_device_page(username, device):
     if device_temperature != None:
         temperature = wx.StaticText(main_dialog, label=f"Temperature: {device_temperature}", pos=[100, 200], style=wx.ALIGN_LEFT)
         temperature.SetForegroundColour(wx.Colour(255, 255, 255))
+    if device_status != None:
+        status = wx.StaticText(main_dialog, label=f"Status: {device_status}", pos=[100, 200], style=wx.ALIGN_LEFT)
+        status.SetForegroundColour(wx.Colour(255, 255, 255))
+    if device_entry_code != None:
+        entry_code = wx.StaticText(main_dialog, label=f"Entry code: {device_entry_code}", pos=[100, 230], style=wx.ALIGN_LEFT)
+        entry_code.SetForegroundColour(wx.Colour(255, 255, 255))
+    if device_resolution != None:
+        resolution = wx.StaticText(main_dialog, label=f"Resolution: {device_resolution}", pos=[100, 230], style=wx.ALIGN_LEFT)
+        resolution.SetForegroundColour(wx.Colour(255, 255, 255))
+    if device_motion_detection != None:
+        #Istedenfor å printe True/False
+        motion_detection_status = 'On' if device_motion_detection else 'Off'
+        motion_detection = wx.StaticText(main_dialog, label=f"Motion detection: {motion_detection_status}", pos=[100, 230], style=wx.ALIGN_LEFT)
+        motion_detection.SetForegroundColour(wx.Colour(255, 255, 255))
+
 
 
     # Back button to return to the home page
@@ -459,7 +483,7 @@ def create_configure_device_page(username, device):
 def create_add_new_device_page(username):
     destroy_everything()
     
-    all_devices = lights + fridges + heaters
+    all_devices = lights + fridges + heaters + locks + cameras
 
     listbox = wx.ListBox(main_dialog, size = [200, 200], choices = [])
     listbox.Center()

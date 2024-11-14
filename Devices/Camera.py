@@ -4,7 +4,7 @@ class Camera(Device):
     def __init__(self, prod_id, name, brand, resolution="1080p", status="Inactive", motion_detection=False):
         super().__init__(prod_id, name, brand, "Camera")
         self.resolution = resolution
-        self.status = status
+        self.status = status    
         self.motion_detection = motion_detection
 
     def set_resolution(self, new_resolution):
