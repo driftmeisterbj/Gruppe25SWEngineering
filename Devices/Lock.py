@@ -19,7 +19,7 @@ class SmartLock(Device):
     
     def unlock(self, entered_code):
         if entered_code == self.entry_code:
-            self.status = "Unlocked"  # Ensure consistent casing
+            self.status = "Unlocked"
             print(f"{self.brand} {self.name} is now unlocked")
         else:
             print("Incorrect entry code. The lock remains locked")
