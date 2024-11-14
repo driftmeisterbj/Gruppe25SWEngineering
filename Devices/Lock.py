@@ -1,8 +1,8 @@
 from Device import Device
 
-class SmartLock(Device):
+class Lock(Device):
     def __init__(self, prod_id, name, brand, status="Unlocked", entry_code="0727"):
-        super().__init__(prod_id, name, brand, "Smart Lock")
+        super().__init__(prod_id, name, brand, "Lock")
         self.status = status
         self.entry_code = entry_code
 
