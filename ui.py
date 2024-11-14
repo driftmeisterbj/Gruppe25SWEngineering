@@ -386,7 +386,6 @@ def create_home_page(username):
 def create_add_new_device_page(username):
     destroy_everything()
     
-    all_devices = lights + fridges + heaters
 
     listbox = wx.ListBox(main_dialog, size = [200, 200], choices = [])
     listbox.Center()
@@ -395,9 +394,12 @@ def create_add_new_device_page(username):
     #Using a lambda function to make sure the functions called when button is clicked
     back_btn(lambda: create_home_page(username))
 
+    all_devices = lights + fridges + heaters
+
     def get_all_devices():
         #device_list = [f"{device.name} {device.brand}" for device in all_devices]
         device_list = []
+        all_devices = lights + fridges + heaters
         user_devices = db.find_device_list_user(username)
 
         for device in all_devices:
@@ -414,11 +416,15 @@ def create_add_new_device_page(username):
         for current_device in all_devices:
             for device_user in user_devices:
                 if device_user["prod_id"] == current_device.prod_id:
-                    index_list.append(all_devices.index(current_device))
+                    index_list.append(int(all_devices.index(current_device)))
+
+
 
         for index in index_list:
             all_devices.pop(int(index))
 
+
+        index_list.clear()
         return device_list
 
     def search_for_devices(evt):
