@@ -450,20 +450,24 @@ def create_add_new_device_page(username):
     def on_add_device_to_user(evt):
         selected_index = listbox.GetSelection()
         if selected_index != wx.NOT_FOUND:
-            selected_device = all_devices[selected_index]
-            """
-            #Converts object -> dictionary
-            device = {
-                'prod_id': selected_device.prod_id,
-                'name': selected_device.name,
-                'brand': selected_device.brand,
-                'category': selected_device.category
-            }
-            """
-            device = db.create_new_device(selected_device.prod_id, selected_device.name,
+            device_list = get_all_devices()
+            selected_device_str = device_list[selected_index]
+
+            # Extract the actual device object from all_devices based on the selected string
+            selected_device = next(
+                (device for device in all_devices if f"{device.name} {device.brand}" == selected_device_str),
+                None
+            )
+
+            if selected_device:
+                device = db.create_new_device(selected_device.prod_id, selected_device.name,
                                           selected_device.brand, selected_device.category)
-            db.add_device_to_user(username,device)
-            create_home_page(username)
+                db.add_device_to_user(username, device)
+                create_home_page(username)
+
+                # Refresh the ListBox after adding the device
+                updated_device_list = get_all_devices()
+                listbox.SetItems(updated_device_list)
 
     add_device_btn = wx.Button(main_dialog,label="Add selected device",pos=[360,150])
     add_device_btn.Bind(wx.EVT_BUTTON, on_add_device_to_user)
