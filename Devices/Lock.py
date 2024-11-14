@@ -1,8 +1,8 @@
 from Device import Device
 
-class Lock(Device):
+class SmartLock(Device):
     def __init__(self, prod_id, name, brand, status="Unlocked", entry_code="0727"):
-        super().__init__(prod_id, name, brand, "Lock")
+        super().__init__(prod_id, name, brand, "Smart Lock")
         self.status = status
         self.entry_code = entry_code
 
@@ -19,10 +19,10 @@ class Lock(Device):
     
     def unlock(self, entered_code):
         if entered_code == self.entry_code:
-            self.status = "unlocked"
-            print(f"{self.brand} {self.name} is now locked is now unlocked")
+            self.status = "Unlocked"  # Ensure consistent casing
+            print(f"{self.brand} {self.name} is now unlocked")
         else:
             print("Incorrect entry code. The lock remains locked")
-    
-    def status(self):
+
+    def get_status(self):
         return f"{self.brand}, {self.name} is currently {self.status}."
