@@ -75,6 +75,22 @@
                 "category": "Light",
                 "on": false,
                 "brightness": 5
+            },
+            {
+                "prod_id": 3,
+                "name": "Wyze Bulb Color",
+                "brand": "Wyze",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            },
+            {
+                "prod_id": 16,
+                "name": "WRF560SEHZ",
+                "brand": "Whirlpool",
+                "category": "Fridge",
+                "on": false,
+                "temperature": 4
             }
         ]
     },
@@ -207,5 +223,36 @@
         "password": "Qwerty123",
         "email": "aa@aa.b",
         "devices": []
+    },
+    {
+        "username": "Ddddd",
+        "password": "Bvcxz123",
+        "email": "a@hh.m",
+        "devices": [
+            {
+                "prod_id": 1,
+                "name": "Hue White and Color Ambiance",
+                "brand": "Philips",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            },
+            {
+                "prod_id": 3,
+                "name": "Wyze Bulb Color",
+                "brand": "Wyze",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            },
+            {
+                "prod_id": 2,
+                "name": "LIFX Color A19",
+                "brand": "LIFX",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            }
+        ]
     }
 ]

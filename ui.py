@@ -408,7 +408,17 @@ def create_add_new_device_page(username):
                     break
             if not device_already_added:
                 device_list.append(f"{device.name} {device.brand}")
-            
+
+        index_list = []
+
+        for current_device in all_devices:
+            for device_user in user_devices:
+                if device_user["prod_id"] == all_devices["prod_id"]:
+                    index_list.append(all_devices.index(current_device))
+
+        for index in index_list:
+            all_devices.pop(int(index))
+
         return device_list
 
     def search_for_devices(evt):
