@@ -27,6 +27,78 @@
                 "name": "LIFX Color A19",
                 "brand": "LIFX",
                 "category": "Light"
+            },
+            {
+                "prod_id": 6,
+                "name": "Cync Smart LED",
+                "brand": "GE Lighting",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            },
+            {
+                "prod_id": 11,
+                "name": "Family Hub RF28R7551SR",
+                "brand": "Samsung",
+                "category": "Fridge",
+                "on": false,
+                "temperature": 4
+            },
+            {
+                "prod_id": 20,
+                "name": "KMHC319ESS",
+                "brand": "KitchenAid",
+                "category": "Fridge",
+                "on": false,
+                "temperature": 4
+            },
+            {
+                "prod_id": 4,
+                "name": "Smart LED Strip Light",
+                "brand": "Govee",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            },
+            {
+                "prod_id": 9,
+                "name": "Sengled Smart LED",
+                "brand": "Sengled",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            },
+            {
+                "prod_id": 1,
+                "name": "Hue White and Color Ambiance",
+                "brand": "Philips",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            },
+            {
+                "prod_id": 8,
+                "name": "Echo Glow",
+                "brand": "Amazon",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            },
+            {
+                "prod_id": 15,
+                "name": "Brilliant Series 36",
+                "brand": "Miele",
+                "category": "Fridge",
+                "on": false,
+                "temperature": 4
+            },
+            {
+                "prod_id": 21,
+                "name": "AM09 Fan Heater",
+                "brand": "Dyson",
+                "category": "Heater",
+                "on": false,
+                "temperature": 15
             }
         ]
     },

@@ -1,5 +1,9 @@
 import json
 from abc import ABC,abstractmethod
+import os
+import sys
+path = os.path.join(os.path.dirname(__file__), "Devices")
+sys.path.append(path)
 from Devices import Fridge, Heater, Lock, Light, Device
 
 
@@ -266,8 +270,10 @@ class JsonDatabase():
     def add_device_to_user(self, username, device):
         user_index = self.find_user_index(username)
 
+        """
         if not self.is_device_valid(device):
             return 'Device invalid'
+            """
 
         if user_index != -1:
             users = self.read_json()
@@ -275,11 +281,30 @@ class JsonDatabase():
             device_list = user["devices"]
             # device_list.append(device)
 
-            device_exists = any(d['prod_id'] == device['prod_id'] for d in device_list)
-            if not device_exists:
-                device_list.append(device)
+            device_data = {
+                "prod_id": device.prod_id,
+                "name": device.name,
+                "brand": device.brand,
+                "category": device.category,
+                "on": device.on
+            }
+
+            if device.category == "Fridge":
+                device_data["temperature"] = device.temperature
+            elif device.category == "Heater":
+                device_data["temperature"] = device.temperature
+            elif device.category == "Light":
+                device_data["brightness"] = device.brightness
+            elif device.category == "Lock":
+                device_data["entry_code"] = device.entry_code
             else:
-                print('device already added')
+                return "Unknown category"
+
+            device_exists = any(d['prod_id'] == device_data['prod_id'] for d in device_list)
+            if not device_exists:
+                device_list.append(device_data)
+            else:
+                return 'Device already added'
 
             data = {
                 "username": user["username"],
@@ -309,7 +334,7 @@ class JsonDatabase():
 
         else:
             print("user_index not found")
-            return False
+            return []
 
     def remove_duplicate_devices_from_user(self, username):
         user_index = self.find_user_index(username)
@@ -339,16 +364,16 @@ class JsonDatabase():
     # Oprette nytt device
     def create_new_device(self, prod_id, name, brand, category):
         if category == "Fridge":
-            return Fridge(prod_id, name, brand)
+            return Fridge.Fridge(prod_id, name, brand)
         
         if category == "Lock":
-            return Lock(prod_id, name, brand)
+            return Lock.Lock(prod_id, name, brand)
         
         if category == "Heater":
-            return Heater(prod_id, name, brand)
+            return Heater.Heater(prod_id, name, brand)
         
         if category == "Light":
-            return Light(prod_id, name, brand)
+            return Light.Light(prod_id, name, brand)
         
         return False
 
