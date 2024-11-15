@@ -46,38 +46,6 @@
                 "category": "Fridge",
                 "on": false,
                 "temperature": 4
-            },
-            {
-                "prod_id": 1,
-                "name": "Hue White and Color Ambiance",
-                "brand": "Philips",
-                "category": "Light",
-                "on": false,
-                "brightness": 5
-            },
-            {
-                "prod_id": 10,
-                "name": "Yeelight  LED",
-                "brand": "Yeelight",
-                "category": "Light",
-                "on": false,
-                "brightness": 5
-            },
-            {
-                "prod_id": 11,
-                "name": "Family Hub RF28R7551SR",
-                "brand": "Samsung",
-                "category": "Fridge",
-                "on": false,
-                "temperature": 4
-            },
-            {
-                "prod_id": 18,
-                "name": "QuadroCool X",
-                "brand": "Haier",
-                "category": "Fridge",
-                "on": false,
-                "temperature": 4
             }
         ]
     },
