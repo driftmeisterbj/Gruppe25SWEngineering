@@ -4,7 +4,7 @@ import os
 import sys
 path = os.path.join(os.path.dirname(__file__), "Devices")
 sys.path.append(path)
-from Devices import Fridge, Heater, Lock, Light, Device
+from Devices import Fridge, Heater, Lock, Light, Camera, Device
 
 
 class ReadWrite(ABC):
@@ -296,7 +296,14 @@ class JsonDatabase():
             elif device.category == "Light":
                 device_data["brightness"] = device.brightness
             elif device.category == "Lock":
+                device_data["status"] = device.status
                 device_data["entry_code"] = device.entry_code
+            elif device.category == "Camera":
+                device_data["resolution"] = device.resolution
+                device_data["status"] = device.status
+                device_data["motion_detection"] = device.motion_detection
+
+
             else:
                 return "Unknown category"
 
@@ -368,6 +375,9 @@ class JsonDatabase():
         
         if category == "Lock":
             return Lock.Lock(prod_id, name, brand)
+
+        if category == "Camera":
+            return Camera.Camera(prod_id, name, brand)
         
         if category == "Heater":
             return Heater.Heater(prod_id, name, brand)
@@ -386,6 +396,51 @@ class JsonDatabase():
             user = users[user_index]
             device_list = user["devices"]
             
+    #Hver gang det leses fra json blir enhetene omgjort fra objekter til dictionaries
+    def recreate_object(self,device_dict):
+        category = device_dict['category']
+
+        if category == 'Light':
+            return Light.Light(
+            prod_id=device_dict["prod_id"],
+            name=device_dict["name"],
+            brand=device_dict["brand"],
+            brightness=device_dict.get("brightness", 100)
+            )
+        elif category == 'Fridge':
+            return Fridge.Fridge(
+            prod_id=device_dict["prod_id"],
+            name=device_dict["name"],
+            brand=device_dict["brand"],
+            temperature=device_dict.get("temperature", 15)
+            )
+        elif category == "Heater":
+            return Heater.Heater(
+            prod_id=device_dict["prod_id"],
+            name=device_dict["name"],
+            brand=device_dict["brand"],
+            temperature=device_dict.get("temperature", 15)
+            )
+        elif category == "Lock":
+            return Lock.Lock(
+            prod_id=device_dict["prod_id"],
+            name=device_dict["name"],
+            brand=device_dict["brand"],
+            entry_code=device_dict.get("entry_code", "1234")
+            )
+        elif category == "Camera":
+            return Camera.Camera(
+            prod_id=device_dict["prod_id"],
+            name=device_dict["name"],
+            brand=device_dict["brand"],
+            resolution=device_dict.get("resolution", "1080p"),
+            status=device_dict.get("status", "Inactive"),
+            motion_detection=device_dict.get("motion_detection", False)
+            )
+
+
+
+
             """
             device_index = -1
             counter = 0

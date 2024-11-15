@@ -1,11 +1,12 @@
 
 import ctypes
 import subprocess
-import tkinter as tk
+
 from jsondb import JsonDatabase, JsonReadWrite
+import os
 import sys
 sys.path.append('Devices/')
-from Nearby_devices import lights,fridges,heaters
+from Nearby_devices import lights,fridges,heaters,locks,cameras
 
 try:
     import wx
@@ -18,6 +19,12 @@ except:
 app = wx.App()
 
 search_list = []
+# implements accessibillity for the edit controls
+class Accessible(wx.Accessible):
+
+	def GetName(self, childID):
+		return((wx.ACC_OK, self.GetWindow().GetHint()))
+
 
 def on_destroy(evt):
     exit()
@@ -25,14 +32,15 @@ def on_destroy(evt):
 main_dialog = wx.Dialog(None, title = "main", size = [500, 500])
 main_dialog.Center()
 main_dialog.Bind(wx.EVT_CLOSE, on_destroy)
-
-db = JsonDatabase("userdb")
+userDb = os.path.join(os.path.dirname(__file__), "userdb")
+db = JsonDatabase(userDb)
 
 class ErrorText():
-    def __init__(self, parent):
+    def __init__(self, parent, y):
         self.error_text = wx.StaticText(parent, label="")
         self.error_text.SetForegroundColour(wx.RED)
-        self.error_text.Wrap(300)
+        self.y = y
+        self.error_text.Wrap(y)
         self.error_text.Hide()
 
     def ShowSelf(self):
@@ -41,14 +49,30 @@ class ErrorText():
     def HideSelf(self):
         self.error_text.Hide()
 
-    def SetText(self, text):
+    def RepositionSelf(self, y):
+        #https://stackoverflow.com/questions/14269880/the-right-way-to-find-the-size-of-text-in-wxpython
+        width, height = self.error_text.GetTextExtent(self.text)
+        #x = ( (bredde på vinduet) - (bredde på teksten) ) // 2
+        if(width > 300):
+            width = 300
+        x = (500 - width) // 2
+
+        self.error_text.SetPosition((x, y))
+        #https://stackoverflow.com/questions/1785227/change-the-colour-of-a-statictext-wxpython
+        self.error_text.SetForegroundColour(colour_finder("red"))
+
+    def SetText(self, text, y):
+        self.HideSelf()
+        self.ShowSelf()
+        self.text = text
         self.error_text.SetLabel(text)
         self.error_text.Wrap(300)
-        self.ShowSelf()
+        self.RepositionSelf(y)
 
-    def NewError(self, text):
+    def NewError(self, text, y):
         self.HideSelf()
-        self.SetText(text)
+        self.ShowSelf()
+        self.SetText(text, y)
 
         
 def colour_finder(colour_string):
@@ -137,15 +161,17 @@ def create_login_page():
     # Input fields with placeholders
     username_input = wx.TextCtrl(panel, style=wx.TE_LEFT, value="")
     username_input.SetHint("Username")
+    username_input.SetAccessible(Accessible())
 
     password_input = wx.TextCtrl(panel, style=wx.TE_PASSWORD | wx.TE_LEFT, value="")
     password_input.SetHint("Password")
+    password_input.SetAccessible(Accessible())
 
     # Buttons
     create_user_btn = wx.Button(panel, label="Create New Account")
     login_btn = wx.Button(panel, label="Log In")
 
-    error_text = ErrorText(panel)
+    error_text = ErrorText(panel, 300)
 
     # Arrange items using the form sizer
     form_sizer.Add(username_input, pos=(0, 0), span=(1, 2), flag=wx.EXPAND)
@@ -195,11 +221,11 @@ def create_login_page():
     def try_logging_in(username, password):
         users = db.read_json()
 
-        if is_login_valid(username, password) == True:
+        if is_login_valid(username, password):
             create_home_page(username)
         
         else:
-            error_text.NewError("Wrong username or password")
+            error_text.NewError("Wrong username or password", 300)
 
 
 
@@ -229,18 +255,20 @@ def create_user_creation_page():
     # Input fields with placeholders
     username_input = wx.TextCtrl(panel)
     username_input.SetHint("Your Username")
+    username_input.SetAccessible(Accessible())
 
     email_input = wx.TextCtrl(panel)
     email_input.SetHint("Your Email")
+    email_input.SetAccessible(Accessible())
 
     password_input = wx.TextCtrl(panel, style=wx.TE_PASSWORD)
     password_input.SetHint("Your Password")
-
+    password_input.SetAccessible(Accessible())
     confirm_password_input = wx.TextCtrl(panel, style=wx.TE_PASSWORD)
     confirm_password_input.SetHint("Confirm Your Password")
-
+    confirm_password_input.SetAccessible(Accessible())
     # Error text
-    error_text = ErrorText(panel)
+    error_text = ErrorText(panel, 400)
 
     # Arrange items using the form sizer
     form_sizer.Add(username_input, pos=(0, 0), span=(1, 2), flag=wx.EXPAND)
@@ -286,39 +314,39 @@ def create_user_creation_page():
 
         # Validation Checks
         if not username:
-            error_text.SetText("Username cannot be empty.")
+            error_text.SetText("Username cannot be empty.", 400)
             panel.Layout()
             return
         if not email:
-            error_text.SetText("Email cannot be empty.")
+            error_text.SetText("Email cannot be empty.", 400)
             panel.Layout()
             return
         if not password:
-            error_text.SetText("Password cannot be empty.")
+            error_text.SetText("Password cannot be empty.", 400)
             panel.Layout()
             return
         if password != confirm_password:
-            error_text.SetText("Passwords do not match.")
+            error_text.SetText("Passwords do not match.", 400)
             panel.Layout()
             return
         if db.is_username_taken(username):
-            error_text.SetText("An account with this username already exists.")
+            error_text.SetText("An account with this username already exists.", 400)
             panel.Layout()
             return
         elif db.is_username_valid(username) != True:
-            error_text.SetText(db.is_username_valid(username))
+            error_text.SetText(db.is_username_valid(username), 400)
             panel.Layout()
             return
         elif db.is_email_taken(email):
-            error_text.SetText("An account with this email already exists.")
+            error_text.SetText("An account with this email already exists.", 400)
             panel.Layout()
             return
         elif db.is_email_valid(email) != True:
-            error_text.SetText(db.is_email_valid(email))
+            error_text.SetText(db.is_email_valid(email), 400)
             panel.Layout()
             return
         elif db.is_password_valid(password) != True:
-            error_text.SetText(db.is_password_valid(password))
+            error_text.SetText(db.is_password_valid(password), 400)
             panel.Layout()
             return
         else:
@@ -350,9 +378,14 @@ def create_home_page(username):
     def on_add_device(evt):
         create_add_new_device_page(username)
 
+    #Optimize:------------------------------
     def on_configure_device(evt):
-        device_name = ""
-        device = db.get_device(username, device_name)
+        index = listbox.GetSelection()
+        device_list = db.find_device_list_user(username)
+        selected_device = device_list[index]
+        #Gjør om til objekt
+        device = db.recreate_object(selected_device)
+        create_configure_device_page(username, device)
 
     add_device_btn = wx.Button(main_dialog,label="Add new device",pos=[360,150])
     add_device_btn.Bind(wx.EVT_BUTTON, on_add_device)
@@ -361,7 +394,6 @@ def create_home_page(username):
     display_app_name()
     display_name(username)
 
-    #Todo: Button for adjusting a specific devices settings
     configure_device_btn = wx.Button(main_dialog,label="Configure Device",pos=[360,170])
     configure_device_btn.Bind(wx.EVT_BUTTON, on_configure_device)
 
@@ -382,10 +414,114 @@ def create_home_page(username):
     listbox.Center()
 
 
+def create_configure_device_page(username, device):
+    destroy_everything()
+
+
+    # Title for the configure page
+    title = wx.StaticText(main_dialog, label="Device Configuration", pos=[150, 50], style=wx.ALIGN_CENTER)
+    title.SetFont(wx.Font(12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD))
+    title.SetForegroundColour(wx.Colour(255, 255, 255))
+
+    # Display device details
+    device_name = getattr(device,"name", "Unknown")
+    device_brand = getattr(device,"brand", "Unknown")
+    device_category = getattr(device,"category", "Unknown")
+    device_prod_id = getattr(device,"prod_id", "Unknown")
+    device_on = getattr(device,"on","Unknown")
+    #Fridge, Heater
+    device_temperature = getattr(device,"temperature", None)
+    #Light
+    device_brightness = getattr(device,"brightness", None)
+    #Lock, Camera
+    device_status = getattr(device,"status", None)
+    #Lock
+    device_entry_code = getattr(device,"entry_code", None)
+    #Camera
+    device_resolution = getattr(device,"resolution", None)
+    #Camera
+    device_motion_detection = getattr(device,"motion_detection", None)
+
+    # Create labels for each device detail
+    name = wx.StaticText(main_dialog, label=f"Name: {device_name}", pos=[100, 80], style=wx.ALIGN_LEFT)
+    name.SetForegroundColour(wx.Colour(255, 255, 255))    
+    
+    brand = wx.StaticText(main_dialog, label=f"Brand: {device_brand}", pos=[100, 110], style=wx.ALIGN_LEFT)
+    brand.SetForegroundColour(wx.Colour(255, 255, 255))  
+    
+    category = wx.StaticText(main_dialog, label=f"Category: {device_category}", pos=[100, 140], style=wx.ALIGN_LEFT)
+    category.SetForegroundColour(wx.Colour(255, 255, 255))    
+
+    prodid = wx.StaticText(main_dialog, label=f"Product ID: {device_prod_id}", pos=[100, 170], style=wx.ALIGN_LEFT)
+    prodid.SetForegroundColour(wx.Colour(255, 255, 255))
+    
+    #Istedenfor å printe True/False
+    on_status = 'On' if device_on else 'Off'
+    on = wx.StaticText(main_dialog, label=f"Power: {on_status}", pos=[100, 200], style=wx.ALIGN_LEFT)
+    on.SetForegroundColour(wx.Colour(255, 255, 255))
+    toggle_power = 'Turn off' if on_status == 'On' else 'Turn on'
+    def on_toggle_power(evt):
+        if device.on:
+            device.turn_off_device()
+        else:
+            device.turn_on_device()
+
+        create_configure_device_page(username, device)
+
+    power_btn = wx.Button(main_dialog, label=f"{toggle_power}", pos=[180, 195])
+    power_btn.Bind(wx.EVT_BUTTON, on_toggle_power)
+
+
+
+    if device_brightness != None:
+        brightness = wx.StaticText(main_dialog, label=f"Brightness: {device_brightness}", pos=[100, 230], style=wx.ALIGN_LEFT)
+        brightness.SetForegroundColour(wx.Colour(255, 255, 255))
+
+        #Istedenfor å ha to set_brighntess for +/- så tar den i mot et parameter som sendes av knappene
+        def on_set_brightness( value):
+            device.set_brightness(value)
+            create_configure_device_page(username,device)
+
+        decrease_brightness = wx.Button(main_dialog, label=f"-", pos=[180, 225],size=(25,25))
+        decrease_brightness.Bind(wx.EVT_BUTTON, lambda evt: on_set_brightness('-'))
+
+        increase_brightness = wx.Button(main_dialog, label=f"+", pos=[205, 225],size=(25,25))
+        increase_brightness.Bind(wx.EVT_BUTTON, lambda evt: on_set_brightness('+'))
+
+
+    if device_temperature != None:
+        temperature = wx.StaticText(main_dialog, label=f"Temperature: {device_temperature}", pos=[100, 230], style=wx.ALIGN_LEFT)
+        temperature.SetForegroundColour(wx.Colour(255, 255, 255))
+    if device_status != None:
+        status = wx.StaticText(main_dialog, label=f"Status: {device_status}", pos=[100, 230], style=wx.ALIGN_LEFT)
+        status.SetForegroundColour(wx.Colour(255, 255, 255))
+    if device_entry_code != None:
+        entry_code = wx.StaticText(main_dialog, label=f"Entry code: {device_entry_code}", pos=[100, 260], style=wx.ALIGN_LEFT)
+        entry_code.SetForegroundColour(wx.Colour(255, 255, 255))
+    if device_resolution != None:
+        resolution = wx.StaticText(main_dialog, label=f"Resolution: {device_resolution}", pos=[100, 260], style=wx.ALIGN_LEFT)
+        resolution.SetForegroundColour(wx.Colour(255, 255, 255))
+    if device_motion_detection != None:
+        #Istedenfor å printe True/False
+        motion_detection_status = 'On' if device_motion_detection else 'Off'
+        motion_detection = wx.StaticText(main_dialog, label=f"Motion detection: {motion_detection_status}", pos=[100, 290], style=wx.ALIGN_LEFT)
+        motion_detection.SetForegroundColour(wx.Colour(255, 255, 255))
+
+
+
+    # Back button to return to the home page
+    back_btn = wx.Button(main_dialog, label="< Back", pos=[30, 400])
+    back_btn.Bind(wx.EVT_BUTTON, lambda evt: create_home_page(username))
+
+    display_app_name()
+    log_out_btn()
+
+    
 
 def create_add_new_device_page(username):
     destroy_everything()
     
+    all_devices = lights + fridges + heaters + locks + cameras
 
     listbox = wx.ListBox(main_dialog, size = [200, 200], choices = [])
     listbox.Center()
@@ -394,12 +530,9 @@ def create_add_new_device_page(username):
     #Using a lambda function to make sure the functions called when button is clicked
     back_btn(lambda: create_home_page(username))
 
-    all_devices = lights + fridges + heaters
-
     def get_all_devices():
         #device_list = [f"{device.name} {device.brand}" for device in all_devices]
         device_list = []
-        all_devices = lights + fridges + heaters
         user_devices = db.find_device_list_user(username)
 
         for device in all_devices:
@@ -410,21 +543,7 @@ def create_add_new_device_page(username):
                     break
             if not device_already_added:
                 device_list.append(f"{device.name} {device.brand}")
-
-        index_list = []
-
-        for current_device in all_devices:
-            for device_user in user_devices:
-                if device_user["prod_id"] == current_device.prod_id:
-                    index_list.append(int(all_devices.index(current_device)))
-
-
-
-        for index in index_list:
-            all_devices.pop(int(index))
-
-
-        index_list.clear()
+            
         return device_list
 
     def search_for_devices(evt):
@@ -438,20 +557,24 @@ def create_add_new_device_page(username):
     def on_add_device_to_user(evt):
         selected_index = listbox.GetSelection()
         if selected_index != wx.NOT_FOUND:
-            selected_device = all_devices[selected_index]
-            """
-            #Converts object -> dictionary
-            device = {
-                'prod_id': selected_device.prod_id,
-                'name': selected_device.name,
-                'brand': selected_device.brand,
-                'category': selected_device.category
-            }
-            """
-            device = db.create_new_device(selected_device.prod_id, selected_device.name,
+            device_list = get_all_devices()
+            selected_device_str = device_list[selected_index]
+
+            # Extract the actual device object from all_devices based on the selected string
+            selected_device = next(
+                (device for device in all_devices if f"{device.name} {device.brand}" == selected_device_str),
+                None
+            )
+
+            if selected_device:
+                device = db.create_new_device(selected_device.prod_id, selected_device.name,
                                           selected_device.brand, selected_device.category)
-            db.add_device_to_user(username,device)
-            create_home_page(username)
+                db.add_device_to_user(username, device)
+                create_home_page(username)
+
+                # Refresh the ListBox after adding the device
+                updated_device_list = get_all_devices()
+                listbox.SetItems(updated_device_list)
 
     add_device_btn = wx.Button(main_dialog,label="Add selected device",pos=[360,150])
     add_device_btn.Bind(wx.EVT_BUTTON, on_add_device_to_user)
@@ -466,9 +589,20 @@ def create_device_page():
 
 
 #https://discuss.wxpython.org/t/getchildren/27335
+def setFocusOnFirstChild():
+	focusableObj = False
+	children = main_dialog.GetChildren()
+	for i in children:
+		if isinstance(i, (wx.Button, wx.CheckBox, wx.TextCtrl,)):
+			focusableObj = True
+			break
+	if focusableObj:
+		i.SetFocus()
+		print(f"setting focus on {i.GetLabel()}")
 def destroy_everything():
     for child in main_dialog.GetChildren():
         child.Destroy()
+    wx.CallLater(1000, setFocusOnFirstChild)
 
 create_login_page()
 main_dialog.Show()

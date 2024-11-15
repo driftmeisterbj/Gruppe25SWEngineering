@@ -21,8 +21,10 @@ class Heater(Device):
 
     # Method to display current status
     # Print out if it is on and other information or that it is off.
+    """
     def status(self):
         if self.on:
             return f"{self.brand} {self.name} is on, temperature: {self.temperature} celsius."
         else:
             return f"{self.brand} {self.name} is off."
+"""

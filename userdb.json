@@ -5,14 +5,6 @@
         "email": "",
         "devices": [
             {
-                "prod_id": 1,
-                "name": "Hue White and Color Ambiance",
-                "brand": "Philips",
-                "category": "Light",
-                "on": false,
-                "brightness": 5
-            },
-            {
                 "prod_id": 2,
                 "name": "LIFX Color A19",
                 "brand": "LIFX",
@@ -21,44 +13,31 @@
                 "brightness": 5
             },
             {
-                "prod_id": 8,
-                "name": "Echo Glow",
-                "brand": "Amazon",
-                "category": "Light",
-                "on": false,
-                "brightness": 5
-            },
-            {
-                "prod_id": 6,
-                "name": "Cync Smart LED",
-                "brand": "GE Lighting",
-                "category": "Light",
-                "on": false,
-                "brightness": 5
-            },
-            {
-                "prod_id": 3,
-                "name": "Wyze Bulb Color",
-                "brand": "Wyze",
-                "category": "Light",
-                "on": false,
-                "brightness": 5
-            },
-            {
-                "prod_id": 12,
-                "name": "InstaView Door-in-Door",
-                "brand": "LG",
-                "category": "Fridge",
-                "on": false,
-                "temperature": 4
-            },
-            {
                 "prod_id": 21,
                 "name": "AM09 Fan Heater",
                 "brand": "Dyson",
                 "category": "Heater",
                 "on": false,
                 "temperature": 15
+            },
+            {
+                "prod_id": 48,
+                "name": "Ring Spotlight Cam",
+                "brand": "Ring",
+                "category": "Camera",
+                "on": false,
+                "resolution": "1080p",
+                "status": "Inactive",
+                "motion_detection": false
+            },
+            {
+                "prod_id": 34,
+                "name": "Yale Assure Lock SL",
+                "brand": "Yale",
+                "category": "Lock",
+                "on": false,
+                "status": "Unlocked",
+                "entry_code": "0727"
             }
         ]
     },
@@ -191,36 +170,5 @@
         "password": "Qwerty123",
         "email": "aa@aa.b",
         "devices": []
-    },
-    {
-        "username": "Ddddd",
-        "password": "Bvcxz123",
-        "email": "a@hh.m",
-        "devices": [
-            {
-                "prod_id": 1,
-                "name": "Hue White and Color Ambiance",
-                "brand": "Philips",
-                "category": "Light",
-                "on": false,
-                "brightness": 5
-            },
-            {
-                "prod_id": 3,
-                "name": "Wyze Bulb Color",
-                "brand": "Wyze",
-                "category": "Light",
-                "on": false,
-                "brightness": 5
-            },
-            {
-                "prod_id": 2,
-                "name": "LIFX Color A19",
-                "brand": "LIFX",
-                "category": "Light",
-                "on": false,
-                "brightness": 5
-            }
-        ]
     }
 ]

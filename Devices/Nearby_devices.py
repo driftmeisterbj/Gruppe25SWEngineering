@@ -1,6 +1,8 @@
 from Light import Light
 from Fridge import Fridge
 from Heater import Heater
+from Lock import Lock
+from Camera import Camera
 import random
 
 counter = 0
@@ -14,13 +16,13 @@ lights = [
     Light(id(), "Hue White and Color Ambiance", "Philips"),
     Light(id(), "LIFX Color A19", "LIFX"),
     Light(id(), "Wyze Bulb Color", "Wyze"),
-    Light(id(), "Smart LED Strip Light", "Govee"),
+    Light(id(), " LED Strip Light", "Govee"),
     Light(id(), "Nanoleaf Shapes", "Nanoleaf"),
-    Light(id(), "Cync Smart LED", "GE Lighting"),
-    Light(id(), "Kasa Smart Bulb", "TP-Link"),
+    Light(id(), "Cync  LED", "GE Lighting"),
+    Light(id(), "Kasa  Bulb", "TP-Link"),
     Light(id(), "Echo Glow", "Amazon"),
-    Light(id(), "Sengled Smart LED", "Sengled"),
-    Light(id(), "Yeelight Smart LED", "Yeelight"),
+    Light(id(), "Sengled  LED", "Sengled"),
+    Light(id(), "Yeelight  LED", "Yeelight"),
 ]
 
 fridges = [
@@ -46,6 +48,34 @@ heaters = [
     Heater(id(), "Oscillating Ceramic Heater", "Pelonis"),
     Heater(id(), "Silent System 28", "Mill"),
     Heater(id(), "Compact Propane Heater", "Mr. Heater"),
-    Heater(id(), "Smart Ceramic Tower Heater", "Govee"),
+    Heater(id(), " Ceramic Tower Heater", "Govee"),
 ]
+
+locks = [
+    Lock(id(), "August  Lock Pro + Connect", "August"),
+    Lock(id(), "Kwikset Kevo 2nd Gen", "Kwikset"),
+    Lock(id(), "Schlage Encode Plus", "Schlage"),
+    Lock(id(), "Yale Assure Lock SL", "Yale"),
+    Lock(id(), "Level Lock+", "Level"),
+    Lock(id(), "Nest x Yale Lock", "Nest"),
+    Lock(id(), "Ultraloq U-Bolt Pro", "Ultraloq"),
+    Lock(id(), "Eufy Security  Lock", "Eufy"),
+    Lock(id(), "SimpliSafe  Lock", "SimpliSafe"),
+    Lock(id(), "Lockly Secure Pro", "Lockly"),
+]
+
+cameras = [
+    Camera(id(), "Nest Cam IQ Outdoor", "Nest", resolution="1080p", motion_detection=True),
+    Camera(id(), "Ring Stick Up Cam Elite", "Ring", resolution="1080p", motion_detection=True),
+    Camera(id(), "Arlo Pro 4", "Arlo", resolution="4K", motion_detection=True),
+    Camera(id(), "Wyze Cam v3", "Wyze", resolution="1080p", motion_detection=False),
+    Camera(id(), "Eufy Security SoloCam E40", "Eufy", resolution="1080p", motion_detection=True),
+    Camera(id(), "SimpliSafe HD Camera", "SimpliSafe", resolution="1080p", motion_detection=False),
+    Camera(id(), "Blink Outdoor Camera", "Blink", resolution="1080p", motion_detection=True),
+    Camera(id(), "Ring Spotlight Cam", "Ring", resolution="1080p", motion_detection=True),
+    Camera(id(), "Google Nest Cam (battery)", "Nest", resolution="1080p", motion_detection=True),
+    Camera(id(), "Lorex 4K Ultra HD IP Camera", "Lorex", resolution="4K", motion_detection=True),
+]
+
+
 #print(heaters[0].name, heaters[0].brand)

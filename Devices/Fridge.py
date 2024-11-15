@@ -17,9 +17,10 @@ class Fridge(Device):
         except ValueError:
             raise ValueError("Vennligst skriv inn en gyldig heltallverdi for temperaturen.")
             
-
+"""
     def status(self):
         if self.on:
             return f"{self.brand} {self.name} is on. Current temperature: {self.temperature} Celcius"
         else:
             return f"{self.brand} {self.name} is off"
+"""
