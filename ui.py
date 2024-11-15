@@ -468,7 +468,7 @@ def create_configure_device_page(username, device):
 
         create_configure_device_page(username, device)
 
-    power_btn = wx.Button(main_dialog, label=f"{toggle_power}", pos=[180, 195])
+    power_btn = wx.Button(main_dialog, label=f"{toggle_power}", pos=[205, 195])
     power_btn.Bind(wx.EVT_BUTTON, on_toggle_power)
 
 
@@ -482,38 +482,101 @@ def create_configure_device_page(username, device):
             device.set_brightness(value)
             create_configure_device_page(username,device)
 
-        decrease_brightness = wx.Button(main_dialog, label=f"-", pos=[180, 225],size=(25,25))
+        decrease_brightness = wx.Button(main_dialog, label=f"-", pos=[205, 225],size=(25,25))
         decrease_brightness.Bind(wx.EVT_BUTTON, lambda evt: on_set_brightness('-'))
 
-        increase_brightness = wx.Button(main_dialog, label=f"+", pos=[205, 225],size=(25,25))
+        increase_brightness = wx.Button(main_dialog, label=f"+", pos=[230, 225],size=(25,25))
         increase_brightness.Bind(wx.EVT_BUTTON, lambda evt: on_set_brightness('+'))
 
 
     if device_temperature != None:
         temperature = wx.StaticText(main_dialog, label=f"Temperature: {device_temperature}", pos=[100, 230], style=wx.ALIGN_LEFT)
         temperature.SetForegroundColour(wx.Colour(255, 255, 255))
+        #Basically en kopi av set_brighntess
+        def on_set_temperature( value):
+            device.set_temperature(value)
+            create_configure_device_page(username,device)
+
+        decrease_temperature = wx.Button(main_dialog, label=f"-", pos=[205, 225],size=(25,25))
+        decrease_temperature.Bind(wx.EVT_BUTTON, lambda evt: on_set_temperature('-'))
+
+        increase_temperature = wx.Button(main_dialog, label=f"+", pos=[230, 225],size=(25,25))
+        increase_temperature.Bind(wx.EVT_BUTTON, lambda evt: on_set_temperature('+'))
+
+
     if device_status != None:
         status = wx.StaticText(main_dialog, label=f"Status: {device_status}", pos=[100, 230], style=wx.ALIGN_LEFT)
         status.SetForegroundColour(wx.Colour(255, 255, 255))
+        def on_lock(evt):
+            if device.status == 'Unlocked':
+                device.lock()
+            else:
+                dialog = wx.TextEntryDialog(main_dialog, "Enter the unlock code:", "Unlock Device")
+                if dialog.ShowModal() == wx.ID_OK:
+                    unlock_code = dialog.GetValue()
+                    if not device.unlock(unlock_code):
+                        wx.MessageBox("Incorrect code entered", "Incorrect code", wx.OK | wx.ICON_INFORMATION)
+
+                dialog.Destroy()
+            create_configure_device_page(username,device)
+
+        lock_btn = wx.Button(main_dialog, label=f"Change", pos=[205, 225])
+        lock_btn.Bind(wx.EVT_BUTTON, on_lock)
+
     if device_entry_code != None:
         entry_code = wx.StaticText(main_dialog, label=f"Entry code: {device_entry_code}", pos=[100, 260], style=wx.ALIGN_LEFT)
         entry_code.SetForegroundColour(wx.Colour(255, 255, 255))
+
+        def on_set_entry_code(evt):
+            dialog = wx.TextEntryDialog(main_dialog, "Enter a new code:", "Change code")
+            if dialog.ShowModal() == wx.ID_OK:
+                new_code = dialog.GetValue()
+                if not device.set_entry_code(new_code):
+                    wx.MessageBox("Invalid code", "Code must be 4 characters", wx.OK | wx.ICON_INFORMATION)
+
+
+            dialog.Destroy()
+            create_configure_device_page(username,device)
+
+
+        set_code = wx.Button(main_dialog, label=f"Set", pos=[205, 255])
+        set_code.Bind(wx.EVT_BUTTON, on_set_entry_code)
+
     if device_resolution != None:
         resolution = wx.StaticText(main_dialog, label=f"Resolution: {device_resolution}", pos=[100, 260], style=wx.ALIGN_LEFT)
         resolution.SetForegroundColour(wx.Colour(255, 255, 255))
+
+        def on_set_resolution(value):
+            device.set_resolution(value)
+            create_configure_device_page(username,device)
+
+        decrease_resolution = wx.Button(main_dialog, label=f"-", pos=[205, 255],size=(25,25))
+        decrease_resolution.Bind(wx.EVT_BUTTON, lambda evt: on_set_resolution('-'))
+
+        increase_resolution = wx.Button(main_dialog, label=f"+", pos=[230, 255],size=(25,25))
+        increase_resolution.Bind(wx.EVT_BUTTON, lambda evt: on_set_resolution('+'))   
+
     if device_motion_detection != None:
         #Istedenfor å printe True/False
         motion_detection_status = 'On' if device_motion_detection else 'Off'
         motion_detection = wx.StaticText(main_dialog, label=f"Motion detection: {motion_detection_status}", pos=[100, 290], style=wx.ALIGN_LEFT)
         motion_detection.SetForegroundColour(wx.Colour(255, 255, 255))
 
+        def on_set_motion_detection(evt):
+            device.toggle_motion_detection()
+            create_configure_device_page(username,device)
+        
+        toggle_label = "Turn off" if motion_detection_status == 'On' else 'Turn on'
 
+        decrease_resolution = wx.Button(main_dialog, label=f"{toggle_label}", pos=[225, 285])
+        decrease_resolution.Bind(wx.EVT_BUTTON, on_set_motion_detection)
 
     # Back button to return to the home page
     back_btn = wx.Button(main_dialog, label="< Back", pos=[30, 400])
     back_btn.Bind(wx.EVT_BUTTON, lambda evt: create_home_page(username))
 
     display_app_name()
+    display_name(username)
     log_out_btn()
 
     
@@ -580,7 +643,7 @@ def create_add_new_device_page(username):
     add_device_btn.Bind(wx.EVT_BUTTON, on_add_device_to_user)
     
     display_app_name()
-
+    display_name(username)
     main_dialog.Show()
 
 def create_device_page():

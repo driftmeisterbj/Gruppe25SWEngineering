@@ -8,6 +8,7 @@ class Heater(Device):
     # Function to set new temperaturee
     # Recive user input and accept or deny based on if it is invalid or not
     # Noteify the user if there is any error and to try again
+    """
     def set_temperature(self, new_temp):
         try:
             new_temp = int(new_temp)
@@ -18,6 +19,17 @@ class Heater(Device):
                 print("Invalid temperature, must be between 15 and 30 degrees.")
         except ValueError:
             raise ValueError("Please input a valid number")
+
+
+"""
+    def set_temperature(self, new_temperature):
+        if new_temperature == '+':
+            if not self.temperature >= 30:
+                self.temperature += 1
+        elif new_temperature == '-':
+            if not self.temperature <= 15:
+                self.temperature -= 1
+
 
     # Method to display current status
     # Print out if it is on and other information or that it is off.
