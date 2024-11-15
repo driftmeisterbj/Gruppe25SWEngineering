@@ -414,8 +414,8 @@ def create_home_page(username):
 
 
 def create_configure_device_page(username, device):
-    db.update_device_data(username,device)
     destroy_everything()
+    db.update_device_data(username,device)
 
 
 
