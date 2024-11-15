@@ -8,12 +8,16 @@ class Camera(Device):
         self.motion_detection = motion_detection
 
     def set_resolution(self, new_resolution):
-        valid_resolutions = ["720p", "1080p", "4K"]
-        if new_resolution in valid_resolutions:
-            self.resolution = new_resolution
-            print(f"Resolution has been updated to: {self.resolution}")
-        else:
-            print("Invalid resolution. Choose from: 720p, 1080p, or 4K.")
+        valid_resolutions = ["180p","240p","480p","720p", "1080p","1440p","4K"]
+
+        current_index = valid_resolutions.index(self.resolution)
+
+        if new_resolution == '+':
+            self.resolution = valid_resolutions[current_index+1]
+        #index sjekken stopper den fra å gå rundt i sirkler når den når -1 
+        elif new_resolution == '-' and current_index > 0:
+            self.resolution = valid_resolutions[current_index-1]
+
 
     def activate(self):
         self.status = "Active"
@@ -24,9 +28,11 @@ class Camera(Device):
         print(f"{self.brand} {self.name} is now inactive.")
     
     def toggle_motion_detection(self):
-        self.motion_detection = not self.motion_detection
-        state = "enabled" if self.motion_detection else "disabled"
-        print(f"Motion detection has been {state}.")
+        if not self.motion_detection:
+            self.motion_detection = True
+        else:
+            self.motion_detection = False
+
 
     def status(self):
         motion_state = "enabled" if self.motion_detection else "disabled"

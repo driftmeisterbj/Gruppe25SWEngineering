@@ -9,20 +9,20 @@ class Lock(Device):
     def set_entry_code(self, new_code):
         if isinstance(new_code, str) and new_code.isdigit() and len(new_code) == 4:
             self.entry_code = new_code
-            print(f"Entry code has been updated to: {self.entry_code}")
+            return True
         else:
-            print("Invalid entry code Must be a 4-digit number")
+            return False
 
     def lock(self):
         self.status = "Locked"
         print(f"{self.brand} {self.name} is now locked")
-    
-    def unlock(self, entered_code):
+    def unlock(self,entered_code):
         if entered_code == self.entry_code:
             self.status = "Unlocked"
-            print(f"{self.brand} {self.name} is now unlocked")
+            return True
         else:
-            print("Incorrect entry code. The lock remains locked")
-
+            return False
+"""
     def get_status(self):
         return f"{self.brand}, {self.name} is currently {self.status}."
+"""
