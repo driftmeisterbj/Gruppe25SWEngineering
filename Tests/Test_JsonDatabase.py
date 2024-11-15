@@ -379,6 +379,12 @@ class TestJsonDatabase(unittest.TestCase):
                         "devices": []
                     }
                 ])
+    @mock.patch("Device.Device.getDict", return_value={
+                            "prod_id": 123,
+                            "name": "Gyldig",
+                            "brand": "Enhet",
+                            "category": "Test"
+                        })
     def test_find_device_list_user_found(self, mock, mock2):
         device_list=[{
                             "prod_id": 123,
@@ -410,8 +416,6 @@ class TestJsonDatabase(unittest.TestCase):
                 ])
     def test_find_device_list_user_no_user_found(self, mock):
         username = "InvalidUser"
-        device = Device.Device(123, "Gyldig", "Enhet", "Test")
-        device_list=[device.getDict()]
         find_device_list = self.database.find_device_list_user(username)
         self.assertEqual(find_device_list, [])
 
@@ -434,6 +438,9 @@ class TestJsonDatabase(unittest.TestCase):
                     }
                 ])
     def test_find_device_list_user_no_device_list(self, mock):
+        username = "User2"
+        find_device_list = self.database.find_device_list_user(username)
+        self.assertEqual(find_device_list, [])
         
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

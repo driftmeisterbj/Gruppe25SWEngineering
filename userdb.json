@@ -44,7 +44,7 @@
                 "name": "B36CT80SNS",
                 "brand": "Bosch",
                 "category": "Fridge",
-                "on": false,
+                "on": true,
                 "temperature": 4
             }
         ]
