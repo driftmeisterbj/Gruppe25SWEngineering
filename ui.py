@@ -380,19 +380,27 @@ def create_home_page(username):
 
     def on_configure_device(evt):
         index = listbox.GetSelection()
-        device_list = db.find_device_list_user(username)
-        selected_device = device_list[index]
-        #Gjør om til objekt
-        device = db.recreate_object(selected_device)
-        create_configure_device_page(username, device)
+        if index != -1:
+            device_list = db.find_device_list_user(username)
+            selected_device = device_list[index]
+            #Gjør om til objekt
+            device = db.recreate_object(selected_device)
+            create_configure_device_page(username, device)
+
+        else:
+            return
 
     def on_remove_device(evt):
-        index = listbox.GetSelection()
-        device_list = db.find_device_list_user(username)
-        selected_device = device_list[index]
-        device = db.recreate_object(selected_device)
-        db.delete_device_from_user(username, device)
-        create_home_page(username)
+        if index != -1:
+            index = listbox.GetSelection()
+            device_list = db.find_device_list_user(username)
+            selected_device = device_list[index]
+            device = db.recreate_object(selected_device)
+            db.delete_device_from_user(username, device)
+            create_home_page(username)
+        
+        else:
+            return
 
     add_device_btn = wx.Button(main_dialog,label="Add new device",pos=[360,150])
     add_device_btn.Bind(wx.EVT_BUTTON, on_add_device)

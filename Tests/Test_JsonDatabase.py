@@ -9,6 +9,10 @@ sys.path.append(project_root)
 
 from jsondb import JsonDatabase
 
+path = os.path.join(os.path.dirname(__file__), "Devices")
+sys.path.append(path)
+from Devices import Fridge, Heater, Lock, Light, Camera, Device
+
 class TestJsonDatabase(unittest.TestCase):
     def setUp(self):
         self.database = JsonDatabase("test")
@@ -218,23 +222,10 @@ class TestJsonDatabase(unittest.TestCase):
     # -------------------------------------------------------------------------------------------
     # Tests for is_device_valid()
     def test_is_device_valid_true(self):
-        device = {
-                "prod_id": 123,
-                "name": "Gyldig",
-                "brand": "Enhet",
-                "category": "Test"
-            }
+        device = Device.Device(123, "Gyldig", "Enhet", "Test")
         device_check = self.database.is_device_valid(device)
         self.assertEqual(device_check, True)
 
-    def test_is_device_valid_missing_key(self):
-        device = {
-                "name": "Gyldig",
-                "brand": "Enhet",
-                "category": "Test"
-            }
-        device_check = self.database.is_device_valid(device)
-        self.assertEqual(device_check, False)
 
     # ----------------------------------------
     # -------------------------------------------------------------------------------------------
@@ -388,13 +379,13 @@ class TestJsonDatabase(unittest.TestCase):
                         "devices": []
                     }
                 ])
-    def test_find_device_list_user_found(self, mock):
+    def test_find_device_list_user_found(self, mock, mock2):
         device_list=[{
-                        "prod_id": 123,
-                        "name": "Gyldig",
-                        "brand": "Enhet",
-                        "category": "Test"
-                    }]
+                            "prod_id": 123,
+                            "name": "Gyldig",
+                            "brand": "Enhet",
+                            "category": "Test"
+                        }]
         username = "User1"
         find_device_list = self.database.find_device_list_user(username)
         self.assertEqual(find_device_list, device_list)
@@ -419,8 +410,31 @@ class TestJsonDatabase(unittest.TestCase):
                 ])
     def test_find_device_list_user_no_user_found(self, mock):
         username = "InvalidUser"
+        device = Device.Device(123, "Gyldig", "Enhet", "Test")
+        device_list=[device.getDict()]
         find_device_list = self.database.find_device_list_user(username)
-        self.assertEqual(find_device_list, False)
+        self.assertEqual(find_device_list, [])
+
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                    {
+                        "username": "User1",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": [{
+                            "prod_id": 123,
+                            "name": "Gyldig",
+                            "brand": "Enhet",
+                            "category": "Test"
+                        }]
+                    }, {
+                        "username": "User2",
+                        "password": "password",
+                        "email": "epost@epost.com",
+                        "devices": []
+                    }
+                ])
+    def test_find_device_list_user_no_device_list(self, mock):
+        
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------

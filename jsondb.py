@@ -313,7 +313,6 @@ class JsonDatabase():
             return device_list
 
         else:
-            print("user_index not found")
             return []
 
     def remove_duplicate_devices_from_user(self, username):
