@@ -300,12 +300,8 @@ class TestJsonDatabase(unittest.TestCase):
                     }
                 ])
     def test_add_device_to_user_added(self, mock):
-        device = {
-                "prod_id": 123,
-                "name": "Gyldig",
-                "brand": "Enhet",
-                "category": "Test"
-            }
+        device = Device.Device(123, "Gyldig", "Enhet", "Test")
+        
         username = "User1"
         add_device = self.database.add_device_to_user(username, device)
         self.assertEqual(add_device, True)
@@ -325,9 +321,7 @@ class TestJsonDatabase(unittest.TestCase):
                 ])
     @mock.patch("jsondb.JsonDatabase.is_device_valid", return_value=False)
     def test_add_device_to_user_invalid_device(self, mock, mock2):
-        device = {
-                
-            }
+        device = {}
         username = "User1"
         add_device = self.database.add_device_to_user(username, device)
         self.assertEqual(add_device, "Device invalid")
@@ -347,12 +341,7 @@ class TestJsonDatabase(unittest.TestCase):
                 ])
     @mock.patch("jsondb.JsonDatabase.find_user_index", return_value=-1)
     def test_add_device_to_user_cannot_find_user(self, mock, mock2):
-        device = {
-                "prod_id": 123,
-                "name": "Gyldig",
-                "brand": "Enhet",
-                "category": "Test"
-            }
+        device = Device.Device(123, "Gyldig", "Enhet", "Test")
         username = "User1"
         add_device = self.database.add_device_to_user(username, device)
         self.assertEqual(add_device, False)
@@ -519,12 +508,7 @@ class TestJsonDatabase(unittest.TestCase):
                     }
                 ])
     def test_delete_device_from_user_deleted(self, mock):
-        device = {
-                    "prod_id": 123,
-                    "name": "Gyldig",
-                    "brand": "Enhet",
-                    "category": "Test"
-                }
+        device = Device.Device(123, "Gyldig", "Enhet", "Test")
         delete_device = self.database.delete_device_from_user("User1", device)
         self.assertEqual(delete_device, True)
 
@@ -547,12 +531,7 @@ class TestJsonDatabase(unittest.TestCase):
                     }
                 ])
     def test_delete_device_from_user_user_not_found(self, mock):
-        device = {
-                    "prod_id": 123,
-                    "name": "Gyldig",
-                    "brand": "Enhet",
-                    "category": "Test"
-                }
+        device = device = Device.Device(123, "Gyldig", "Enhet", "Test")
         delete_device = self.database.delete_device_from_user("NonUser", device)
         self.assertEqual(delete_device, False)
 
@@ -575,12 +554,7 @@ class TestJsonDatabase(unittest.TestCase):
                     }
                 ])
     def test_delete_device_from_user_device_not_found(self, mock):
-        device = {
-                    "prod_id": 69,
-                    "name": "Ikke",
-                    "brand": "En",
-                    "category": "Enhet"
-                }
+        device = Device.Device(69, "Ikke", "En", "Enhet")
         delete_device = self.database.delete_device_from_user("User1", device)
         self.assertEqual(delete_device, "Device could not be found")
 
