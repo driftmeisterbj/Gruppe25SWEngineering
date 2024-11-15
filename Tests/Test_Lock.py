@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from smart_lock import SmartLock
+from Lock import SmartLock
 
 class TestSmartLock(unittest.TestCase):
     
