@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 from Device import Device
-from smart_camera import SmartCamera
+from Camera import SmartCamera
 
 class TestSmartCamera(unittest.TestCase):
 
