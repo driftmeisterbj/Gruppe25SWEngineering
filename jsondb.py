@@ -396,6 +396,40 @@ class JsonDatabase():
             user = users[user_index]
             device_list = user["devices"]
             
+            """
+            device_index = -1
+            counter = 0
+            for device_in_list in device_list:
+                if device_in_list == device:
+                    device_index = counter
+                counter += 1
+
+            if device_index != -1:
+                device_list.pop(device_index)
+            """
+
+            device_dict = device.getDict()
+
+            try:
+                device_list.remove(device_dict)
+            except:
+                return "Device could not be found"
+            
+            data = {
+                "username": user["username"],
+                "password": user["password"],
+                "email": user["email"],
+                "devices": device_list
+            }
+
+            user = data
+            users[user_index] = user
+            JsonReadWrite.write(self.filename, users)
+            return True
+
+        else:
+            return False
+            
     #Hver gang det leses fra json blir enhetene omgjort fra objekter til dictionaries
     def recreate_object(self,device_dict):
         category = device_dict['category']
