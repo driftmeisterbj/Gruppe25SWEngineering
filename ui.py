@@ -492,6 +492,18 @@ def create_configure_device_page(username, device):
     if device_temperature != None:
         temperature = wx.StaticText(main_dialog, label=f"Temperature: {device_temperature}", pos=[100, 230], style=wx.ALIGN_LEFT)
         temperature.SetForegroundColour(wx.Colour(255, 255, 255))
+        #Basically en kopi av set_brighntess
+        def on_set_temperature( value):
+            device.set_temperature(value)
+            create_configure_device_page(username,device)
+
+        decrease_temperature = wx.Button(main_dialog, label=f"-", pos=[190, 225],size=(25,25))
+        decrease_temperature.Bind(wx.EVT_BUTTON, lambda evt: on_set_temperature('-'))
+
+        increase_temperature = wx.Button(main_dialog, label=f"+", pos=[215, 225],size=(25,25))
+        increase_temperature.Bind(wx.EVT_BUTTON, lambda evt: on_set_temperature('+'))
+
+
     if device_status != None:
         status = wx.StaticText(main_dialog, label=f"Status: {device_status}", pos=[100, 230], style=wx.ALIGN_LEFT)
         status.SetForegroundColour(wx.Colour(255, 255, 255))

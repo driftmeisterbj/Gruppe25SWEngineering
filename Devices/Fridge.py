@@ -5,6 +5,17 @@ class Fridge(Device):
         super().__init__(prod_id, name, brand, "Fridge")
         self.temperature = temperature
 
+
+    def set_temperature(self, new_temperature):
+        if new_temperature == '+':
+            if not self.temperature >= 12:
+                self.temperature += 1
+        elif new_temperature == '-':
+            if not self.temperature <= 2:
+                self.temperature -= 1
+
+
+"""
     def set_temperature(self, new_temp):
         try:
             new_temp = int(new_temp)
@@ -16,7 +27,10 @@ class Fridge(Device):
                 
         except ValueError:
             raise ValueError("Vennligst skriv inn en gyldig heltallverdi for temperaturen.")
-            
+           """
+
+       
+
 """
     def status(self):
         if self.on:

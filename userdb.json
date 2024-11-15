@@ -38,6 +38,14 @@
                 "on": false,
                 "status": "Unlocked",
                 "entry_code": "0727"
+            },
+            {
+                "prod_id": 14,
+                "name": "B36CT80SNS",
+                "brand": "Bosch",
+                "category": "Fridge",
+                "on": false,
+                "temperature": 4
             }
         ]
     },
