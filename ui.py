@@ -391,8 +391,8 @@ def create_home_page(username):
             return
 
     def on_remove_device(evt):
+        index = listbox.GetSelection()
         if index != -1:
-            index = listbox.GetSelection()
             device_list = db.find_device_list_user(username)
             selected_device = device_list[index]
             device = db.recreate_object(selected_device)

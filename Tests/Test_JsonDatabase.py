@@ -12,7 +12,6 @@ from jsondb import JsonDatabase
 path = os.path.join(os.path.dirname(__file__), "Devices")
 sys.path.append(path)
 from Devices import Fridge, Heater, Lock, Light, Camera, Device
-
 class TestJsonDatabase(unittest.TestCase):
     def setUp(self):
         self.database = JsonDatabase("test")

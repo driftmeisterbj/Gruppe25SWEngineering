@@ -28,7 +28,7 @@
                 "on": false,
                 "resolution": "1080p",
                 "status": "Inactive",
-                "motion_detection": false
+                "motion_detection": true
             },
             {
                 "prod_id": 34,
@@ -46,6 +46,14 @@
                 "category": "Fridge",
                 "on": true,
                 "temperature": 4
+            },
+            {
+                "prod_id": 4,
+                "name": " LED Strip Light",
+                "brand": "Govee",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
             }
         ]
     },
