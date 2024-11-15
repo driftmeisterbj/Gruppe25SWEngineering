@@ -11,4 +11,3 @@ class Device:
 
     def turn_on_device(self):
         self.on = True
-        return self.on

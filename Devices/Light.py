@@ -5,25 +5,21 @@ class Light(Device):
         self.brightness = brightness
         #self.on = False
         
+
+
     def set_brightness(self, new_brightness):
-        try:
-            new_brightness = int(new_brightness)  # Konvertere til heltall
-            if 1 <= new_brightness <= 10:
-                self.brightness = new_brightness
-                print(f"{self.brand} {self.name} brightness set to: {self.brightness}")
-            elif new_brightness < 0:
-                self.brightness = 0
-                print(f"{self.brand} {self.name} brightness set to: {self.brightness}")
-            elif new_brightness > 10:
-                self.brightness = 10
-                print(f"{self.brand} {self.name} brightness set to: {self.brightness}")
+        if new_brightness == '+':
+            if not self.brightness >= 10:
+                self.brightness += 1
+        elif new_brightness == '-':
+            if not self.brightness <= 0:
+                self.brightness -= 1
+    
 
-
-        except ValueError:
-            print("Brightness must be number")
-
+"""
     def status(self):
         if self.on:
             return f"{self.brand} {self.name} is turned on, brightness: {self.brightness}"
         else:
             return f"{self.brand} {self.name} is off."
+"""

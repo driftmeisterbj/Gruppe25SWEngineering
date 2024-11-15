@@ -468,8 +468,6 @@ def create_configure_device_page(username, device):
 
         create_configure_device_page(username, device)
 
-
-
     power_btn = wx.Button(main_dialog, label=f"{toggle_power}", pos=[180, 195])
     power_btn.Bind(wx.EVT_BUTTON, on_toggle_power)
 
@@ -478,6 +476,19 @@ def create_configure_device_page(username, device):
     if device_brightness != None:
         brightness = wx.StaticText(main_dialog, label=f"Brightness: {device_brightness}", pos=[100, 230], style=wx.ALIGN_LEFT)
         brightness.SetForegroundColour(wx.Colour(255, 255, 255))
+
+        #Istedenfor å ha to set_brighntess for +/- så tar den i mot et parameter som sendes av knappene
+        def on_set_brightness( value):
+            device.set_brightness(value)
+            create_configure_device_page(username,device)
+
+        decrease_brightness = wx.Button(main_dialog, label=f"-", pos=[180, 225],size=(25,25))
+        decrease_brightness.Bind(wx.EVT_BUTTON, lambda evt: on_set_brightness('-'))
+
+        increase_brightness = wx.Button(main_dialog, label=f"+", pos=[205, 225],size=(25,25))
+        increase_brightness.Bind(wx.EVT_BUTTON, lambda evt: on_set_brightness('+'))
+
+
     if device_temperature != None:
         temperature = wx.StaticText(main_dialog, label=f"Temperature: {device_temperature}", pos=[100, 230], style=wx.ALIGN_LEFT)
         temperature.SetForegroundColour(wx.Colour(255, 255, 255))
