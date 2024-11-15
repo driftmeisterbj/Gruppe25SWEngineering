@@ -378,7 +378,6 @@ def create_home_page(username):
     def on_add_device(evt):
         create_add_new_device_page(username)
 
-    #Optimize:------------------------------
     def on_configure_device(evt):
         index = listbox.GetSelection()
         device_list = db.find_device_list_user(username)
@@ -415,7 +414,9 @@ def create_home_page(username):
 
 
 def create_configure_device_page(username, device):
+    db.update_device_data(username,device)
     destroy_everything()
+
 
 
     # Title for the configure page
@@ -465,6 +466,8 @@ def create_configure_device_page(username, device):
             device.turn_off_device()
         else:
             device.turn_on_device()
+
+        db.add_device_to_user(username,device)
 
         create_configure_device_page(username, device)
 

@@ -439,9 +439,37 @@ class JsonDatabase():
             )
 
 
+    #Update device_data
+    def update_device_data(self,username,device):
+        user_index = self.find_user_index(username)
+
+        users = self.read_json()
+        user = users[user_index]
+        device_list = user['devices']
+
+        for i, user_device in enumerate(device_list):
+            if user_device['prod_id'] == device.prod_id:
+                user_device["name"] = device.name
+                user_device["brand"] = device.brand
+                user_device["category"] = device.category
+                user_device["on"] = device.on
+
+                if device.category == "Fridge" or device.category == "Heater":
+                    user_device["temperature"] = device.temperature
+                elif device.category == "Light":
+                    user_device["brightness"] = device.brightness
+                elif device.category == "Lock":
+                    user_device["status"] = device.status
+                    user_device["entry_code"] = device.entry_code
+                elif device.category == "Camera":
+                    user_device["resolution"] = device.resolution
+                    user_device["status"] = device.status
+                    user_device["motion_detection"] = device.motion_detection
+                
+                JsonReadWrite.write(self.filename, users)
 
 
-            """
+        """
             device_index = -1
             counter = 0
             for device_in_list in device_list:
@@ -451,7 +479,6 @@ class JsonDatabase():
 
             if device_index != -1:
                 device_list.pop(device_index)
-            """
 
             try:
                 device_list.remove(device)
@@ -472,6 +499,7 @@ class JsonDatabase():
 
         else:
             return False
+            """
 
     # Endre på dataen til et device fra bruker sin device-liste
     def modify_device_information():
@@ -514,6 +542,8 @@ class JsonDatabase():
                 return device
             
         return False
+
+    
 
     ################
     #test get_current_user
