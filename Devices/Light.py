@@ -14,6 +14,18 @@ class Light(Device):
         elif new_brightness == '-':
             if not self.brightness <= 0:
                 self.brightness -= 1
+
+    def getDict(self):
+        device_dict = {
+            "prod_id": self.prod_id,
+            "name": self.name,
+            "brand": self.brand,
+            "category": self.category,
+            "on": self.on,
+            "brightness": self.brightness
+        }
+
+        return device_dict
     
 
 """

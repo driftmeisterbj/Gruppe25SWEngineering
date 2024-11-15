@@ -40,3 +40,15 @@ class Heater(Device):
         else:
             return f"{self.brand} {self.name} is off."
 """
+
+    def getDict(self):
+        device_dict = {
+            "prod_id": self.prod_id,
+            "name": self.name,
+            "brand": self.brand,
+            "category": self.category,
+            "on": self.on,
+            "temperature": self.temperature
+        }
+
+        return device_dict

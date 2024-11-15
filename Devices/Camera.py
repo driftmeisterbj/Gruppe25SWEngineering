@@ -37,3 +37,17 @@ class Camera(Device):
     def status(self):
         motion_state = "enabled" if self.motion_detection else "disabled"
         return f"{self.brand} {self.name} is currently {self.status}. Resolution: {self.resolution}. Motion Detection: {motion_state}."
+    
+    def getDict(self):
+        device_dict = {
+            "prod_id": self.prod_id,
+            "name": self.name,
+            "brand": self.brand,
+            "category": self.category,
+            "on": self.on,
+            "resolution": self.resolution,
+            "status": self.status,
+            "motion_detection": self.motion_detection
+        }
+
+        return device_dict
