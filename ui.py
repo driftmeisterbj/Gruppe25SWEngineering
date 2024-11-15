@@ -507,21 +507,28 @@ def create_configure_device_page(username, device):
     if device_status != None:
         status = wx.StaticText(main_dialog, label=f"Status: {device_status}", pos=[100, 230], style=wx.ALIGN_LEFT)
         status.SetForegroundColour(wx.Colour(255, 255, 255))
-        def on_lock(evt):
-            if device.status == 'Unlocked':
-                device.lock()
-            else:
-                dialog = wx.TextEntryDialog(main_dialog, "Enter the unlock code:", "Unlock Device")
-                if dialog.ShowModal() == wx.ID_OK:
-                    unlock_code = dialog.GetValue()
-                    if not device.unlock(unlock_code):
-                        wx.MessageBox("Incorrect code entered", "Incorrect code", wx.OK | wx.ICON_INFORMATION)
 
-                dialog.Destroy()
+        def on_change_status(evt):
+            if device.category == 'Lock':
+                if device.status == 'Unlocked':
+                    device.lock()
+                else:
+                    dialog = wx.TextEntryDialog(main_dialog, "Enter the unlock code:", "Unlock Device")
+                    if dialog.ShowModal() == wx.ID_OK:
+                        unlock_code = dialog.GetValue()
+                        if not device.unlock(unlock_code):
+                            wx.MessageBox("Incorrect code entered", "Incorrect code", wx.OK | wx.ICON_INFORMATION)
+                    dialog.Destroy()
+            elif device.category == 'Camera':
+                if device.status == 'Active':
+                    device.deactivate()
+                else:
+                    device.activate()
+                    
             create_configure_device_page(username,device)
 
-        lock_btn = wx.Button(main_dialog, label=f"Change", pos=[205, 225])
-        lock_btn.Bind(wx.EVT_BUTTON, on_lock)
+        change_status = wx.Button(main_dialog, label=f"Change", pos=[205, 225])
+        change_status.Bind(wx.EVT_BUTTON, on_change_status)
 
     if device_entry_code != None:
         entry_code = wx.StaticText(main_dialog, label=f"Entry code: {device_entry_code}", pos=[100, 260], style=wx.ALIGN_LEFT)
