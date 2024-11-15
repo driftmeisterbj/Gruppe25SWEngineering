@@ -404,7 +404,7 @@ class JsonDatabase():
             return False
             
     #Hver gang det leses fra json blir enhetene omgjort fra objekter til dictionaries
-    def recreate_object(self,device_dict):
+    def recreate_object(self, device_dict):
         category = device_dict['category']
 
         if category == 'Light':
