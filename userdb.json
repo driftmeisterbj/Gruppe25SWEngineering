@@ -46,6 +46,22 @@
                 "category": "Fridge",
                 "on": false,
                 "temperature": 4
+            },
+            {
+                "prod_id": 1,
+                "name": "Hue White and Color Ambiance",
+                "brand": "Philips",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            },
+            {
+                "prod_id": 10,
+                "name": "Yeelight  LED",
+                "brand": "Yeelight",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
             }
         ]
     },

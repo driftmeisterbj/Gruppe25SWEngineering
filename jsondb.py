@@ -245,9 +245,10 @@ class JsonDatabase():
     # Sjekker at alle nøklene stemmer med hva en enhet skal inneholde.
     # Hvis enheten inneholder alle nøklene returneres True. Ellers returneres Falses
     def is_device_valid(self, device):
+        device_dict = device.getDict()
         required_keys = ['prod_id','name','brand','category']
         for key in required_keys:
-            if key not in device:
+            if key not in device_dict:
                 return False
         return True
 
@@ -270,44 +271,16 @@ class JsonDatabase():
     def add_device_to_user(self, username, device):
         user_index = self.find_user_index(username)
 
-        """
         if not self.is_device_valid(device):
             return 'Device invalid'
-            """
 
         if user_index != -1:
             users = self.read_json()
             user = users[user_index]
             device_list = user["devices"]
-            # device_list.append(device)
+            device_data = device.getDict()
 
-            device_data = {
-                "prod_id": device.prod_id,
-                "name": device.name,
-                "brand": device.brand,
-                "category": device.category,
-                "on": device.on
-            }
-
-            if device.category == "Fridge":
-                device_data["temperature"] = device.temperature
-            elif device.category == "Heater":
-                device_data["temperature"] = device.temperature
-            elif device.category == "Light":
-                device_data["brightness"] = device.brightness
-            elif device.category == "Lock":
-                device_data["status"] = device.status
-                device_data["entry_code"] = device.entry_code
-            elif device.category == "Camera":
-                device_data["resolution"] = device.resolution
-                device_data["status"] = device.status
-                device_data["motion_detection"] = device.motion_detection
-
-
-            else:
-                return "Unknown category"
-
-            device_exists = any(d['prod_id'] == device_data['prod_id'] for d in device_list)
+            device_exists = any(d['prod_id'] == device_data["prod_id"] for d in device_list)
             if not device_exists:
                 device_list.append(device_data)
             else:
