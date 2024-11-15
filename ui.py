@@ -386,6 +386,14 @@ def create_home_page(username):
         device = db.recreate_object(selected_device)
         create_configure_device_page(username, device)
 
+    def on_remove_device(evt):
+        index = listbox.GetSelection()
+        device_list = db.find_device_list_user(username)
+        selected_device = device_list[index]
+        device = db.recreate_object(selected_device)
+        db.delete_device_from_user(username, device)
+        create_home_page(username)
+
     add_device_btn = wx.Button(main_dialog,label="Add new device",pos=[360,150])
     add_device_btn.Bind(wx.EVT_BUTTON, on_add_device)
 
@@ -393,12 +401,15 @@ def create_home_page(username):
     display_app_name()
     display_name(username)
 
-    configure_device_btn = wx.Button(main_dialog,label="Configure Device",pos=[360,170])
+    configure_device_btn = wx.Button(main_dialog,label="Configure Device",pos=[360,180])
     configure_device_btn.Bind(wx.EVT_BUTTON, on_configure_device)
+
+    remove_device_btn = wx.Button(main_dialog,label="Remove Device",pos=[360,210])
+    remove_device_btn.Bind(wx.EVT_BUTTON, on_remove_device)
 
     #Creates list of already added devices
     def make_listbox_device_list(list):
-        db.remove_duplicate_devices_from_user( username)
+        db.remove_duplicate_devices_from_user(username)
         new_list = []
         for device in list:
             new_list.append(device.get("name") + " " + device.get("brand"))
