@@ -245,9 +245,10 @@ class JsonDatabase():
     # Sjekker at alle nøklene stemmer med hva en enhet skal inneholde.
     # Hvis enheten inneholder alle nøklene returneres True. Ellers returneres Falses
     def is_device_valid(self, device):
+        device_dict = device.getDict()
         required_keys = ['prod_id','name','brand','category']
         for key in required_keys:
-            if key not in device:
+            if key not in device_dict:
                 return False
         return True
 
@@ -270,44 +271,16 @@ class JsonDatabase():
     def add_device_to_user(self, username, device):
         user_index = self.find_user_index(username)
 
-        """
         if not self.is_device_valid(device):
             return 'Device invalid'
-            """
 
         if user_index != -1:
             users = self.read_json()
             user = users[user_index]
             device_list = user["devices"]
-            # device_list.append(device)
+            device_data = device.getDict()
 
-            device_data = {
-                "prod_id": device.prod_id,
-                "name": device.name,
-                "brand": device.brand,
-                "category": device.category,
-                "on": device.on
-            }
-
-            if device.category == "Fridge":
-                device_data["temperature"] = device.temperature
-            elif device.category == "Heater":
-                device_data["temperature"] = device.temperature
-            elif device.category == "Light":
-                device_data["brightness"] = device.brightness
-            elif device.category == "Lock":
-                device_data["status"] = device.status
-                device_data["entry_code"] = device.entry_code
-            elif device.category == "Camera":
-                device_data["resolution"] = device.resolution
-                device_data["status"] = device.status
-                device_data["motion_detection"] = device.motion_detection
-
-
-            else:
-                return "Unknown category"
-
-            device_exists = any(d['prod_id'] == device_data['prod_id'] for d in device_list)
+            device_exists = any(d['prod_id'] == device_data["prod_id"] for d in device_list)
             if not device_exists:
                 device_list.append(device_data)
             else:
@@ -340,7 +313,6 @@ class JsonDatabase():
             return device_list
 
         else:
-            print("user_index not found")
             return []
 
     def remove_duplicate_devices_from_user(self, username):
@@ -396,8 +368,42 @@ class JsonDatabase():
             user = users[user_index]
             device_list = user["devices"]
             
+            """
+            device_index = -1
+            counter = 0
+            for device_in_list in device_list:
+                if device_in_list == device:
+                    device_index = counter
+                counter += 1
+
+            if device_index != -1:
+                device_list.pop(device_index)
+            """
+
+            device_dict = device.getDict()
+
+            try:
+                device_list.remove(device_dict)
+            except:
+                return "Device could not be found"
+            
+            data = {
+                "username": user["username"],
+                "password": user["password"],
+                "email": user["email"],
+                "devices": device_list
+            }
+
+            user = data
+            users[user_index] = user
+            JsonReadWrite.write(self.filename, users)
+            return True
+
+        else:
+            return False
+            
     #Hver gang det leses fra json blir enhetene omgjort fra objekter til dictionaries
-    def recreate_object(self,device_dict):
+    def recreate_object(self, device_dict):
         category = device_dict['category']
 
         if category == 'Light':
@@ -437,6 +443,8 @@ class JsonDatabase():
             status=device_dict.get("status", "Inactive"),
             motion_detection=device_dict.get("motion_detection", False)
             )
+        else:
+            return False
 
 
     #Update device_data

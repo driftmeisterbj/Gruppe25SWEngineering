@@ -11,3 +11,13 @@ class Device:
 
     def turn_on_device(self):
         self.on = True
+
+    def getDict(self):
+        device_dict = {
+            "prod_id": self.prod_id,
+            "name": self.name,
+            "brand": self.brand,
+            "category": self.category,
+        }
+
+        return device_dict
