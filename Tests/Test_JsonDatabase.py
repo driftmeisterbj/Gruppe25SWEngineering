@@ -483,7 +483,31 @@ class TestJsonDatabase(unittest.TestCase):
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tests for create_new_device()
-    
+    # https://stackoverflow.com/questions/2225038/determine-the-type-of-an-object
+    def test_create_new_device_fridge(self):
+        device = self.database.create_new_device(1, "Name", "Brand", "Fridge")
+        self.assertIsInstance(device, Fridge.Fridge)
+
+    def test_create_new_device_lock(self):
+        device = self.database.create_new_device(1, "Name", "Brand", "Lock")
+        self.assertIsInstance(device, Lock.Lock)
+
+    def test_create_new_device_camera(self):
+        device = self.database.create_new_device(1, "Name", "Brand", "Camera")
+        self.assertIsInstance(device, Camera.Camera)
+
+    def test_create_new_device_heater(self):
+        device = self.database.create_new_device(1, "Name", "Brand", "Heater")
+        self.assertIsInstance(device, Heater.Heater)
+
+    def test_create_new_device_light(self):
+        device = self.database.create_new_device(1, "Name", "Brand", "Light")
+        self.assertIsInstance(device, Light.Light)
+
+    def test_create_new_device_no_category(self):
+        device = self.database.create_new_device(1, "Name", "Brand", "")
+        self.assertEqual(device, False)
+
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
