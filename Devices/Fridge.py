@@ -14,14 +14,8 @@ class Fridge(Device):
             if not self.temperature <= 2:
                 self.temperature -= 1
 
-    def getDict(self):
-        device_dict = {
-            "prod_id": self.prod_id,
-            "name": self.name,
-            "brand": self.brand,
-            "category": self.category,
-            "on": self.on,
-            "temperature": self.temperature
-        }
+    def get_dict(self):
+        device_dict = super().get_dict()
+        device_dict['temperature'] = self.temperature
 
         return device_dict

@@ -12,4 +12,13 @@ class Device:
     def turn_on_device(self):
         self.on = True
 
+    def get_dict(self):
+         return {
+            "prod_id": self.prod_id,
+            "name": self.name,
+            "brand": self.brand,
+            "category": self.category,
+            "on": self.on,
+        }
+
     

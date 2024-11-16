@@ -33,16 +33,10 @@ class Camera(Device):
         else:
             self.motion_detection = False
 
-    def getDict(self):
-        device_dict = {
-            "prod_id": self.prod_id,
-            "name": self.name,
-            "brand": self.brand,
-            "category": self.category,
-            "on": self.on,
-            "resolution": self.resolution,
-            "status": self.status,
-            "motion_detection": self.motion_detection
-        }
+    def get_dict(self):
+        device_dict = super().get_dict()
+        device_dict['resolution'] = self.resolution
+        device_dict['status'] = self.status
+        device_dict['motion_detection'] = self.motion_detection
 
         return device_dict
