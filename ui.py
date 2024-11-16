@@ -478,8 +478,6 @@ def create_configure_device_page(username, device):
         else:
             device.turn_on_device()
 
-        db.add_device_to_user(username,device)
-
         create_configure_device_page(username, device)
 
     power_btn = wx.Button(main_dialog, label=f"{toggle_power}", pos=[205, 195])
