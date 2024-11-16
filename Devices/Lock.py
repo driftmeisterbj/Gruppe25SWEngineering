@@ -35,7 +35,3 @@ class Lock(Device):
         }
 
         return device_dict
-"""
-    def get_status(self):
-        return f"{self.brand}, {self.name} is currently {self.status}."
-"""

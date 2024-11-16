@@ -25,28 +25,3 @@ class Fridge(Device):
         }
 
         return device_dict
-
-
-"""
-    def set_temperature(self, new_temp):
-        try:
-            new_temp = int(new_temp)
-            if 2 <= new_temp <= 12:
-                self.temperature = new_temp
-                print(f"{self.brand} {self.name} is now set to {self.temperature} Celcius")
-            else:
-                print("Invalid temperature, must be between 2 and 12 degrees")
-                
-        except ValueError:
-            raise ValueError("Vennligst skriv inn en gyldig heltallverdi for temperaturen.")
-           """
-
-       
-
-"""
-    def status(self):
-        if self.on:
-            return f"{self.brand} {self.name} is on. Current temperature: {self.temperature} Celcius"
-        else:
-            return f"{self.brand} {self.name} is off"
-"""
