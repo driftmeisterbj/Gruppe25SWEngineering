@@ -443,6 +443,8 @@ class JsonDatabase():
             status=device_dict.get("status", "Inactive"),
             motion_detection=device_dict.get("motion_detection", False)
             )
+        else:
+            return False
 
 
     #Update device_data

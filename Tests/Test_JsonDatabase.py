@@ -584,6 +584,76 @@ class TestJsonDatabase(unittest.TestCase):
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
+    # Tests for recreate_object()
+    def test_recreate_object_light(self):
+        device_dict = {
+            "prod_id": 1,
+            "name": "Name",
+            "brand": "Brand",
+            "category": "Light"
+        }
+        
+        device = self.database.recreate_object(device_dict)
+        self.assertIsInstance(device, Light.Light)
+
+    def test_recreate_object_fridge(self):
+        device_dict = {
+            "prod_id": 1,
+            "name": "Name",
+            "brand": "Brand",
+            "category": "Fridge"
+        }
+        
+        device = self.database.recreate_object(device_dict)
+        self.assertIsInstance(device, Fridge.Fridge)
+
+    def test_recreate_object_heater(self):
+        device_dict = {
+            "prod_id": 1,
+            "name": "Name",
+            "brand": "Brand",
+            "category": "Heater"
+        }
+        
+        device = self.database.recreate_object(device_dict)
+        self.assertIsInstance(device, Heater.Heater)
+
+    def test_recreate_object_lock(self):
+        device_dict = {
+            "prod_id": 1,
+            "name": "Name",
+            "brand": "Brand",
+            "category": "Lock"
+        }
+        
+        device = self.database.recreate_object(device_dict)
+        self.assertIsInstance(device, Lock.Lock)
+
+    def test_recreate_object_camera(self):
+        device_dict = {
+            "prod_id": 1,
+            "name": "Name",
+            "brand": "Brand",
+            "category": "Camera"
+        }
+        
+        device = self.database.recreate_object(device_dict)
+        self.assertIsInstance(device, Camera.Camera)
+
+    def test_recreate_object_none(self):
+        device_dict = {
+            "prod_id": 1,
+            "name": "Name",
+            "brand": "Brand",
+            "category": ""
+        }
+        
+        device = self.database.recreate_object(device_dict)
+        self.assertEqual(device, False)
+
+    # -------------------------------------------------------------------------------------------
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -------------------------------------------------------------------------------------------
     # Tests for modify_device_information()
 
     # -------------------------------------------------------------------------------------------
