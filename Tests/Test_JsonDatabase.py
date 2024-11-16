@@ -660,6 +660,104 @@ class TestJsonDatabase(unittest.TestCase):
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tests for get_current_user()
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                        {
+                            "username": "User1",
+                            "password": "password",
+                            "email": "epost@epost.com",
+                            "devices": [{
+                                "prod_id": 1,
+                                "name": "Name1",
+                                "brand": "Brand1",
+                                "category": "Test"
+                            }, {
+                                "prod_id": 2,
+                                "name": "Name2",
+                                "brand": "Brand2",
+                                "category": "Test"
+                            }]
+                        }
+                    ])
+    def test_get_current_user_multiple_devices(self, mock):
+        user = {
+                "username": "User1",
+                "email": "epost@epost.com",
+                "devices": [{
+                    "prod_id": 1,
+                    "name": "Name1",
+                    "brand": "Brand1",
+                    "category": "Test"
+                }, {
+                    "prod_id": 2,
+                    "name": "Name2",
+                    "brand": "Brand2",
+                    "category": "Test"
+                }]}
+        current_user = self.database.get_current_user("User1")
+        self.assertEqual(current_user, user)
+
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                        {
+                            "username": "User1",
+                            "password": "password",
+                            "email": "epost@epost.com",
+                            "devices": [{
+                                "prod_id": 1,
+                                "name": "Name1",
+                                "brand": "Brand1",
+                                "category": "Test"
+                            }]
+                        }
+                    ])
+    def test_get_current_user_one_device(self, mock):
+        user = {
+                "username": "User1",
+                "email": "epost@epost.com",
+                "devices": [{
+                    "prod_id": 1,
+                    "name": "Name1",
+                    "brand": "Brand1",
+                    "category": "Test"
+                }]}
+        current_user = self.database.get_current_user("User1")
+        self.assertEqual(current_user, user)
+
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                        {
+                            "username": "User1",
+                            "password": "password",
+                            "email": "epost@epost.com",
+                            "devices": []
+                        }
+                    ])
+    def test_get_current_user_no_devices(self, mock):
+        user = {
+                "username": "User1",
+                "email": "epost@epost.com",
+                "devices": []}
+        current_user = self.database.get_current_user("User1")
+        self.assertEqual(current_user, user)
+
+    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+                        {
+                            "username": "User1",
+                            "password": "password",
+                            "email": "epost@epost.com",
+                            "devices": [{
+                                "prod_id": 1,
+                                "name": "Name1",
+                                "brand": "Brand1",
+                                "category": "Test"
+                            }]
+                        }
+                    ])
+    def test_get_current_user_no_user(self, mock):
+        user = {
+                "username": None,
+                "email": None,
+                "devices": []}
+        current_user = self.database.get_current_user("NonUser")
+        self.assertEqual(current_user, user)
 
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
