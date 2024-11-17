@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 import sys
 sys.path.append('../')
-sys.path.append('Devices/')
+sys.path.append('FDevices/')
 from Light import Light
 
 class TestLight(unittest.TestCase):

@@ -1,4 +1,4 @@
-from Device import Device
+from FDevice import Device
 
 class Heater(Device):
     def __init__(self, prod_id, name, brand, on=False, temperature=15):

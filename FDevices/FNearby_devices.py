@@ -1,8 +1,8 @@
-from Light import Light
-from Fridge import Fridge
-from Heater import Heater
-from Lock import Lock
-from Camera import Camera
+from FLight import Light
+from FFridge import Fridge
+from FHeater import Heater
+from FLock import Lock
+from FCamera import Camera
 import random
 
 counter = 0

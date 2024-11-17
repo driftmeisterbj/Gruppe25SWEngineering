@@ -5,7 +5,7 @@ import subprocess
 from jsondb import JsonDatabase, JsonReadWrite
 import os
 import sys
-sys.path.append('Devices/')
+sys.path.append('FDevices/')
 from Nearby_devices import lights,fridges,heaters,locks,cameras
 
 try:
@@ -373,7 +373,7 @@ def create_user_creation_page():
 def create_home_page(username):
     destroy_everything()
 
-    title = wx.StaticText(main_dialog, label="Your Devices",pos=[188,100], style=wx.ALIGN_CENTER)
+    title = wx.StaticText(main_dialog, label="Your FDevices",pos=[188,100], style=wx.ALIGN_CENTER)
     title.SetFont(wx.Font(12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD))
     title.SetForegroundColour(wx.Colour(255, 255, 255))
 

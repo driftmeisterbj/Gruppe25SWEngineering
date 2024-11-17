@@ -1,4 +1,4 @@
-from Device import Device
+from FDevice import Device
 
 class Camera(Device):
     def __init__(self, prod_id, name, brand, on=False, resolution="1080p", status="Inactive", motion_detection=False):
