@@ -23,19 +23,9 @@ class Lock(Device):
         else:
             return False
         
-    def getDict(self):
-        device_dict = {
-            "prod_id": self.prod_id,
-            "name": self.name,
-            "brand": self.brand,
-            "category": self.category,
-            "on": self.on,
-            "status": self.status,
-            "entry_code": self.entry_code
-        }
+    def get_dict(self):
+        device_dict = super().get_dict()
+        device_dict['status'] = self.status
+        device_dict['entry_code'] = self.entry_code
 
         return device_dict
-"""
-    def get_status(self):
-        return f"{self.brand}, {self.name} is currently {self.status}."
-"""
