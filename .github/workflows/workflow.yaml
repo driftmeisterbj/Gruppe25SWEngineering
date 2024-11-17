@@ -31,7 +31,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
-        run: python -m pip install unittest .
+        run: python -m pip install --upgrade pip
 
       - name: Run tests
         run: python -m unittest discover
