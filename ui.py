@@ -486,8 +486,6 @@ def create_configure_device_page(username, device):
         else:
             device.turn_on_device()
 
-        db.add_device_to_user(username,device)
-
         create_configure_device_page(username, device)
 
     power_btn = wx.Button(main_dialog, label=f"{toggle_power}", pos=[205, 195])
@@ -660,7 +658,7 @@ def create_add_new_device_page(username):
 
             if selected_device:
                 device = db.create_new_device(selected_device.prod_id, selected_device.name,
-                                          selected_device.brand, selected_device.category)
+                                          selected_device.brand, selected_device.category, selected_device.on)
                 db.add_device_to_user(username, device)
                 create_home_page(username)
 

@@ -1,8 +1,8 @@
 from Device import Device
 
 class Lock(Device):
-    def __init__(self, prod_id, name, brand, status="Unlocked", entry_code="0727"):
-        super().__init__(prod_id, name, brand, "Lock")
+    def __init__(self, prod_id, name, brand, on=False, status="Unlocked", entry_code="0727"):
+        super().__init__(prod_id, name, brand, "Lock", on)
         self.status = status
         self.entry_code = entry_code
 
@@ -23,19 +23,9 @@ class Lock(Device):
         else:
             return False
         
-    def getDict(self):
-        device_dict = {
-            "prod_id": self.prod_id,
-            "name": self.name,
-            "brand": self.brand,
-            "category": self.category,
-            "on": self.on,
-            "status": self.status,
-            "entry_code": self.entry_code
-        }
+    def get_dict(self):
+        device_dict = super().get_dict()
+        device_dict['status'] = self.status
+        device_dict['entry_code'] = self.entry_code
 
         return device_dict
-"""
-    def get_status(self):
-        return f"{self.brand}, {self.name} is currently {self.status}."
-"""

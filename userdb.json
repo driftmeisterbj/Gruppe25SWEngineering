@@ -25,9 +25,9 @@
                 "name": "Ring Spotlight Cam",
                 "brand": "Ring",
                 "category": "Camera",
-                "on": false,
+                "on": true,
                 "resolution": "1080p",
-                "status": "Inactive",
+                "status": "Active",
                 "motion_detection": true
             },
             {
@@ -44,7 +44,7 @@
                 "name": "B36CT80SNS",
                 "brand": "Bosch",
                 "category": "Fridge",
-                "on": true,
+                "on": false,
                 "temperature": 4
             },
             {
@@ -54,6 +54,14 @@
                 "category": "Light",
                 "on": false,
                 "brightness": 5
+            },
+            {
+                "prod_id": 3,
+                "name": "Wyze Bulb Color",
+                "brand": "Wyze",
+                "category": "Light",
+                "on": true,
+                "brightness": 8
             }
         ]
     },

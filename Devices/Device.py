@@ -1,10 +1,10 @@
 class Device:
-    def __init__(self, prod_id, name, brand, category):
+    def __init__(self, prod_id, name, brand, category, on=False):
         self.prod_id = prod_id
         self.name = name
         self.brand = brand
         self.category = category
-        self.on = False
+        self.on = on
 
     def turn_off_device(self):
         self.on = False
@@ -12,12 +12,13 @@ class Device:
     def turn_on_device(self):
         self.on = True
 
-    def getDict(self):
-        device_dict = {
+    def get_dict(self):
+         return {
             "prod_id": self.prod_id,
             "name": self.name,
             "brand": self.brand,
             "category": self.category,
+            "on": self.on,
         }
 
-        return device_dict
+    
