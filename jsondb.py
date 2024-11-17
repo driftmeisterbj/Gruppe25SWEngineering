@@ -341,21 +341,21 @@ class JsonDatabase():
             return True
 
     # Oprette nytt device
-    def create_new_device(self, prod_id, name, brand, category, on):
+    def create_new_device(self, prod_id, name, brand, category):
         if category == "Fridge":
-            return Fridge.Fridge(prod_id, name, brand, on)
+            return Fridge.Fridge(prod_id, name, brand)
         
         if category == "Lock":
-            return Lock.Lock(prod_id, name, brand, on)
+            return Lock.Lock(prod_id, name, brand)
 
         if category == "Camera":
-            return Camera.Camera(prod_id, name, brand, on)
+            return Camera.Camera(prod_id, name, brand)
         
         if category == "Heater":
-            return Heater.Heater(prod_id, name, brand, on)
+            return Heater.Heater(prod_id, name, brand)
         
         if category == "Light":
-            return Light.Light(prod_id, name, brand, on)
+            return Light.Light(prod_id, name, brand)
         
         return False
 

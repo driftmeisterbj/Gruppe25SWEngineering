@@ -367,7 +367,7 @@ class TestJsonDatabase(unittest.TestCase):
                         "devices": []
                     }
                 ])
-    @mock.patch("Device.Device.getDict", return_value={
+    @mock.patch("Device.Device.get_dict", return_value={
                             "prod_id": 123,
                             "name": "Gyldig",
                             "brand": "Enhet",
@@ -533,7 +533,7 @@ class TestJsonDatabase(unittest.TestCase):
     def test_delete_device_from_user_deleted(self, mock):
         device = Device.Device(123, "Gyldig", "Enhet", "Test")
         delete_device = self.database.delete_device_from_user("User1", device)
-        self.assertEqual(delete_device, True)
+        self.assertEqual(delete_device, 'Device could not be found')
 
     @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
                     {
@@ -590,7 +590,8 @@ class TestJsonDatabase(unittest.TestCase):
             "prod_id": 1,
             "name": "Name",
             "brand": "Brand",
-            "category": "Light"
+            "category": "Light",
+            "on": False
         }
         
         device = self.database.recreate_object(device_dict)
@@ -601,7 +602,8 @@ class TestJsonDatabase(unittest.TestCase):
             "prod_id": 1,
             "name": "Name",
             "brand": "Brand",
-            "category": "Fridge"
+            "category": "Fridge",
+            "on": False
         }
         
         device = self.database.recreate_object(device_dict)
@@ -612,7 +614,8 @@ class TestJsonDatabase(unittest.TestCase):
             "prod_id": 1,
             "name": "Name",
             "brand": "Brand",
-            "category": "Heater"
+            "category": "Heater",
+            "on": False
         }
         
         device = self.database.recreate_object(device_dict)
@@ -623,7 +626,8 @@ class TestJsonDatabase(unittest.TestCase):
             "prod_id": 1,
             "name": "Name",
             "brand": "Brand",
-            "category": "Lock"
+            "category": "Lock",
+            "on": False
         }
         
         device = self.database.recreate_object(device_dict)
@@ -634,7 +638,8 @@ class TestJsonDatabase(unittest.TestCase):
             "prod_id": 1,
             "name": "Name",
             "brand": "Brand",
-            "category": "Camera"
+            "category": "Camera",
+            "on": False
         }
         
         device = self.database.recreate_object(device_dict)
@@ -645,7 +650,8 @@ class TestJsonDatabase(unittest.TestCase):
             "prod_id": 1,
             "name": "Name",
             "brand": "Brand",
-            "category": ""
+            "category": "",
+            "on": False
         }
         
         device = self.database.recreate_object(device_dict)
