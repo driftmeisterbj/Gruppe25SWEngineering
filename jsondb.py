@@ -299,7 +299,6 @@ class JsonDatabase():
             JsonReadWrite.write(self.filename, users)
             return True
         else:
-            print("user_index not found")
             return False
 
 
@@ -542,7 +541,7 @@ class JsonDatabase():
     def add_device_to_current_user(self, current_user, new_device):
         if not self.is_device_valid(new_device):
             print('Device is not valid')
-            return
+            return 'Device is not valid'
         current_user['devices'].append(new_device)
         print(new_device['brand'],new_device['name'],'Added')
 
