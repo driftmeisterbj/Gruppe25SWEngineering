@@ -5,8 +5,8 @@ import subprocess
 from jsondb import JsonDatabase, JsonReadWrite
 import os
 import sys
-sys.path.append('Devices/')
-from Nearby_devices import lights,fridges,heaters,locks,cameras
+sys.path.append('devices/')
+from nearby_devices import lights,fridges,heaters,locks,cameras
 
 try:
     import wx
@@ -350,7 +350,12 @@ def create_user_creation_page():
             panel.Layout()
             return
         else:
-            ctypes.windll.user32.MessageBoxW(0, "Your account was created!", "Success", 1)
+            #ctypes.windll.user32.MessageBoxW(0, "Your account was created!", "Success", 1)
+            wx.MessageBox(
+            "Your account was created!",
+            "Success",
+            wx.OK
+            )
             db.add_user_to_json(username, password, email)
             create_home_page(username)
 
@@ -368,7 +373,7 @@ def create_user_creation_page():
 def create_home_page(username):
     destroy_everything()
 
-    title = wx.StaticText(main_dialog, label="Your Devices",pos=[188,100], style=wx.ALIGN_CENTER)
+    title = wx.StaticText(main_dialog, label="Your devices",pos=[188,100], style=wx.ALIGN_CENTER)
     title.SetFont(wx.Font(12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD))
     title.SetForegroundColour(wx.Colour(255, 255, 255))
 
@@ -380,19 +385,27 @@ def create_home_page(username):
 
     def on_configure_device(evt):
         index = listbox.GetSelection()
-        device_list = db.find_device_list_user(username)
-        selected_device = device_list[index]
-        #Gjør om til objekt
-        device = db.recreate_object(selected_device)
-        create_configure_device_page(username, device)
+        if index != -1:
+            device_list = db.find_device_list_user(username)
+            selected_device = device_list[index]
+            #Gjør om til objekt
+            device = db.recreate_object(selected_device)
+            create_configure_device_page(username, device)
+
+        else:
+            return
 
     def on_remove_device(evt):
         index = listbox.GetSelection()
-        device_list = db.find_device_list_user(username)
-        selected_device = device_list[index]
-        device = db.recreate_object(selected_device)
-        db.delete_device_from_user(username, device)
-        create_home_page(username)
+        if index != -1:
+            device_list = db.find_device_list_user(username)
+            selected_device = device_list[index]
+            device = db.recreate_object(selected_device)
+            db.delete_device_from_user(username, device)
+            create_home_page(username)
+        
+        else:
+            return
 
     add_device_btn = wx.Button(main_dialog,label="Add new device",pos=[360,150])
     add_device_btn.Bind(wx.EVT_BUTTON, on_add_device)

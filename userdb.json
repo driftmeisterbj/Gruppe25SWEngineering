@@ -25,10 +25,10 @@
                 "name": "Ring Spotlight Cam",
                 "brand": "Ring",
                 "category": "Camera",
-                "on": false,
+                "on": true,
                 "resolution": "1080p",
-                "status": "Inactive",
-                "motion_detection": false
+                "status": "Active",
+                "motion_detection": true
             },
             {
                 "prod_id": 34,
