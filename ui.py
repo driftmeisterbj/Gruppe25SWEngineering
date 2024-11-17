@@ -350,7 +350,12 @@ def create_user_creation_page():
             panel.Layout()
             return
         else:
-            ctypes.windll.user32.MessageBoxW(0, "Your account was created!", "Success", 1)
+            #ctypes.windll.user32.MessageBoxW(0, "Your account was created!", "Success", 1)
+            wx.MessageBox(
+            "Your account was created!",
+            "Success",
+            wx.OK
+            )
             db.add_user_to_json(username, password, email)
             create_home_page(username)
 
