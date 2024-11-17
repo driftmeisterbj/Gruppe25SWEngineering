@@ -1,7 +1,8 @@
 name: WF
 
-on: push
-  pull-request
+on:
+  push:
+  pull-request:
 
 jobs:
   run-tests:
