@@ -245,7 +245,7 @@ class JsonDatabase():
     # Sjekker at alle nøklene stemmer med hva en enhet skal inneholde.
     # Hvis enheten inneholder alle nøklene returneres True. Ellers returneres Falses
     def is_device_valid(self, device):
-        device_dict = device.getDict()
+        device_dict = device.get_dict()
         required_keys = ['prod_id','name','brand','category']
         for key in required_keys:
             if key not in device_dict:
@@ -278,7 +278,7 @@ class JsonDatabase():
             users = self.read_json()
             user = users[user_index]
             device_list = user["devices"]
-            device_data = device.getDict()
+            device_data = device.get_dict()
 
             device_exists = any(d['prod_id'] == device_data["prod_id"] for d in device_list)
             if not device_exists:
@@ -380,7 +380,7 @@ class JsonDatabase():
                 device_list.pop(device_index)
             """
 
-            device_dict = device.getDict()
+            device_dict = device.get_dict()
 
             try:
                 device_list.remove(device_dict)
