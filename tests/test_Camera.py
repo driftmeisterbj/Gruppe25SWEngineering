@@ -4,7 +4,7 @@ from unittest.mock import patch
 import sys
 sys.path.append('../')
 sys.path.append('devices/')
-from Camera import Camera
+from camera import Camera
 
 class TestCamera(unittest.TestCase):
 

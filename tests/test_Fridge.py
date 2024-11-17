@@ -4,7 +4,7 @@ import sys
 
 sys.path.append('../')
 sys.path.append('devices/')
-from Fridge import Fridge
+from fridge import Fridge
 
 class TestFridge(unittest.TestCase):
     

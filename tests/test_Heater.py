@@ -4,7 +4,7 @@ import sys
 
 sys.path.append('../')
 sys.path.append('devices/')
-from Heater import Heater
+from heater import Heater
 
 class TestHeater(unittest.TestCase):
 
