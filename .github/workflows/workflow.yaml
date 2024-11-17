@@ -32,4 +32,4 @@ jobs:
         run: python -m pip install --upgrade pip
 
       - name: Run tests
-        run: python -m unittest tests/test_Camera.py tests/test_Device.py tests/test_Fridge.py tests/test_Heater.py tests/test_JsonDatabase.py tests/test_Light.py tests/test_Lock.py tests/test_read_write.py
+        run: python -m unittest tests.test_Camera.py tests.test_Device.py tests.test_Fridge.py tests.test_Heater.py tests.test_JsonDatabase.py tests.test_Light.py tests.test_Lock.py tests.test_read_write.py
