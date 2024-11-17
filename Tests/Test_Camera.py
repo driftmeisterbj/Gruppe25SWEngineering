@@ -17,6 +17,10 @@ class TestCamera(unittest.TestCase):
         self.assertEqual(self.camera.brand, 'Nest')
         self.assertEqual(self.camera.category, 'Camera')
         self.assertFalse(self.camera.on)
+        self.assertEqual(self.camera.resolution, '1080p')
+        self.assertEqual(self.camera.status, 'Inactive')
+        self.assertFalse(self.camera.motion_detection)
+
 
     def test_turn_on_off_camera(self):
         self.camera.on = False
@@ -28,6 +32,43 @@ class TestCamera(unittest.TestCase):
         self.assertTrue(self.camera.on)
         self.camera.turn_off_device()
         self.assertFalse(self.camera.on)
+
+    def test_set_resolution_valid(self):
+        self.assertEqual(self.camera.resolution, '1080p')
+        self.camera.set_resolution('+')
+        self.assertEqual(self.camera.resolution,'1440p')
+
+        self.camera.resolution = '1080p'
+        self.assertEqual(self.camera.resolution, '1080p')
+        self.camera.set_resolution('-')
+        self.assertEqual(self.camera.resolution,'720p')
+
+    def test_set_resolution_above_below_limit(self):
+        self.camera.resolution = '4K'
+        self.assertEqual(self.camera.resolution,'4K')
+        self.camera.set_resolution('+')
+        self.assertEqual(self.camera.resolution,'4K')
+
+        self.camera.resolution = '180p'
+        self.assertEqual(self.camera.resolution,'180p')
+        self.camera.set_resolution('-')
+        self.assertEqual(self.camera.resolution,'180p')
+
+    def test_activate(self):
+        pass
+
+    def test_deactivate(self):
+        self.assertEqual(self.camera.status,'Inactive')
+        self.camera.activate()
+        self.assertEqual(self.camera.status,'Active')
+
+    def toggle_motion_detection(self):
+        self.camera.status = 'Active'
+        self.assertEqual(self.camera.status,'Active')
+        self.camera.deactivate()
+        self.assertEqual(self.camera.status,'Inactive')
+
+
 
 if __name__ == '__main__':
     unittest.main()

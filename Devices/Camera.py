@@ -12,7 +12,7 @@ class Camera(Device):
 
         current_index = valid_resolutions.index(self.resolution)
 
-        if new_resolution == '+':
+        if new_resolution == '+' and current_index < len(valid_resolutions)-1:
             self.resolution = valid_resolutions[current_index+1]
         #index sjekken stopper den fra å gå rundt i sirkler når den når -1 
         elif new_resolution == '-' and current_index > 0:
@@ -21,11 +21,9 @@ class Camera(Device):
 
     def activate(self):
         self.status = "Active"
-        print(f"{self.brand} {self.name} is now active.")
     
     def deactivate(self):
         self.status = "Inactive"
-        print(f"{self.brand} {self.name} is now inactive.")
     
     def toggle_motion_detection(self):
         if not self.motion_detection:

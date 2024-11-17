@@ -1,47 +1,65 @@
 import unittest
 from unittest.mock import patch
-from Lock import SmartLock
+import sys
+sys.path.append('../')
+sys.path.append('Devices/')
+from Lock import Lock
 
-class TestSmartLock(unittest.TestCase):
+class TestLock(unittest.TestCase):
     
     def setUp(self):
-        self.smart_lock = SmartLock("001", "Front Door", "Yale")
+        self.lock = Lock(1, "Front Door", "Yale")
 
     def test_initial_status(self):
-        self.assertEqual(self.smart_lock.status, "Unlocked")
-        self.assertEqual(self.smart_lock.entry_code, "0727")
+        self.assertEqual(self.lock.prod_id, 1)
+        self.assertEqual(self.lock.name, 'Front Door')
+        self.assertEqual(self.lock.brand, 'Yale')
+        self.assertEqual(self.lock.category, 'Lock')
+        self.assertEqual(self.lock.status, "Unlocked")
+        self.assertEqual(self.lock.entry_code, "0727")
 
-    @patch('builtins.print')
-    def test_set_entry_code_valid(self, mock_print):
-        self.smart_lock.set_entry_code("1234")
-        self.assertEqual(self.smart_lock.entry_code, "1234")
-        mock_print.assert_called_with("Entry code has been updated to: 1234")
+    def test_turn_on_off_lock(self):
+        self.lock.on = False
+        self.assertFalse(self.lock.on)
+        self.lock.turn_on_device()
+        self.assertTrue(self.lock.on)
 
-    @patch('builtins.print')
-    def test_set_entry_code_invalid(self, mock_print):
-        self.smart_lock.set_entry_code("abcd")
-        mock_print.assert_called_with("Invalid entry code Must be a 4-digit number")
-        self.assertEqual(self.smart_lock.entry_code, "0727")
+        self.lock.on = True
+        self.assertTrue(self.lock.on)
+        self.lock.turn_off_device()
+        self.assertFalse(self.lock.on)
 
-    @patch('builtins.print')
-    def test_lock(self, mock_print):
-        self.smart_lock.lock()
-        self.assertEqual(self.smart_lock.status, "Locked")
-        mock_print.assert_called_with("Yale Front Door is now locked")
+    def test_set_entry_code_valid(self):
+        self.assertEqual(self.lock.entry_code,'0727')
+        self.lock.set_entry_code('1234')
+        self.assertEqual(self.lock.entry_code,'1234')
+
+    def test_set_entry_code_invalid(self):
+        self.assertEqual(self.lock.entry_code,'0727')
+        self.lock.set_entry_code('abcd')
+        self.assertEqual(self.lock.entry_code,'0727')
+        self.lock.set_entry_code('12345')
+        self.assertEqual(self.lock.entry_code,'0727')
+
+    def test_lock_unlock(self):
+        self.assertEqual(self.lock.status,'Unlocked')
+        self.assertTrue(self.lock.lock)
+        self.lock.lock()
+        self.assertEqual(self.lock.status,'Locked')
+
+        self.assertTrue(self.lock.unlock('0727'))
+        self.lock.unlock('0727')
+        self.assertEqual(self.lock.status,'Unlocked')
+
+    def test_unlock_invalid(self):
+        self.lock.status = 'Locked'
+        self.assertEqual(self.lock.status,'Locked')
+        self.assertFalse(self.lock.unlock('4651'))
+        self.lock.unlock('4651')
+        self.assertEqual(self.lock.status, 'Locked')
     
-    @patch('builtins.print')
-    def test_unlock_successful(self, mock_print):
-        self.smart_lock.lock()
-        self.smart_lock.unlock("0727")
-        self.assertEqual(self.smart_lock.status, "Unlocked")
-        mock_print.assert_called_with("Yale Front Door is now unlocked")
 
-    @patch('builtins.print')
-    def test_unlock_unsuccessful(self, mock_print):
-        self.smart_lock.lock()
-        self.smart_lock.unlock("wrongcode")
-        self.assertEqual(self.smart_lock.status, "Locked")
-        mock_print.assert_called_with("Incorrect entry code. The lock remains locked")
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -15,7 +15,6 @@ class Lock(Device):
 
     def lock(self):
         self.status = "Locked"
-        print(f"{self.brand} {self.name} is now locked")
     def unlock(self,entered_code):
         if entered_code == self.entry_code:
             self.status = "Unlocked"
