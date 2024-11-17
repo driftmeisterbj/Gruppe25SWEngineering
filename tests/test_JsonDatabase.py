@@ -367,7 +367,7 @@ class TestJsonDatabase(unittest.TestCase):
                         "devices": []
                     }
                 ])
-    @mock.patch("Device.Device.get_dict", return_value={
+    @mock.patch("device_class.Device.get_dict", return_value={
                             "prod_id": 123,
                             "name": "Gyldig",
                             "brand": "Enhet",
