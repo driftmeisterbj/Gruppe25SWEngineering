@@ -221,7 +221,7 @@ class TestJsonDatabase(unittest.TestCase):
     # -------------------------------------------------------------------------------------------
     # Tests for is_device_valid()
     def test_is_device_valid_true(self):
-        device = Device.Device(123, "Gyldig", "Enhet", "Test")
+        device = device_class.Device(123, "Gyldig", "Enhet", "Test")
         device_check = self.database.is_device_valid(device)
         self.assertEqual(device_check, True)
 
@@ -299,7 +299,7 @@ class TestJsonDatabase(unittest.TestCase):
                     }
                 ])
     def test_add_device_to_user_added(self, mock):
-        device = Device.Device(123, "Gyldig", "Enhet", "Test")
+        device = device_class.Device(123, "Gyldig", "Enhet", "Test")
         
         username = "User1"
         add_device = self.database.add_device_to_user(username, device)
@@ -340,7 +340,7 @@ class TestJsonDatabase(unittest.TestCase):
                 ])
     @mock.patch("jsondb.JsonDatabase.find_user_index", return_value=-1)
     def test_add_device_to_user_cannot_find_user(self, mock, mock2):
-        device = Device.Device(123, "Gyldig", "Enhet", "Test")
+        device = device_class.Device(123, "Gyldig", "Enhet", "Test")
         username = "User1"
         add_device = self.database.add_device_to_user(username, device)
         self.assertEqual(add_device, False)
@@ -486,23 +486,23 @@ class TestJsonDatabase(unittest.TestCase):
     # https://stackoverflow.com/questions/2225038/determine-the-type-of-an-object
     def test_create_new_device_fridge(self):
         device = self.database.create_new_device(1, "Name", "Brand", "Fridge")
-        self.assertIsInstance(device, Fridge.Fridge)
+        self.assertIsInstance(device, fridge.Fridge)
 
     def test_create_new_device_lock(self):
         device = self.database.create_new_device(1, "Name", "Brand", "Lock")
-        self.assertIsInstance(device, Lock.Lock)
+        self.assertIsInstance(device, lock.Lock)
 
     def test_create_new_device_camera(self):
         device = self.database.create_new_device(1, "Name", "Brand", "Camera")
-        self.assertIsInstance(device, Camera.Camera)
+        self.assertIsInstance(device, camera.Camera)
 
     def test_create_new_device_heater(self):
         device = self.database.create_new_device(1, "Name", "Brand", "Heater")
-        self.assertIsInstance(device, Heater.Heater)
+        self.assertIsInstance(device, heater.Heater)
 
     def test_create_new_device_light(self):
         device = self.database.create_new_device(1, "Name", "Brand", "Light")
-        self.assertIsInstance(device, Light.Light)
+        self.assertIsInstance(device, light.Light)
 
     def test_create_new_device_no_category(self):
         device = self.database.create_new_device(1, "Name", "Brand", "")
@@ -531,7 +531,7 @@ class TestJsonDatabase(unittest.TestCase):
                     }
                 ])
     def test_delete_device_from_user_deleted(self, mock):
-        device = Device.Device(123, "Gyldig", "Enhet", "Test")
+        device = device_class.Device(123, "Gyldig", "Enhet", "Test")
         delete_device = self.database.delete_device_from_user("User1", device)
         self.assertEqual(delete_device, 'Device could not be found')
 
@@ -554,7 +554,7 @@ class TestJsonDatabase(unittest.TestCase):
                     }
                 ])
     def test_delete_device_from_user_user_not_found(self, mock):
-        device = device = Device.Device(123, "Gyldig", "Enhet", "Test")
+        device = device = device_class.Device(123, "Gyldig", "Enhet", "Test")
         delete_device = self.database.delete_device_from_user("NonUser", device)
         self.assertEqual(delete_device, False)
 
@@ -577,7 +577,7 @@ class TestJsonDatabase(unittest.TestCase):
                     }
                 ])
     def test_delete_device_from_user_device_not_found(self, mock):
-        device = Device.Device(69, "Ikke", "En", "Enhet")
+        device = device_class.Device(69, "Ikke", "En", "Enhet")
         delete_device = self.database.delete_device_from_user("User1", device)
         self.assertEqual(delete_device, "Device could not be found")
 
@@ -595,7 +595,7 @@ class TestJsonDatabase(unittest.TestCase):
         }
         
         device = self.database.recreate_object(device_dict)
-        self.assertIsInstance(device, Light.Light)
+        self.assertIsInstance(device, light.Light)
 
     def test_recreate_object_fridge(self):
         device_dict = {
@@ -607,7 +607,7 @@ class TestJsonDatabase(unittest.TestCase):
         }
         
         device = self.database.recreate_object(device_dict)
-        self.assertIsInstance(device, Fridge.Fridge)
+        self.assertIsInstance(device, fridge.Fridge)
 
     def test_recreate_object_heater(self):
         device_dict = {
@@ -619,7 +619,7 @@ class TestJsonDatabase(unittest.TestCase):
         }
         
         device = self.database.recreate_object(device_dict)
-        self.assertIsInstance(device, Heater.Heater)
+        self.assertIsInstance(device, heater.Heater)
 
     def test_recreate_object_lock(self):
         device_dict = {
@@ -631,7 +631,7 @@ class TestJsonDatabase(unittest.TestCase):
         }
         
         device = self.database.recreate_object(device_dict)
-        self.assertIsInstance(device, Lock.Lock)
+        self.assertIsInstance(device, lock.Lock)
 
     def test_recreate_object_camera(self):
         device_dict = {
@@ -643,7 +643,7 @@ class TestJsonDatabase(unittest.TestCase):
         }
         
         device = self.database.recreate_object(device_dict)
-        self.assertIsInstance(device, Camera.Camera)
+        self.assertIsInstance(device, camera.Camera)
 
     def test_recreate_object_none(self):
         device_dict = {
