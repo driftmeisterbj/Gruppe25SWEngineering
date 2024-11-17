@@ -663,7 +663,7 @@ def create_add_new_device_page(username):
 
             if selected_device:
                 device = db.create_new_device(selected_device.prod_id, selected_device.name,
-                                          selected_device.brand, selected_device.category, selected_device.on)
+                                          selected_device.brand, selected_device.category)
                 db.add_device_to_user(username, device)
                 create_home_page(username)
 

@@ -46,22 +46,6 @@
                 "category": "Fridge",
                 "on": false,
                 "temperature": 4
-            },
-            {
-                "prod_id": 4,
-                "name": " LED Strip Light",
-                "brand": "Govee",
-                "category": "Light",
-                "on": false,
-                "brightness": 5
-            },
-            {
-                "prod_id": 3,
-                "name": "Wyze Bulb Color",
-                "brand": "Wyze",
-                "category": "Light",
-                "on": true,
-                "brightness": 8
             }
         ]
     },
