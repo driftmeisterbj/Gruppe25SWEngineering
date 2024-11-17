@@ -9,9 +9,9 @@ sys.path.append(project_root)
 
 from jsondb import JsonDatabase
 
-path = os.path.join(os.path.dirname(__file__), "FDevices")
+path = os.path.join(os.path.dirname(__file__), "devices")
 sys.path.append(path)
-from FDevices import FFridge, FHeater, FLock, FLight, FCamera, FDevice
+from devices import fridge, heater, lock, light, camera, device_class
 class TestJsonDatabase(unittest.TestCase):
     def setUp(self):
         self.database = JsonDatabase("test")

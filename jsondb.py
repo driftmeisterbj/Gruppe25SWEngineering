@@ -2,9 +2,9 @@ import json
 from abc import ABC,abstractmethod
 import os
 import sys
-path = os.path.join(os.path.dirname(__file__), "FDevices")
+path = os.path.join(os.path.dirname(__file__), "devices")
 sys.path.append(path)
-from FDevices import FFridge, FHeater, FLock, FLight, FCamera, FDevice
+from devices import fridge, heater, lock, light, camera, device_class
 
 
 class ReadWrite(ABC):
@@ -342,19 +342,19 @@ class JsonDatabase():
     # Oprette nytt device
     def create_new_device(self, prod_id, name, brand, category):
         if category == "Fridge":
-            return Fridge.Fridge(prod_id, name, brand)
+            return fridge.Fridge(prod_id, name, brand)
         
         if category == "Lock":
-            return Lock.Lock(prod_id, name, brand)
+            return lock.Lock(prod_id, name, brand)
 
         if category == "Camera":
-            return Camera.Camera(prod_id, name, brand)
+            return camera.Camera(prod_id, name, brand)
         
         if category == "Heater":
-            return Heater.Heater(prod_id, name, brand)
+            return heater.Heater(prod_id, name, brand)
         
         if category == "Light":
-            return Light.Light(prod_id, name, brand)
+            return light.Light(prod_id, name, brand)
         
         return False
 
@@ -406,7 +406,7 @@ class JsonDatabase():
         category = device_dict['category']
 
         if category == 'Light':
-            return Light.Light(
+            return light.Light(
             prod_id=device_dict["prod_id"],
             name=device_dict["name"],
             brand=device_dict["brand"],
@@ -414,7 +414,7 @@ class JsonDatabase():
             brightness=device_dict.get("brightness", 100)
             )
         elif category == 'Fridge':
-            return Fridge.Fridge(
+            return fridge.Fridge(
             prod_id=device_dict["prod_id"],
             name=device_dict["name"],
             brand=device_dict["brand"],
@@ -422,7 +422,7 @@ class JsonDatabase():
             temperature=device_dict.get("temperature", 15)
             )
         elif category == "Heater":
-            return Heater.Heater(
+            return heater.Heater(
             prod_id=device_dict["prod_id"],
             name=device_dict["name"],
             brand=device_dict["brand"],
@@ -430,7 +430,7 @@ class JsonDatabase():
             temperature=device_dict.get("temperature", 15)
             )
         elif category == "Lock":
-            return Lock.Lock(
+            return lock.Lock(
             prod_id=device_dict["prod_id"],
             name=device_dict["name"],
             brand=device_dict["brand"],
@@ -438,7 +438,7 @@ class JsonDatabase():
             entry_code=device_dict.get("entry_code", "1234")
             )
         elif category == "Camera":
-            return Camera.Camera(
+            return camera.Camera(
             prod_id=device_dict["prod_id"],
             name=device_dict["name"],
             brand=device_dict["brand"],
@@ -513,9 +513,6 @@ class JsonDatabase():
             return False
             """
 
-    # Endre på dataen til et device fra bruker sin device-liste
-    def modify_device_information():
-        print()
 
     #Gets current user object
     def get_current_user(self, username):

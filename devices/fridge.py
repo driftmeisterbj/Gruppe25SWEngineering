@@ -1,4 +1,4 @@
-from FDevice import Device
+from device_class import Device
 
 class Fridge(Device):
     def __init__(self, prod_id, name, brand, on=False, temperature=4):

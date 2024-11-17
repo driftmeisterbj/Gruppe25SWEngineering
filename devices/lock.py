@@ -1,4 +1,4 @@
-from FDevice import Device
+from device_class import Device
 
 class Lock(Device):
     def __init__(self, prod_id, name, brand, on=False, status="Unlocked", entry_code="0727"):

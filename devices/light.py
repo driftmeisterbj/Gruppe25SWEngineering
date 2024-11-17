@@ -1,4 +1,4 @@
-from FDevice import Device
+from device_class import Device
 class Light(Device):
     def __init__(self, prod_id, name, brand, on=False, brightness=5):
         super().__init__(prod_id,name,brand, "Light", on)

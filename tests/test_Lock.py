@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 import sys
 sys.path.append('../')
-sys.path.append('FDevices/')
+sys.path.append('devices/')
 from Lock import Lock
 
 class TestLock(unittest.TestCase):

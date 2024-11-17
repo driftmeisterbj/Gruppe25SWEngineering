@@ -3,7 +3,7 @@ from unittest.mock import patch
 import sys
 
 sys.path.append('../')
-sys.path.append('FDevices/')
+sys.path.append('devices/')
 from Device import Device
 
 class TestDevice(unittest.TestCase):
