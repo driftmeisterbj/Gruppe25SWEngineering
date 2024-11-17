@@ -1,8 +1,8 @@
 from Device import Device
 
 class Heater(Device):
-    def __init__(self,prod_id,name,brand,temperature=15):
-        super().__init__(prod_id,name,brand, "Heater")
+    def __init__(self, prod_id, name, brand, on=False, temperature=15):
+        super().__init__(prod_id,name,brand, "Heater", on)
         self.temperature = temperature
 
     def set_temperature(self, new_temperature):

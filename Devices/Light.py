@@ -1,7 +1,7 @@
 from Device import Device
 class Light(Device):
-    def __init__(self,prod_id,name,brand,brightness=5):
-        super().__init__(prod_id,name,brand, "Light")
+    def __init__(self, prod_id, name, brand, on=False, brightness=5):
+        super().__init__(prod_id,name,brand, "Light", on)
         self.brightness = brightness
         #self.on = False
         

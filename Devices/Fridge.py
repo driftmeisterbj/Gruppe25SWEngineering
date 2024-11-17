@@ -1,8 +1,8 @@
 from Device import Device
 
 class Fridge(Device):
-    def __init__(self, prod_id, name, brand, temperature=4):
-        super().__init__(prod_id, name, brand, "Fridge")
+    def __init__(self, prod_id, name, brand, on=False, temperature=4):
+        super().__init__(prod_id, name, brand, "Fridge", on)
         self.temperature = temperature
 
 
