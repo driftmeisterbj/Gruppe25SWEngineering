@@ -2,9 +2,9 @@ import json
 from abc import ABC,abstractmethod
 import os
 import sys
-path = os.path.join(os.path.dirname(__file__), "Devices")
+path = os.path.join(os.path.dirname(__file__), "devices")
 sys.path.append(path)
-from Devices import Fridge, Heater, Lock, Light, Camera, Device
+from devices import fridge, heater, lock, light, camera, device_class
 
 
 class ReadWrite(ABC):
@@ -245,7 +245,7 @@ class JsonDatabase():
     # Sjekker at alle nøklene stemmer med hva en enhet skal inneholde.
     # Hvis enheten inneholder alle nøklene returneres True. Ellers returneres Falses
     def is_device_valid(self, device):
-        device_dict = device.getDict()
+        device_dict = device.get_dict()
         required_keys = ['prod_id','name','brand','category']
         for key in required_keys:
             if key not in device_dict:
@@ -278,7 +278,7 @@ class JsonDatabase():
             users = self.read_json()
             user = users[user_index]
             device_list = user["devices"]
-            device_data = device.getDict()
+            device_data = device.get_dict()
 
             device_exists = any(d['prod_id'] == device_data["prod_id"] for d in device_list)
             if not device_exists:
@@ -299,7 +299,6 @@ class JsonDatabase():
             JsonReadWrite.write(self.filename, users)
             return True
         else:
-            print("user_index not found")
             return False
 
 
@@ -343,19 +342,19 @@ class JsonDatabase():
     # Oprette nytt device
     def create_new_device(self, prod_id, name, brand, category):
         if category == "Fridge":
-            return Fridge.Fridge(prod_id, name, brand)
+            return fridge.Fridge(prod_id, name, brand)
         
         if category == "Lock":
-            return Lock.Lock(prod_id, name, brand)
+            return lock.Lock(prod_id, name, brand)
 
         if category == "Camera":
-            return Camera.Camera(prod_id, name, brand)
+            return camera.Camera(prod_id, name, brand)
         
         if category == "Heater":
-            return Heater.Heater(prod_id, name, brand)
+            return heater.Heater(prod_id, name, brand)
         
         if category == "Light":
-            return Light.Light(prod_id, name, brand)
+            return light.Light(prod_id, name, brand)
         
         return False
 
@@ -380,7 +379,7 @@ class JsonDatabase():
                 device_list.pop(device_index)
             """
 
-            device_dict = device.getDict()
+            device_dict = device.get_dict()
 
             try:
                 device_list.remove(device_dict)
@@ -407,38 +406,43 @@ class JsonDatabase():
         category = device_dict['category']
 
         if category == 'Light':
-            return Light.Light(
+            return light.Light(
             prod_id=device_dict["prod_id"],
             name=device_dict["name"],
             brand=device_dict["brand"],
+            on=device_dict["on"],
             brightness=device_dict.get("brightness", 100)
             )
         elif category == 'Fridge':
-            return Fridge.Fridge(
+            return fridge.Fridge(
             prod_id=device_dict["prod_id"],
             name=device_dict["name"],
             brand=device_dict["brand"],
+            on=device_dict["on"],
             temperature=device_dict.get("temperature", 15)
             )
         elif category == "Heater":
-            return Heater.Heater(
+            return heater.Heater(
             prod_id=device_dict["prod_id"],
             name=device_dict["name"],
             brand=device_dict["brand"],
+            on=device_dict["on"],
             temperature=device_dict.get("temperature", 15)
             )
         elif category == "Lock":
-            return Lock.Lock(
+            return lock.Lock(
             prod_id=device_dict["prod_id"],
             name=device_dict["name"],
             brand=device_dict["brand"],
+            on=device_dict["on"],
             entry_code=device_dict.get("entry_code", "1234")
             )
         elif category == "Camera":
-            return Camera.Camera(
+            return camera.Camera(
             prod_id=device_dict["prod_id"],
             name=device_dict["name"],
             brand=device_dict["brand"],
+            on=device_dict["on"],
             resolution=device_dict.get("resolution", "1080p"),
             status=device_dict.get("status", "Inactive"),
             motion_detection=device_dict.get("motion_detection", False)
@@ -509,9 +513,6 @@ class JsonDatabase():
             return False
             """
 
-    # Endre på dataen til et device fra bruker sin device-liste
-    def modify_device_information():
-        print()
 
     #Gets current user object
     def get_current_user(self, username):
@@ -537,7 +538,7 @@ class JsonDatabase():
     def add_device_to_current_user(self, current_user, new_device):
         if not self.is_device_valid(new_device):
             print('Device is not valid')
-            return
+            return 'Device is not valid'
         current_user['devices'].append(new_device)
         print(new_device['brand'],new_device['name'],'Added')
 
