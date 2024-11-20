@@ -89,7 +89,7 @@ class JsonDatabase():
         return False
 
     # Funksjonen kjører en rekke med sjekker på stringen "username" for validering av brukernavn.
-    # Dersom brukernavnet går gjennom alle sjekkene er brukernavnet gyldig, og funksjonen returnerer True.
+    # Dersom brukernavnet går gjennom alle sjekkene er brukernavnet gyldig, og metoden returnerer True.
     # Dersom brukernavnet feiler på en av sjekkene returneres en string med feilmelding.
     def is_username_valid(self, username):
         illegal_chars=["'", '"', ",", "!", "@", "$", "€", "{", "}",
@@ -254,7 +254,7 @@ class JsonDatabase():
 
 
 
-    # Denne funksjonen finder hvilken index, altså plass i listen, en bruker ligger på.
+    # Denne metoden finder hvilken index, altså plass i listen, en bruker ligger på.
     # Hvis brukeren blir funnet returneres indexen. Ellers returneres -1
     def find_user_index(self, username):
         data = self.read_json()
@@ -267,7 +267,8 @@ class JsonDatabase():
 
         return -1
 
-    # Denne funksjonen legger til en enhet i listen til en bruker, og skriver denne endringen til databasen.
+    # Denne metoden legger til en enhet i listen til en bruker, og skriver denne endringen til databasen.
+    # Returnerer True hvis alt går bra, False hvis brukeren ikke finnes, String med feilmelding desom noe annet skjer.
     def add_device_to_user(self, username, device):
         user_index = self.find_user_index(username)
 
@@ -301,7 +302,8 @@ class JsonDatabase():
         else:
             return False
 
-
+    # Returnerer listen med enheter til en bruker.
+    #Dersom brukeren ikke finnes returneres en tom liste.
     def find_device_list_user(self, username):
         user_index = self.find_user_index(username)
 
@@ -314,6 +316,10 @@ class JsonDatabase():
         else:
             return []
 
+    # Denne metoden eksisterer for å fjerne eventuelle duplikater i en enhetsliste.
+    # Det finnes andre sjekker på plass. Denne metoden ble laget før det eksisterte andre sikkerhetsnett.
+    # Men den brukes fortsatt i tilfelle noe skulle. Returnerer False dersom en bruker ikke finnes, 
+    # True dersom metoden kjører ferdig.
     def remove_duplicate_devices_from_user(self, username):
         user_index = self.find_user_index(username)
 
@@ -339,7 +345,8 @@ class JsonDatabase():
             JsonReadWrite.write(self.filename, data)
             return True
 
-    # Oprette nytt device
+    # Metode for å opprette et objekt. Bruker kategori for å lage de ulike objektene.
+    # Returnerer objektet, returnerer False dersom funksjonaliteten for kategorien ikke er implementert.
     def create_new_device(self, prod_id, name, brand, category):
         if category == "Fridge":
             return fridge.Fridge(prod_id, name, brand)
@@ -358,7 +365,10 @@ class JsonDatabase():
         
         return False
 
-    # Slette et device fra en bruker
+    # Denne metoden brukes for å slette en enhet fra en bruker.
+    # Hvis brukeren ikke finnes returneres False. Hvis sletting av enheten ikke funker, 
+    # f.eks. ved at enheten ikke eksisterer, returneres en feilmelding.
+    # Returnerer True dersom fjerningen funket.
     def delete_device_from_user(self, username, device):
         user_index = self.find_user_index(username)
 
@@ -401,7 +411,9 @@ class JsonDatabase():
         else:
             return False
             
-    #Hver gang det leses fra json blir enhetene omgjort fra objekter til dictionaries
+    # Hver gang det leses fra json blir enhetene omgjort fra objekter til dictionaries
+    # Metoden tar dictionary-en til en enhet og returnerer det som et objekt.
+    # Dersom kategorien er ukjent returneres False.
     def recreate_object(self, device_dict):
         category = device_dict['category']
 
@@ -451,7 +463,9 @@ class JsonDatabase():
             return False
 
 
-    #Update device_data
+    # Denne metoden oppdaterer data for en enhet i brukeren sin enhetsliste.
+    # Metoden vil oppdatere informasjonen til enheten som har lik "prod_id" som enheten gitt som parameter.
+    # Det er viktig at "device" her refererer til et objekt, ikke dictionary.
     def update_device_data(self,username,device):
         user_index = self.find_user_index(username)
 
