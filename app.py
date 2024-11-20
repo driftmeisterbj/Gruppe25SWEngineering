@@ -503,7 +503,7 @@ def create_configure_device_page(username, device):
         brightness.SetForegroundColour(wx.Colour(255, 255, 255))
 
         #Istedenfor å ha to set_brighntess for +/- så tar den i mot et parameter som sendes av knappene
-        def on_set_brightness( value):
+        def on_set_brightness(value):
             device.set_brightness(value)
             create_configure_device_page(username,device)
 
