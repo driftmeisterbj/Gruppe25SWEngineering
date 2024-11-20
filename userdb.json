@@ -36,7 +36,7 @@
                 "brand": "Yale",
                 "category": "Lock",
                 "on": false,
-                "status": "Unlocked",
+                "status": "Locked",
                 "entry_code": "0727"
             },
             {
