@@ -26,9 +26,9 @@
                 "brand": "Ring",
                 "category": "Camera",
                 "on": true,
-                "resolution": "1080p",
+                "resolution": "4K",
                 "status": "Active",
-                "motion_detection": false
+                "motion_detection": true
             },
             {
                 "prod_id": 34,
@@ -46,6 +46,14 @@
                 "category": "Fridge",
                 "on": false,
                 "temperature": 4
+            },
+            {
+                "prod_id": 7,
+                "name": "Kasa  Bulb",
+                "brand": "TP-Link",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
             }
         ]
     },
