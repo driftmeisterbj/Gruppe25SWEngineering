@@ -25,7 +25,7 @@ class JsonReadWrite(ReadWrite):
             with open(fileName, "r") as file:
                 return json.load(file)
         except:
-            return([])
+            return []
 
     @staticmethod
     def write(fileName, data):
@@ -56,17 +56,15 @@ class JsonDatabase(DatabaseInterface):
 
     # Skriver til JSON-filen med tomt innhold, altså full reset.
     # KUN for testing, kan fjernes når vi har ferdigstilt struktur i databasen.
-    # Mangler feilhåndering
-
+    # Returnerer True hvis databasen resettes, False hvis ikke
     def reset_database(self):
         try:
             with open(self.filename, "w") as file:
                 file.write("{}")
             return True
         except:
-            pass
-        return False
-    
+            return False
+        
     # Åpner json-filen for lesing og returnerer innholdet i en liste.
     # Dersom en feil skjer ved lesing, returneres en tom liste
     def read_database(self):
@@ -74,6 +72,10 @@ class JsonDatabase(DatabaseInterface):
 
     # Databasen leses ved bruk av read_database() og denne listen gås gjennom.
     # Dersom brukernavnet eksisterer i databasen allerede returneres True, ellers returneres False
+    """
+    --- Parametere ----
+    username - String
+    """
     def is_username_taken(self, username):
         users = self.read_database()
 
@@ -87,6 +89,10 @@ class JsonDatabase(DatabaseInterface):
     # Funksjonen kjører en rekke med sjekker på stringen "username" for validering av brukernavn.
     # Dersom brukernavnet går gjennom alle sjekkene er brukernavnet gyldig, og metoden returnerer True.
     # Dersom brukernavnet feiler på en av sjekkene returneres en string med feilmelding.
+    """
+    --- Parametere ----
+    username - String
+    """
     def is_username_valid(self, username):
         illegal_chars=["'", '"', ",", "!", "@", "$", "€", "{", "}",
                     "[", "]", "(", ")", "^", "¨", "~", "*", ".",
@@ -108,6 +114,10 @@ class JsonDatabase(DatabaseInterface):
 
     # Funksjonen kjører en rekke med sjekker på stringen "password" for validering av passord.
     # Dersom passordet går gjennom alle sjekkene returneres True, ellers returneres en feilmelding
+    """
+    --- Parametere ----
+    password - String
+    """
     def is_password_valid(self, password):  
         contains_uppercase = False
         contains_lowercase = False
@@ -142,6 +152,10 @@ class JsonDatabase(DatabaseInterface):
 
     # Henter ut innholdet i databasen og sjekker om eposten eksisterer her allerede.
     # Dersom eposten eksisterer er eposten i bruk, og True returneres. Ellers returneres False.
+    """
+    --- Parametere ----
+    email - String
+    """
     def is_email_taken(self, email):
         users = self.read_database()
 
@@ -154,8 +168,11 @@ class JsonDatabase(DatabaseInterface):
 
     # Funksjon for validering av epost. Inneholder en rekke sjekker for at e-post skal være gyldig til bruk.
     # Dersom eposten går gjennom alle sjekkene er den gyldig, og True returneres. Ellers returneres en string med feilmelding.
+    """
+    --- Parametere ----
+    email - String
+    """
     def is_email_valid(self, email):
-        is_valid = False
         contains_at = False
         contains_punctuation = False
         contains_no_duplicates = False
@@ -209,6 +226,12 @@ class JsonDatabase(DatabaseInterface):
 
     # Funksjon for å legge til en ny bruker i databasen.
     # Hvis alle sjekkene går gjennom skrives denne brukeren inn til databasen.
+    """
+    --- Parametere ----
+    username - String
+    password - String
+    email - String
+    """
     def add_user_to_database(self, username, password, email):
         if self.is_username_valid(username) != True:
             return "Username is invalid. Check error messages in console."
@@ -240,6 +263,10 @@ class JsonDatabase(DatabaseInterface):
     # Funksjon for validering av en enhet.
     # Sjekker at alle nøklene stemmer med hva en enhet skal inneholde.
     # Hvis enheten inneholder alle nøklene returneres True. Ellers returneres Falses
+    """
+    --- Parametere ----
+    device - Objekt av klassen "Device"
+    """
     def is_device_valid(self, device):
         device_dict = device.get_dict()
         required_keys = ['prod_id','name','brand','category']
@@ -252,6 +279,10 @@ class JsonDatabase(DatabaseInterface):
 
     # Denne metoden finder hvilken index, altså plass i listen, en bruker ligger på.
     # Hvis brukeren blir funnet returneres indexen. Ellers returneres -1
+    """
+    --- Parametere ----
+    username - String
+    """
     def find_user_index(self, username):
         data = self.read_database()
 
@@ -265,6 +296,11 @@ class JsonDatabase(DatabaseInterface):
 
     # Denne metoden legger til en enhet i listen til en bruker, og skriver denne endringen til databasen.
     # Returnerer True hvis alt går bra, False hvis brukeren ikke finnes, String med feilmelding desom noe annet skjer.
+    """
+    --- Parametere ----
+    username - String
+    device - Objekt av klassen "Device"
+    """
     def add_device_to_user(self, username, device):
         user_index = self.find_user_index(username)
 
@@ -299,7 +335,11 @@ class JsonDatabase(DatabaseInterface):
             return False
 
     # Returnerer listen med enheter til en bruker.
-    #Dersom brukeren ikke finnes returneres en tom liste.
+    # Dersom brukeren ikke finnes returneres en tom liste.
+    """
+    --- Parametere ----
+    username - String
+    """
     def find_device_list_user(self, username):
         user_index = self.find_user_index(username)
 
@@ -316,6 +356,10 @@ class JsonDatabase(DatabaseInterface):
     # Det finnes andre sjekker på plass. Denne metoden ble laget før det eksisterte andre sikkerhetsnett.
     # Men den brukes fortsatt i tilfelle noe skulle. Returnerer False dersom en bruker ikke finnes, 
     # True dersom metoden kjører ferdig.
+    """
+    --- Parametere ----
+    username - String
+    """
     def remove_duplicate_devices_from_user(self, username):
         user_index = self.find_user_index(username)
 
@@ -343,6 +387,13 @@ class JsonDatabase(DatabaseInterface):
 
     # Metode for å opprette et objekt. Bruker kategori for å lage de ulike objektene.
     # Returnerer objektet, returnerer False dersom funksjonaliteten for kategorien ikke er implementert.
+    """
+    --- Parametere ----
+    prod_id - int
+    name - String
+    brand - String
+    category - String
+    """
     def create_new_device(self, prod_id, name, brand, category):
         if category == "Fridge":
             return fridge.Fridge(prod_id, name, brand)
@@ -365,6 +416,11 @@ class JsonDatabase(DatabaseInterface):
     # Hvis brukeren ikke finnes returneres False. Hvis sletting av enheten ikke funker, 
     # f.eks. ved at enheten ikke eksisterer, returneres en feilmelding.
     # Returnerer True dersom fjerningen funket.
+    """
+    --- Parametere ----
+    username - String
+    device - Objekt av klassen "Device"
+    """
     def delete_device_from_user(self, username, device):
         user_index = self.find_user_index(username)
 
@@ -372,18 +428,6 @@ class JsonDatabase(DatabaseInterface):
             users = self.read_database()
             user = users[user_index]
             device_list = user["devices"]
-            
-            """
-            device_index = -1
-            counter = 0
-            for device_in_list in device_list:
-                if device_in_list == device:
-                    device_index = counter
-                counter += 1
-
-            if device_index != -1:
-                device_list.pop(device_index)
-            """
 
             device_dict = device.get_dict()
 
@@ -410,6 +454,10 @@ class JsonDatabase(DatabaseInterface):
     # Hver gang det leses fra json blir enhetene omgjort fra objekter til dictionaries
     # Metoden tar dictionary-en til en enhet og returnerer det som et objekt.
     # Dersom kategorien er ukjent returneres False.
+    """
+    --- Parametere ----
+    device_dict - Dictionary
+    """
     def recreate_object(self, device_dict):
         category = device_dict['category']
 
@@ -462,7 +510,12 @@ class JsonDatabase(DatabaseInterface):
     # Denne metoden oppdaterer data for en enhet i brukeren sin enhetsliste.
     # Metoden vil oppdatere informasjonen til enheten som har lik "prod_id" som enheten gitt som parameter.
     # Det er viktig at "device" her refererer til et objekt, ikke dictionary.
-    def update_device_data(self,username,device):
+    """
+    --- Parametere ----
+    username - String
+    device - Objekt av klassen "Device"
+    """
+    def update_device_data(self,username, device):
         user_index = self.find_user_index(username)
 
         users = self.read_database()
@@ -491,40 +544,12 @@ class JsonDatabase(DatabaseInterface):
                 JsonReadWrite.write(self.filename, users)
 
 
-        """
-            device_index = -1
-            counter = 0
-            for device_in_list in device_list:
-                if device_in_list == device:
-                    device_index = counter
-                counter += 1
-
-            if device_index != -1:
-                device_list.pop(device_index)
-
-            try:
-                device_list.remove(device)
-            except:
-                return "Device could not be found"
-            
-            data = {
-                "username": user["username"],
-                "password": user["password"],
-                "email": user["email"],
-                "devices": device_list
-            }
-
-            user = data
-            users[user_index] = user
-            JsonReadWrite.write(self.filename, users)
-            return True
-
-        else:
-            return False
-            """
-
-
-    #Gets current user object
+    # Finner en bruker i databasen og returnerer et dictionary
+    # for denne brukeren. Hvis brukeren ikke blir funnet blir et tomt dictionary returnert.
+    """
+    --- Parametere ----
+    username - String
+    """
     def get_current_user(self, username):
         user_index = self.find_user_index(username)
         if user_index != -1:
@@ -544,75 +569,5 @@ class JsonDatabase(DatabaseInterface):
                 'devices': []
             }
 
-    #Updates current user object
-    def add_device_to_current_user(self, current_user, new_device):
-        if not self.is_device_valid(new_device):
-            print('Device is not valid')
-            return 'Device is not valid'
-        current_user['devices'].append(new_device)
-        print(new_device['brand'],new_device['name'],'Added')
-
-
-    def get_device_object(self, username, device_name, device_brand):
-        user = self.get_current_user(username)
-
-        for device in user["devices"]:
-            if device.name == device_name and device.brand == device_brand:
-                return device
-            
-        return False
 
     
-
-    ################
-    #test get_current_user
-    #current_user = get_current_user('userdb','Test3')
-
-    if __name__ == "__main__":
-
-        dev1 = {
-            "name": "Vaskemaskin",
-            "brand": "Miele"
-        }
-        dev2 = {
-            "name": "Hue",
-            "brand": "phillips",
-            "category": 'light'
-        }
-        dev3 = {
-            "name": "Hue",
-            "brand": "phillips",
-            "category": 'light'
-        }
-        dev4 = {
-            "prod_id": 11564,
-            "name": "Hue 2.0",
-            "brand": "phillips",
-            "category": 'light'
-        }
-
-        # add_device_to_user("userdb", "Test3", dev2)
-        # add_device_to_user("userdb", "Test3", dev3)
-        # add_device_to_user("userdb", "Test3", dev4)
-
-        # Returnerer kun device-listen
-        # print(current_user['devices'])
-
-        # Returnerer hele objektet
-        # print(current_user)
-
-        """
-        dev1 = {
-            "name": "Vaskemaskin",
-            "brand": "Miele"
-        }
-        add_device_to_user("userdb", "Test3", dev1)
-        # reset_json("userdb")
-
-        add_user_to_json("userdb", "Test1", "Passord123", "ma!i?l@mail.com")
-        add_user_to_json("userdb", "Test2", "Pa123", "mail.m@mail.com")
-        add_user_to_json("userdb", "Test3", "Passord123", "mail")
-        """
-
-
-#db = JsonDatabase("test")

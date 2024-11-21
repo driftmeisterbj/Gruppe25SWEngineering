@@ -765,10 +765,8 @@ class TestJsonDatabase(unittest.TestCase):
         current_user = self.database.get_current_user("NonUser")
         self.assertEqual(current_user, user)
 
-    # -------------------------------------------------------------------------------------------
-    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    # -------------------------------------------------------------------------------------------
-    # Tests for add_device_to_current_user()
+   
+   
 
     def test_cleanup(self):
         path = os.path.join(os.path.dirname(__file__))
