@@ -72,7 +72,7 @@ class JsonDatabase(DatabaseInterface):
     def read_database(self):
         return JsonReadWrite.read(self.filename)
 
-    # Databasen leses ved bruk av read_json() og denne listen gås gjennom.
+    # Databasen leses ved bruk av read_database() og denne listen gås gjennom.
     # Dersom brukernavnet eksisterer i databasen allerede returneres True, ellers returneres False
     def is_username_taken(self, username):
         users = self.read_database()

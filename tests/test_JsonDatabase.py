@@ -20,7 +20,7 @@ class TestJsonDatabase(unittest.TestCase):
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tester for is_username_taken()
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
             {
                 "username": "TakenName",
                 "password": "p",
@@ -32,7 +32,7 @@ class TestJsonDatabase(unittest.TestCase):
         check_name = self.database.is_username_taken("TakenName")
         self.assertEqual(check_name, True)
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
             {
                 "username": "TakenName",
                 "password": "p",
@@ -44,7 +44,7 @@ class TestJsonDatabase(unittest.TestCase):
         check_name = self.database.is_username_taken("NonTakenName")
         self.assertEqual(check_name, False)
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
             {
                 "username": "TakenName",
                 "password": "p",
@@ -119,7 +119,7 @@ class TestJsonDatabase(unittest.TestCase):
     # -------------------------------------------------------------------------------------------
     # Tester for is_email_taken()
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
             {
                 "username": "TakenName",
                 "password": "p",
@@ -131,7 +131,7 @@ class TestJsonDatabase(unittest.TestCase):
         check_email = self.database.is_email_taken("epost123@mail.com")
         self.assertEqual(check_email, False)
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
             {
                 "username": "TakenName",
                 "password": "p",
@@ -143,7 +143,7 @@ class TestJsonDatabase(unittest.TestCase):
         check_email = self.database.is_email_taken("epost@epost.com")
         self.assertEqual(check_email, True)
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
             {
                 "username": "TakenName",
                 "password": "p",
@@ -198,7 +198,7 @@ class TestJsonDatabase(unittest.TestCase):
     @mock.patch("jsondb.JsonDatabase.is_password_valid", return_value=True)
     @mock.patch("jsondb.JsonDatabase.is_email_valid", return_value=True)
     @mock.patch("jsondb.JsonDatabase.is_email_taken", return_value=False)
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                 {
                     "username": "User1",
                     "password": "password",
@@ -231,7 +231,7 @@ class TestJsonDatabase(unittest.TestCase):
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tests for find_user_index()
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                 {
                     "username": "User1",
                     "password": "password",
@@ -248,7 +248,7 @@ class TestJsonDatabase(unittest.TestCase):
         check_index = self.database.find_user_index("User1")
         self.assertEqual(check_index, 0) 
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                     {
                         "username": "User1",
                         "password": "password",
@@ -265,7 +265,7 @@ class TestJsonDatabase(unittest.TestCase):
         check_index = self.database.find_user_index("User2")
         self.assertEqual(check_index, 1) 
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                     {
                         "username": "User1",
                         "password": "password",
@@ -285,7 +285,7 @@ class TestJsonDatabase(unittest.TestCase):
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tests for add_device_to_user()
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                     {
                         "username": "User1",
                         "password": "password",
@@ -305,7 +305,7 @@ class TestJsonDatabase(unittest.TestCase):
         add_device = self.database.add_device_to_user(username, device)
         self.assertEqual(add_device, True)
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                     {
                         "username": "User1",
                         "password": "password",
@@ -325,7 +325,7 @@ class TestJsonDatabase(unittest.TestCase):
         add_device = self.database.add_device_to_user(username, device)
         self.assertEqual(add_device, "Device invalid")
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                     {
                         "username": "User1",
                         "password": "password",
@@ -349,7 +349,7 @@ class TestJsonDatabase(unittest.TestCase):
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tests for find_device_list_user()
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                     {
                         "username": "User1",
                         "password": "password",
@@ -384,7 +384,7 @@ class TestJsonDatabase(unittest.TestCase):
         find_device_list = self.database.find_device_list_user(username)
         self.assertEqual(find_device_list, device_list)
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                     {
                         "username": "User1",
                         "password": "password",
@@ -407,7 +407,7 @@ class TestJsonDatabase(unittest.TestCase):
         find_device_list = self.database.find_device_list_user(username)
         self.assertEqual(find_device_list, [])
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                     {
                         "username": "User1",
                         "password": "password",
@@ -434,7 +434,7 @@ class TestJsonDatabase(unittest.TestCase):
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tests for remove_duplicate_devices_from_user()
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                     {
                         "username": "User1",
                         "password": "password",
@@ -456,7 +456,7 @@ class TestJsonDatabase(unittest.TestCase):
         remove_duplicates = self.database.remove_duplicate_devices_from_user("User1")
         self.assertEqual(remove_duplicates, True)
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                     {
                         "username": "User1",
                         "password": "password",
@@ -512,7 +512,7 @@ class TestJsonDatabase(unittest.TestCase):
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tests for delete_device_from_user()
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                     {
                         "username": "User1",
                         "password": "password",
@@ -535,7 +535,7 @@ class TestJsonDatabase(unittest.TestCase):
         delete_device = self.database.delete_device_from_user("User1", device)
         self.assertEqual(delete_device, 'Device could not be found')
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                     {
                         "username": "User1",
                         "password": "password",
@@ -558,7 +558,7 @@ class TestJsonDatabase(unittest.TestCase):
         delete_device = self.database.delete_device_from_user("NonUser", device)
         self.assertEqual(delete_device, False)
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                     {
                         "username": "User1",
                         "password": "password",
@@ -666,7 +666,7 @@ class TestJsonDatabase(unittest.TestCase):
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tests for get_current_user()
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                         {
                             "username": "User1",
                             "password": "password",
@@ -702,7 +702,7 @@ class TestJsonDatabase(unittest.TestCase):
         current_user = self.database.get_current_user("User1")
         self.assertEqual(current_user, user)
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                         {
                             "username": "User1",
                             "password": "password",
@@ -728,7 +728,7 @@ class TestJsonDatabase(unittest.TestCase):
         current_user = self.database.get_current_user("User1")
         self.assertEqual(current_user, user)
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                         {
                             "username": "User1",
                             "password": "password",
@@ -744,7 +744,7 @@ class TestJsonDatabase(unittest.TestCase):
         current_user = self.database.get_current_user("User1")
         self.assertEqual(current_user, user)
 
-    @mock.patch("jsondb.JsonDatabase.read_json", return_value=[
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
                         {
                             "username": "User1",
                             "password": "password",
