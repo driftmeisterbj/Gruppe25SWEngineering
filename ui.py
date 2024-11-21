@@ -483,7 +483,7 @@ def create_configure_device_page(username, device):
         #Istedenfor å ha to set_brighntess for +/- så tar den i mot et parameter som sendes av knappene
         def on_set_brightness( value):
             device.set_brightness(value)
-            create_configure_device_page(username,device)
+            brightness.SetLabelText(str(device.brightness))
 
         decrease_brightness = wx.Button(main_dialog, label=f"-", pos=[205, 225],size=(25,25))
         decrease_brightness.Bind(wx.EVT_BUTTON, lambda evt: on_set_brightness('-'))
@@ -498,7 +498,7 @@ def create_configure_device_page(username, device):
         #Basically en kopi av set_brighntess
         def on_set_temperature( value):
             device.set_temperature(value)
-            create_configure_device_page(username,device)
+            temperature.SetLabelText("Temperature: " + str(device.temperature))
 
         decrease_temperature = wx.Button(main_dialog, label=f"-", pos=[205, 225],size=(25,25))
         decrease_temperature.Bind(wx.EVT_BUTTON, lambda evt: on_set_temperature('-'))
@@ -558,7 +558,7 @@ def create_configure_device_page(username, device):
 
         def on_set_resolution(value):
             device.set_resolution(value)
-            create_configure_device_page(username,device)
+            resolution.SetLabelText("resolution: " + str(device.resolution))
 
         decrease_resolution = wx.Button(main_dialog, label=f"-", pos=[205, 255],size=(25,25))
         decrease_resolution.Bind(wx.EVT_BUTTON, lambda evt: on_set_resolution('-'))
@@ -574,7 +574,7 @@ def create_configure_device_page(username, device):
 
         def on_set_motion_detection(evt):
             device.toggle_motion_detection()
-            create_configure_device_page(username,device)
+            motion_detection.SetLabelText("motion_detection:"+ str(device.motion_detection))
         
         toggle_label = "Turn off" if motion_detection_status == 'On' else 'Turn on'
 
@@ -671,7 +671,6 @@ def setFocusOnFirstChild():
 			break
 	if focusableObj:
 		i.SetFocus()
-		print(f"setting focus on {i.GetLabel()}")
 def destroy_everything():
     for child in main_dialog.GetChildren():
         child.Destroy()
