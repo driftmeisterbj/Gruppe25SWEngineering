@@ -64,7 +64,3 @@ class DatabaseInterface(ABC):
     @abstractmethod
     def update_device_data(self, username, device):
         pass
-
-    @abstractmethod
-    def get_current_user(self, username):
-        pass
