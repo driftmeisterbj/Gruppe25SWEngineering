@@ -542,7 +542,3 @@ class JsonDatabase(DatabaseInterface):
                     user_device["motion_detection"] = device.motion_detection
                 
                 JsonReadWrite.write(self.filename, users)
-
-
-
-    
