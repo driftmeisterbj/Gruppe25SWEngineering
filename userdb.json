@@ -4,5 +4,28 @@
         "password": "Passord1",
         "email": "test@epost.no",
         "devices": []
+    },
+    {
+        "username": "Sda",
+        "password": "Gfdsa123",
+        "email": "aa@gg.com",
+        "devices": [
+            {
+                "prod_id": 4,
+                "name": " LED Strip Light",
+                "brand": "Govee",
+                "category": "Light",
+                "on": false,
+                "brightness": 7
+            },
+            {
+                "prod_id": 7,
+                "name": "Kasa  Bulb",
+                "brand": "TP-Link",
+                "category": "Light",
+                "on": true,
+                "brightness": 5
+            }
+        ]
     }
 ]
