@@ -574,7 +574,8 @@ def create_configure_device_page(username, device):
 
         def on_set_motion_detection(evt):
             device.toggle_motion_detection()
-            motion_detection.SetLabelText("motion_detection:"+ str(device.motion_detection))
+            options = {True: "on", False: "off"}
+            motion_detection.SetLabelText("motion detection: "+ options[device.motion_detection])
         
         toggle_label = "Turn off" if motion_detection_status == 'On' else 'Turn on'
 
