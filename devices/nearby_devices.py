@@ -5,6 +5,9 @@ from lock import Lock
 from camera import Camera
 import random
 
+#Denne filen brukes for å lage enhetslisten når man skal legge til nye enheter
+
+
 counter = 0
 def id():
     global counter
@@ -76,6 +79,3 @@ cameras = [
     Camera(id(), "Google Nest Cam (battery)", "Nest", resolution="1080p", motion_detection=True),
     Camera(id(), "Lorex 4K Ultra HD IP Camera", "Lorex", resolution="4K", motion_detection=True),
 ]
-
-
-#print(heaters[0].name, heaters[0].brand)

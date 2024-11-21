@@ -1,182 +1,46 @@
 [
     {
-        "username": "",
-        "password": "",
-        "email": "",
-        "devices": [
-            {
-                "prod_id": 2,
-                "name": "LIFX Color A19",
-                "brand": "LIFX",
-                "category": "Light",
-                "on": false,
-                "brightness": 5
-            },
-            {
-                "prod_id": 21,
-                "name": "AM09 Fan Heater",
-                "brand": "Dyson",
-                "category": "Heater",
-                "on": false,
-                "temperature": 15
-            },
-            {
-                "prod_id": 48,
-                "name": "Ring Spotlight Cam",
-                "brand": "Ring",
-                "category": "Camera",
-                "on": true,
-                "resolution": "1080p",
-                "status": "Active",
-                "motion_detection": true
-            },
-            {
-                "prod_id": 34,
-                "name": "Yale Assure Lock SL",
-                "brand": "Yale",
-                "category": "Lock",
-                "on": false,
-                "status": "Unlocked",
-                "entry_code": "0727"
-            },
-            {
-                "prod_id": 14,
-                "name": "B36CT80SNS",
-                "brand": "Bosch",
-                "category": "Fridge",
-                "on": false,
-                "temperature": 4
-            }
-        ]
+        "username": "Test",
+        "password": "Passord1",
+        "email": "test@epost.no",
+        "devices": []
     },
     {
-        "username": "Fredrik",
-        "password": "",
-        "email": "",
+        "username": "Sda",
+        "password": "Gfdsa123",
+        "email": "aa@gg.com",
         "devices": [
-            {
-                "prod_id": 2,
-                "name": "LIFX Color A19",
-                "brand": "LIFX",
-                "category": "Light"
-            },
-            {
-                "prod_id": 5,
-                "name": "Nanoleaf Shapes",
-                "brand": "Nanoleaf",
-                "category": "Light"
-            },
             {
                 "prod_id": 4,
-                "name": "Smart LED Strip Light",
+                "name": " LED Strip Light",
                 "brand": "Govee",
-                "category": "Light"
+                "category": "Light",
+                "on": false,
+                "brightness": 7
             },
             {
-                "prod_id": 1,
-                "name": "Hue White and Color Ambiance",
-                "brand": "Philips",
-                "category": "Light"
+                "prod_id": 7,
+                "name": "Kasa  Bulb",
+                "brand": "TP-Link",
+                "category": "Light",
+                "on": true,
+                "brightness": 5
             }
         ]
     },
     {
-        "username": "Test2",
-        "password": "Pa123",
-        "email": "mail.m@mail.com",
+        "username": "Ttttt",
+        "password": "Ee123",
+        "email": "a@a.a",
         "devices": [
             {
-                "prod_id": 10150,
-                "name": "WRF560SEHZ",
-                "brand": "Whirlpool",
-                "category": "Fridge"
-            },
-            {
-                "prod_id": 46943,
-                "name": "Smart LED Strip Light",
-                "brand": "Govee",
-                "category": "Light"
-            },
-            {
-                "prod_id": 16831,
-                "name": "Cync Smart LED",
-                "brand": "GE Lighting",
-                "category": "Light"
-            },
-            {
-                "prod_id": 81225,
-                "name": "Hue White and Color Ambiance",
-                "brand": "Philips",
-                "category": "Light"
+                "prod_id": 3,
+                "name": "Wyze Bulb Color",
+                "brand": "Wyze",
+                "category": "Light",
+                "on": true,
+                "brightness": 7
             }
         ]
-    },
-    {
-        "username": "Test3",
-        "password": "Passord123",
-        "email": "mail44@mail.com",
-        "devices": [
-            {
-                "prod_id": 11564,
-                "name": "Hue 2.0",
-                "brand": "phillips",
-                "category": "light"
-            }
-        ]
-    },
-    {
-        "username": "gEiR2",
-        "password": "Passord1234",
-        "email": "m.a.i.l.2@mail.com",
-        "devices": []
-    },
-    {
-        "username": "geir69",
-        "password": "Passord1234",
-        "email": "mail.mail@.com",
-        "devices": []
-    },
-    {
-        "username": "abc",
-        "password": "Abc123",
-        "email": "abc@gmail.com",
-        "devices": []
-    },
-    {
-        "username": "abc123",
-        "password": "Abc123",
-        "email": "abc@abc.com",
-        "devices": []
-    },
-    {
-        "username": "abc1234",
-        "password": "Abc123",
-        "email": "abc123@.",
-        "devices": []
-    },
-    {
-        "username": "aaa",
-        "password": "Abc123",
-        "email": "@.",
-        "devices": []
-    },
-    {
-        "username": "ASdaad",
-        "password": "Tyuio123",
-        "email": "sksk@skksk.v",
-        "devices": [
-            {
-                "prod_id": 2,
-                "name": "LIFX Color A19",
-                "brand": "LIFX",
-                "category": "Light"
-            }
-        ]
-    },
-    {
-        "username": "Awdw",
-        "password": "Qwerty123",
-        "email": "aa@aa.b",
-        "devices": []
     }
 ]

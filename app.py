@@ -3,6 +3,7 @@ import ctypes
 import subprocess
 
 from jsondb import JsonDatabase, JsonReadWrite
+from dbinterface import DatabaseInterface
 import os
 import sys
 sys.path.append('devices/')
@@ -209,7 +210,7 @@ def create_login_page():
     create_user_btn.Bind(wx.EVT_BUTTON, create_user_btn_click)
 
     def is_login_valid(username, password):
-        users = db.read_json()
+        users = db.read_database()
 
         for user in users:
             if user.get("username").lower() == username.lower():
@@ -219,7 +220,7 @@ def create_login_page():
         return False
 
     def try_logging_in(username, password):
-        users = db.read_json()
+        users = db.read_database()
 
         if is_login_valid(username, password):
             create_home_page(username)
@@ -356,7 +357,7 @@ def create_user_creation_page():
             "Success",
             wx.OK
             )
-            db.add_user_to_json(username, password, email)
+            db.add_user_to_database(username, password, email)
             create_home_page(username)
 
     # Bind events to buttons
@@ -503,7 +504,7 @@ def create_configure_device_page(username, device):
         brightness.SetForegroundColour(wx.Colour(255, 255, 255))
 
         #Istedenfor å ha to set_brighntess for +/- så tar den i mot et parameter som sendes av knappene
-        def on_set_brightness( value):
+        def on_set_brightness(value):
             device.set_brightness(value)
             create_configure_device_page(username,device)
 
