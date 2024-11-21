@@ -2,29 +2,69 @@ import unittest
 from unittest.mock import patch, mock_open
 import sys
 import os
-import trace
-
-# Add the parent directory to sys.path so Python can find jsondb.py
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-# Now you can import from jsondb
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
+sys.path.append(project_root)
 from jsondb import JsonReadWrite
+import json
 
-# Test for read and write functions in JSONdb.py
-class TestReadWrite(unittest.TestCase):
+
+class TestJsonReadWrite(unittest.TestCase):
     @patch('jsondb.open', mock_open(read_data='{"name":"Test"}'))
     def test_read_file_exists(self):
         result = JsonReadWrite.read('dummy.json')
         self.assertEqual(result, {'name': 'Test'})
 
-if __name__ == '__main__':
-    # Create a tracer that will trace only the relevant file
-    tracer = trace.Trace(
-        trace=True,
-        count=False,
-        ignoremods=('sys', '_parser', 'os', 'unittest', 'builtins', 're'),  # Ignore these modules
-        ignoredirs=[sys.prefix]  # Ignore system-wide libraries
-    )
+    @patch('jsondb.open', side_effect=FileNotFoundError)
+    def test_read_file_not_found(self, mock_file):
+        result = JsonReadWrite.read('non_existent.json')
+        self.assertEqual(result, [])
 
-    # Run the test with the trace
-    tracer.run('unittest.main()')
+    @patch('jsondb.open', mock_open(read_data='Invalid JSON'))
+    def test_read_invalid_json(self):
+        result = JsonReadWrite.read('invalid.json')
+        self.assertEqual(result, [])
+
+    @patch('jsondb.open', new_callable=mock_open)
+    def test_write_successful(self, mock_file):
+        data = {"key": "value"}
+        with patch('json.dump') as mock_json_dump:
+            result = JsonReadWrite.write('dummy.json', data)
+            self.assertTrue(result)
+            # Capture the actual file handle and assert json.dump calls it
+            file_handle = mock_file()
+            mock_json_dump.assert_called_once_with(data, file_handle, indent=4)
+
+    @patch('jsondb.open', side_effect=PermissionError)
+    def test_write_permission_error(self, mock_file):
+        data = {"key": "value"}
+        result = JsonReadWrite.write('dummy.json', data)
+        self.assertFalse(result)
+
+    @patch('jsondb.open', mock_open())
+    def test_reset_successful(self):
+        with patch('jsondb.open', mock_open()) as mock_file:
+            result = JsonReadWrite.reset('dummy.json')
+            self.assertTrue(result)
+            mock_file().write.assert_called_once_with("{}")
+
+    @patch('jsondb.open', side_effect=PermissionError)
+    def test_reset_permission_error(self, mock_file):
+        result = JsonReadWrite.reset('dummy.json')
+        self.assertFalse(result)
+
+    @patch('jsondb.open', new_callable=mock_open)
+    def test_write_empty_data(self, mock_file):
+        data = {}
+        with patch('json.dump') as mock_json_dump:
+            result = JsonReadWrite.write('dummy.json', data)
+            self.assertTrue(result)
+            mock_json_dump.assert_called_once_with(data, mock_file(), indent=4)
+  
+    @patch('jsondb.open', mock_open(read_data='{}'))
+    def test_read_empty_file(self):
+        result = JsonReadWrite.read('empty.json')
+        self.assertEqual(result, {})
+
+
+if __name__ == '__main__':
+    unittest.main()
