@@ -3,6 +3,7 @@ import ctypes
 import subprocess
 
 from jsondb import JsonDatabase, JsonReadWrite
+from dbinterface import DatabaseInterface
 import os
 import sys
 sys.path.append('devices/')
@@ -33,7 +34,7 @@ main_dialog = wx.Dialog(None, title = "main", size = [500, 500])
 main_dialog.Center()
 main_dialog.Bind(wx.EVT_CLOSE, on_destroy)
 userDb = os.path.join(os.path.dirname(__file__), "userdb")
-db = JsonDatabase(userDb)
+DatabaseInterface = JsonDatabase(userDb)
 
 class ErrorText():
     def __init__(self, parent, y):
@@ -209,7 +210,7 @@ def create_login_page():
     create_user_btn.Bind(wx.EVT_BUTTON, create_user_btn_click)
 
     def is_login_valid(username, password):
-        users = db.read_json()
+        users = DatabaseInterface.read_database()
 
         for user in users:
             if user.get("username").lower() == username.lower():
@@ -219,7 +220,7 @@ def create_login_page():
         return False
 
     def try_logging_in(username, password):
-        users = db.read_json()
+        users = DatabaseInterface.read_database()
 
         if is_login_valid(username, password):
             create_home_page(username)
@@ -329,24 +330,24 @@ def create_user_creation_page():
             error_text.SetText("Passwords do not match.", 400)
             panel.Layout()
             return
-        if db.is_username_taken(username):
+        if DatabaseInterface.is_username_taken(username):
             error_text.SetText("An account with this username already exists.", 400)
             panel.Layout()
             return
-        elif db.is_username_valid(username) != True:
-            error_text.SetText(db.is_username_valid(username), 400)
+        elif DatabaseInterface.is_username_valid(username) != True:
+            error_text.SetText(DatabaseInterface.is_username_valid(username), 400)
             panel.Layout()
             return
-        elif db.is_email_taken(email):
+        elif DatabaseInterface.is_email_taken(email):
             error_text.SetText("An account with this email already exists.", 400)
             panel.Layout()
             return
-        elif db.is_email_valid(email) != True:
-            error_text.SetText(db.is_email_valid(email), 400)
+        elif DatabaseInterface.is_email_valid(email) != True:
+            error_text.SetText(DatabaseInterface.is_email_valid(email), 400)
             panel.Layout()
             return
-        elif db.is_password_valid(password) != True:
-            error_text.SetText(db.is_password_valid(password), 400)
+        elif DatabaseInterface.is_password_valid(password) != True:
+            error_text.SetText(DatabaseInterface.is_password_valid(password), 400)
             panel.Layout()
             return
         else:
@@ -356,7 +357,7 @@ def create_user_creation_page():
             "Success",
             wx.OK
             )
-            db.add_user_to_json(username, password, email)
+            DatabaseInterface.add_user_to_database(username, password, email)
             create_home_page(username)
 
     # Bind events to buttons
@@ -386,10 +387,10 @@ def create_home_page(username):
     def on_configure_device(evt):
         index = listbox.GetSelection()
         if index != -1:
-            device_list = db.find_device_list_user(username)
+            device_list = DatabaseInterface.find_device_list_user(username)
             selected_device = device_list[index]
             #Gjør om til objekt
-            device = db.recreate_object(selected_device)
+            device = DatabaseInterface.recreate_object(selected_device)
             create_configure_device_page(username, device)
 
         else:
@@ -398,10 +399,10 @@ def create_home_page(username):
     def on_remove_device(evt):
         index = listbox.GetSelection()
         if index != -1:
-            device_list = db.find_device_list_user(username)
+            device_list = DatabaseInterface.find_device_list_user(username)
             selected_device = device_list[index]
-            device = db.recreate_object(selected_device)
-            db.delete_device_from_user(username, device)
+            device = DatabaseInterface.recreate_object(selected_device)
+            DatabaseInterface.delete_device_from_user(username, device)
             create_home_page(username)
         
         else:
@@ -422,7 +423,7 @@ def create_home_page(username):
 
     #Creates list of already added devices
     def make_listbox_device_list(list):
-        db.remove_duplicate_devices_from_user(username)
+        DatabaseInterface.remove_duplicate_devices_from_user(username)
         new_list = []
         for device in list:
             new_list.append(device.get("name") + " " + device.get("brand"))
@@ -430,7 +431,7 @@ def create_home_page(username):
         return new_list
 
 
-    device_list = db.find_device_list_user(username)
+    device_list = DatabaseInterface.find_device_list_user(username)
     items = make_listbox_device_list(device_list)
 
     listbox = wx.ListBox(main_dialog, size = [150, 200], choices = items)
@@ -439,7 +440,7 @@ def create_home_page(username):
 
 def create_configure_device_page(username, device):
     destroy_everything()
-    db.update_device_data(username,device)
+    DatabaseInterface.update_device_data(username,device)
 
 
 
@@ -628,7 +629,7 @@ def create_add_new_device_page(username):
     def get_all_devices():
         #device_list = [f"{device.name} {device.brand}" for device in all_devices]
         device_list = []
-        user_devices = db.find_device_list_user(username)
+        user_devices = DatabaseInterface.find_device_list_user(username)
 
         for device in all_devices:
             device_already_added = False
@@ -662,9 +663,9 @@ def create_add_new_device_page(username):
             )
 
             if selected_device:
-                device = db.create_new_device(selected_device.prod_id, selected_device.name,
+                device = DatabaseInterface.create_new_device(selected_device.prod_id, selected_device.name,
                                           selected_device.brand, selected_device.category)
-                db.add_device_to_user(username, device)
+                DatabaseInterface.add_device_to_user(username, device)
                 create_home_page(username)
 
 

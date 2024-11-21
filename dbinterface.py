@@ -30,7 +30,7 @@ class DatabaseInterface(ABC):
         pass
 
     @abstractmethod
-    def add_user(self, username, password, email):
+    def add_user_to_database(self, username, password, email):
         pass
 
     @abstractmethod
@@ -62,7 +62,7 @@ class DatabaseInterface(ABC):
         pass
 
     @abstractmethod
-    def recreate_device_object(self, device_dict):
+    def recreate_object(self, device_dict):
         pass
 
     @abstractmethod

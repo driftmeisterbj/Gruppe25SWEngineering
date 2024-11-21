@@ -5,6 +5,7 @@ import sys
 path = os.path.join(os.path.dirname(__file__), "devices")
 sys.path.append(path)
 from devices import fridge, heater, lock, light, camera, device_class
+from dbinterface import DatabaseInterface
 
 
 class ReadWrite(ABC):
@@ -47,17 +48,17 @@ class JsonReadWrite(ReadWrite):
             pass
         return False
 
-class JsonDatabase():
+class JsonDatabase(DatabaseInterface):
     def __init__(self, filename) -> None:
         self.filename = filename + ".json"
-        self.data = self.read_json()
+        self.data = self.read_database()
         JsonReadWrite.write(self.filename, self.data)
 
     # Skriver til JSON-filen med tomt innhold, altså full reset.
     # KUN for testing, kan fjernes når vi har ferdigstilt struktur i databasen.
     # Mangler feilhåndering
 
-    def reset_json(self):
+    def reset_database(self):
         try:
             with open(self.filename, "w") as file:
                 file.write("{}")
@@ -68,7 +69,7 @@ class JsonDatabase():
     
     # Åpner json-filen for lesing og returnerer innholdet i en liste.
     # Dersom en feil skjer ved lesing, returneres en tom liste
-    def read_json(self):
+    def read_database(self):
         try:
             with open(self.filename, "r") as file:
                 return json.load(file)
@@ -79,7 +80,7 @@ class JsonDatabase():
     # Databasen leses ved bruk av read_json() og denne listen gås gjennom.
     # Dersom brukernavnet eksisterer i databasen allerede returneres True, ellers returneres False
     def is_username_taken(self, username):
-        users = self.read_json()
+        users = self.read_database()
 
         for user in users:
             for key, value in user.items():
@@ -147,7 +148,7 @@ class JsonDatabase():
     # Henter ut innholdet i databasen og sjekker om eposten eksisterer her allerede.
     # Dersom eposten eksisterer er eposten i bruk, og True returneres. Ellers returneres False.
     def is_email_taken(self, email):
-        users = self.read_json()
+        users = self.read_database()
 
         for user in users:
             for key, value in user.items():
@@ -213,7 +214,7 @@ class JsonDatabase():
 
     # Funksjon for å legge til en ny bruker i databasen.
     # Hvis alle sjekkene går gjennom skrives denne brukeren inn til databasen.
-    def add_user_to_json(self, username, password, email):
+    def add_user_to_database(self, username, password, email):
         if self.is_username_valid(username) != True:
             return "Username is invalid. Check error messages in console."
         
@@ -229,7 +230,7 @@ class JsonDatabase():
         if self.is_email_taken(email) != False:
             return "An account with this email adress already exists"
         
-        data = self.read_json()
+        data = self.read_database()
         new_data = {
             "username": username,
             "password": password,
@@ -257,7 +258,7 @@ class JsonDatabase():
     # Denne metoden finder hvilken index, altså plass i listen, en bruker ligger på.
     # Hvis brukeren blir funnet returneres indexen. Ellers returneres -1
     def find_user_index(self, username):
-        data = self.read_json()
+        data = self.read_database()
 
         counter = 0
         for user in data:
@@ -276,7 +277,7 @@ class JsonDatabase():
             return 'Device invalid'
 
         if user_index != -1:
-            users = self.read_json()
+            users = self.read_database()
             user = users[user_index]
             device_list = user["devices"]
             device_data = device.get_dict()
@@ -308,7 +309,7 @@ class JsonDatabase():
         user_index = self.find_user_index(username)
 
         if user_index != -1:
-            users = self.read_json()
+            users = self.read_database()
             user = users[user_index]
             device_list = user["devices"]
             return device_list
@@ -327,7 +328,7 @@ class JsonDatabase():
             return False
 
         else:
-            data = self.read_json()
+            data = self.read_database()
             devices = self.find_device_list_user(username)
 
             #https://stackoverflow.com/questions/9427163/remove-duplicate-dict-in-list-in-python
@@ -373,7 +374,7 @@ class JsonDatabase():
         user_index = self.find_user_index(username)
 
         if user_index != -1:
-            users = self.read_json()
+            users = self.read_database()
             user = users[user_index]
             device_list = user["devices"]
             
@@ -469,7 +470,7 @@ class JsonDatabase():
     def update_device_data(self,username,device):
         user_index = self.find_user_index(username)
 
-        users = self.read_json()
+        users = self.read_database()
         user = users[user_index]
         device_list = user['devices']
 
@@ -532,7 +533,7 @@ class JsonDatabase():
     def get_current_user(self, username):
         user_index = self.find_user_index(username)
         if user_index != -1:
-            users = self.read_json()
+            users = self.read_database()
             user = users[user_index]
             return {
                 'username':user['username'],

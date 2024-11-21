@@ -27,5 +27,20 @@
                 "brightness": 5
             }
         ]
+    },
+    {
+        "username": "Ttttt",
+        "password": "Ee123",
+        "email": "a@a.a",
+        "devices": [
+            {
+                "prod_id": 3,
+                "name": "Wyze Bulb Color",
+                "brand": "Wyze",
+                "category": "Light",
+                "on": true,
+                "brightness": 7
+            }
+        ]
     }
 ]
