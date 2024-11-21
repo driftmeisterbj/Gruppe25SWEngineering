@@ -7,13 +7,11 @@ import random
 
 #Denne filen brukes for å lage enhetslisten når man skal legge til nye enheter
 
-
 counter = 0
 def id():
     global counter
     counter += 1 
     return counter
-    
 
 lights = [
     Light(id(), "Hue White and Color Ambiance", "Philips"),
