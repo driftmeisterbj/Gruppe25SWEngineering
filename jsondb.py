@@ -543,6 +543,25 @@ class JsonDatabase(DatabaseInterface):
                 
                 JsonReadWrite.write(self.filename, users)
 
+    #Gets current user object
+    def get_current_user(self, username):
+        user_index = self.find_user_index(username)
+        if user_index != -1:
+            users = self.read_database()
+            user = users[user_index]
+            return {
+                'username':user['username'],
+                'email':user['email'],
+                'devices':user['devices']
+            }
+
+
+        else:
+            return {
+                'username': None,
+                'email': None,
+                'devices': []
+            }
 
 
     
