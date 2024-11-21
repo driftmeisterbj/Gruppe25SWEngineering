@@ -691,7 +691,7 @@ def setFocusOnFirstChild():
 			break
 	if focusableObj:
 		i.SetFocus()
-		print(f"setting focus on {i.GetLabel()}")
+
 def destroy_everything():
     for child in main_dialog.GetChildren():
         child.Destroy()
