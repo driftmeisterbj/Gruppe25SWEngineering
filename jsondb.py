@@ -58,12 +58,7 @@ class JsonDatabase(DatabaseInterface):
     # KUN for testing, kan fjernes når vi har ferdigstilt struktur i databasen.
     # Returnerer True hvis databasen resettes, False hvis ikke
     def reset_database(self):
-        try:
-            with open(self.filename, "w") as file:
-                file.write("{}")
-            return True
-        except:
-            return False
+        return JsonReadWrite.reset(self.filename)
         
     # Åpner json-filen for lesing og returnerer innholdet i en liste.
     # Dersom en feil skjer ved lesing, returneres en tom liste
@@ -234,7 +229,7 @@ class JsonDatabase(DatabaseInterface):
     """
     def add_user_to_database(self, username, password, email):
         if self.is_username_valid(username) != True:
-            return "Username is invalid. Check error messages in console."
+            return "Username is invalid"
         
         if self.is_username_taken(username) != False:
             return "Username is already taken"
@@ -243,7 +238,7 @@ class JsonDatabase(DatabaseInterface):
             return "Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number"
         
         if self.is_email_valid(email) != True:
-            return "Email is invalid. Check error messages in console."
+            return "Email is invalid"
                  
         if self.is_email_taken(email) != False:
             return "An account with this email adress already exists"
