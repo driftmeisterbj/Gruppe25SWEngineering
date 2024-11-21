@@ -68,11 +68,3 @@ class DatabaseInterface(ABC):
     @abstractmethod
     def get_current_user(self, username):
         pass
-
-    @abstractmethod
-    def add_device_to_current_user(self, current_user, new_device):
-        pass
-
-    @abstractmethod
-    def get_device_object(self, username, device_name, device_brand):
-        pass

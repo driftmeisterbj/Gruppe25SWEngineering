@@ -42,5 +42,28 @@
                 "brightness": 7
             }
         ]
+    },
+    {
+        "username": "Aaa",
+        "password": "Aaa1",
+        "email": "a@a.c",
+        "devices": [
+            {
+                "prod_id": 4,
+                "name": " LED Strip Light",
+                "brand": "Govee",
+                "category": "Light",
+                "on": true,
+                "brightness": 8
+            },
+            {
+                "prod_id": 9,
+                "name": "Sengled  LED",
+                "brand": "Sengled",
+                "category": "Light",
+                "on": false,
+                "brightness": 5
+            }
+        ]
     }
 ]
