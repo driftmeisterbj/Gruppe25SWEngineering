@@ -20,8 +20,3 @@ class Device:
             "category": self.category,
             "on": self.on,
         }
-
-    def test(self):
-        return {
-
-        }
