@@ -1,7 +1,7 @@
 [
     {
-        "username": "Test",
-        "password": "Passord1",
+        "username": "",
+        "password": "",
         "email": "test@epost.no",
         "devices": []
     },

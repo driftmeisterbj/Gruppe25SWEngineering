@@ -3,10 +3,11 @@ import ctypes
 import subprocess
 
 from jsondb import JsonDatabase, JsonReadWrite
+from dbinterface import DatabaseInterface
 import os
 import sys
-sys.path.append('Devices/')
-from Nearby_devices import lights,fridges,heaters,locks,cameras
+sys.path.append('devices/')
+from nearby_devices import lights,fridges,heaters,locks,cameras
 
 try:
     import wx
@@ -209,7 +210,7 @@ def create_login_page():
     create_user_btn.Bind(wx.EVT_BUTTON, create_user_btn_click)
 
     def is_login_valid(username, password):
-        users = db.read_json()
+        users = db.read_database()
 
         for user in users:
             if user.get("username").lower() == username.lower():
@@ -219,7 +220,7 @@ def create_login_page():
         return False
 
     def try_logging_in(username, password):
-        users = db.read_json()
+        users = db.read_database()
 
         if is_login_valid(username, password):
             create_home_page(username)
@@ -350,8 +351,13 @@ def create_user_creation_page():
             panel.Layout()
             return
         else:
-            ctypes.windll.user32.MessageBoxW(0, "Your account was created!", "Success", 0)
-            db.add_user_to_json(username, password, email)
+            #ctypes.windll.user32.MessageBoxW(0, "Your account was created!", "Success", 1)
+            wx.MessageBox(
+            "Your account was created!",
+            "Success",
+            wx.OK
+            )
+            db.add_user_to_database(username, password, email)
             create_home_page(username)
 
     # Bind events to buttons
@@ -368,7 +374,7 @@ def create_user_creation_page():
 def create_home_page(username):
     destroy_everything()
 
-    title = wx.StaticText(main_dialog, label="Your Devices",pos=[188,100], style=wx.ALIGN_CENTER)
+    title = wx.StaticText(main_dialog, label="Your devices",pos=[188,100], style=wx.ALIGN_CENTER)
     title.SetFont(wx.Font(12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD))
     title.SetForegroundColour(wx.Colour(255, 255, 255))
 
@@ -380,11 +386,27 @@ def create_home_page(username):
 
     def on_configure_device(evt):
         index = listbox.GetSelection()
-        device_list = db.find_device_list_user(username)
-        selected_device = device_list[index]
-        #Gjør om til objekt
-        device = db.recreate_object(selected_device)
-        create_configure_device_page(username, device)
+        if index != -1:
+            device_list = db.find_device_list_user(username)
+            selected_device = device_list[index]
+            #Gjør om til objekt
+            device = db.recreate_object(selected_device)
+            create_configure_device_page(username, device)
+
+        else:
+            return
+
+    def on_remove_device(evt):
+        index = listbox.GetSelection()
+        if index != -1:
+            device_list = db.find_device_list_user(username)
+            selected_device = device_list[index]
+            device = db.recreate_object(selected_device)
+            db.delete_device_from_user(username, device)
+            create_home_page(username)
+        
+        else:
+            return
 
     add_device_btn = wx.Button(main_dialog,label="Add new device",pos=[360,150])
     add_device_btn.Bind(wx.EVT_BUTTON, on_add_device)
@@ -393,12 +415,15 @@ def create_home_page(username):
     display_app_name()
     display_name(username)
 
-    configure_device_btn = wx.Button(main_dialog,label="Configure Device",pos=[360,170])
+    configure_device_btn = wx.Button(main_dialog,label="Configure Device",pos=[360,180])
     configure_device_btn.Bind(wx.EVT_BUTTON, on_configure_device)
+
+    remove_device_btn = wx.Button(main_dialog,label="Remove Device",pos=[360,210])
+    remove_device_btn.Bind(wx.EVT_BUTTON, on_remove_device)
 
     #Creates list of already added devices
     def make_listbox_device_list(list):
-        db.remove_duplicate_devices_from_user( username)
+        db.remove_duplicate_devices_from_user(username)
         new_list = []
         for device in list:
             new_list.append(device.get("name") + " " + device.get("brand"))
@@ -467,8 +492,6 @@ def create_configure_device_page(username, device):
         else:
             device.turn_on_device()
 
-        db.add_device_to_user(username,device)
-
         create_configure_device_page(username, device)
 
     power_btn = wx.Button(main_dialog, label=f"{toggle_power}", pos=[205, 195])
@@ -481,9 +504,9 @@ def create_configure_device_page(username, device):
         brightness.SetForegroundColour(wx.Colour(255, 255, 255))
 
         #Istedenfor å ha to set_brighntess for +/- så tar den i mot et parameter som sendes av knappene
-        def on_set_brightness( value):
+        def on_set_brightness(value):
             device.set_brightness(value)
-            brightness.SetLabelText(str(device.brightness))
+            create_configure_device_page(username,device)
 
         decrease_brightness = wx.Button(main_dialog, label=f"-", pos=[205, 225],size=(25,25))
         decrease_brightness.Bind(wx.EVT_BUTTON, lambda evt: on_set_brightness('-'))
@@ -498,7 +521,7 @@ def create_configure_device_page(username, device):
         #Basically en kopi av set_brighntess
         def on_set_temperature( value):
             device.set_temperature(value)
-            temperature.SetLabelText("Temperature: " + str(device.temperature))
+            create_configure_device_page(username,device)
 
         decrease_temperature = wx.Button(main_dialog, label=f"-", pos=[205, 225],size=(25,25))
         decrease_temperature.Bind(wx.EVT_BUTTON, lambda evt: on_set_temperature('-'))
@@ -558,7 +581,7 @@ def create_configure_device_page(username, device):
 
         def on_set_resolution(value):
             device.set_resolution(value)
-            resolution.SetLabelText("resolution: " + str(device.resolution))
+            create_configure_device_page(username,device)
 
         decrease_resolution = wx.Button(main_dialog, label=f"-", pos=[205, 255],size=(25,25))
         decrease_resolution.Bind(wx.EVT_BUTTON, lambda evt: on_set_resolution('-'))
@@ -574,8 +597,7 @@ def create_configure_device_page(username, device):
 
         def on_set_motion_detection(evt):
             device.toggle_motion_detection()
-            options = {True: "on", False: "off"}
-            motion_detection.SetLabelText("motion detection: "+ options[device.motion_detection])
+            create_configure_device_page(username,device)
         
         toggle_label = "Turn off" if motion_detection_status == 'On' else 'Turn on'
 
@@ -646,9 +668,6 @@ def create_add_new_device_page(username):
                 db.add_device_to_user(username, device)
                 create_home_page(username)
 
-                # Refresh the ListBox after adding the device
-                updated_device_list = get_all_devices()
-                listbox.SetItems(updated_device_list)
 
     add_device_btn = wx.Button(main_dialog,label="Add selected device",pos=[360,150])
     add_device_btn.Bind(wx.EVT_BUTTON, on_add_device_to_user)
@@ -672,6 +691,7 @@ def setFocusOnFirstChild():
 			break
 	if focusableObj:
 		i.SetFocus()
+		print(f"setting focus on {i.GetLabel()}")
 def destroy_everything():
     for child in main_dialog.GetChildren():
         child.Destroy()
