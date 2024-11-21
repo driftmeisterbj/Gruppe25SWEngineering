@@ -2,10 +2,6 @@ from abc import ABC, abstractmethod
 
 class DatabaseInterface(ABC):
     @abstractmethod
-    def reset_database(self):
-        pass
-
-    @abstractmethod
     def read_database(self):
         pass
 
