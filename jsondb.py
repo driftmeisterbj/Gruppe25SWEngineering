@@ -70,7 +70,7 @@ class JsonDatabase(DatabaseInterface):
     # Åpner json-filen for lesing og returnerer innholdet i en liste.
     # Dersom en feil skjer ved lesing, returneres en tom liste
     def read_database(self):
-        JsonReadWrite.read(self.filename)
+        return JsonReadWrite.read(self.filename)
 
     # Databasen leses ved bruk av read_json() og denne listen gås gjennom.
     # Dersom brukernavnet eksisterer i databasen allerede returneres True, ellers returneres False
