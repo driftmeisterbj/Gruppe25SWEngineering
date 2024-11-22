@@ -300,7 +300,7 @@ class TestJsonDatabase(unittest.TestCase):
                     "devices": []
                 }
             ])
-    def test_add_user_to_database_username_taken(self, mock1, mock2, mock3, mock4, mock5, mock6):
+    def test_add_user_to_database_email_invalid(self, mock1, mock2, mock3, mock4, mock5, mock6):
         user_added = self.database.add_user_to_database("Username", "Password123", "e@epost.com")
         self.assertEqual(user_added, "Email is invalid")
 
@@ -322,7 +322,7 @@ class TestJsonDatabase(unittest.TestCase):
                     "devices": []
                 }
             ])
-    def test_add_user_to_database_username_taken(self, mock1, mock2, mock3, mock4, mock5, mock6):
+    def test_add_user_to_database_email_exists(self, mock1, mock2, mock3, mock4, mock5, mock6):
         user_added = self.database.add_user_to_database("Username", "Password123", "e@epost.com")
         self.assertEqual(user_added, "An account with this email adress already exists")
 
