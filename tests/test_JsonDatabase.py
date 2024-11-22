@@ -16,6 +16,7 @@ class TestJsonDatabase(unittest.TestCase):
     def setUp(self):
         self.database = JsonDatabase("test")
     
+    
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
@@ -188,11 +189,11 @@ class TestJsonDatabase(unittest.TestCase):
         email = "nesten.gyldig@epostyep"
         email_check = self.database.is_email_valid(email)
         self.assertEqual(email_check, 'ERROR - The character " . " MUST appear at least once after the character " @ " in the email adress')
+
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
     # Tests for add_user_to_database()
-    
     @mock.patch("jsondb.JsonDatabase.is_username_valid", return_value=True)
     @mock.patch("jsondb.JsonDatabase.is_username_taken", return_value=False)
     @mock.patch("jsondb.JsonDatabase.is_password_valid", return_value=True)
@@ -211,11 +212,121 @@ class TestJsonDatabase(unittest.TestCase):
                     "devices": []
                 }
             ])
-    def test_add_user_to_database(self, mock1, mock2, mock3, mock4, mock5, mock6):
+    def test_add_user_to_database_added(self, mock1, mock2, mock3, mock4, mock5, mock6):
         user_added = self.database.add_user_to_database("Username", "Password123", "e@epost.com")
         self.assertEqual(user_added, True)
-    
 
+    @mock.patch("jsondb.JsonDatabase.is_username_valid", return_value=False)
+    @mock.patch("jsondb.JsonDatabase.is_username_taken", return_value=False)
+    @mock.patch("jsondb.JsonDatabase.is_password_valid", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.is_email_valid", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.is_email_taken", return_value=False)
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
+                {
+                    "username": "User1",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }, {
+                    "username": "User2",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }
+            ])
+    def test_add_user_to_database_username_invalid(self, mock1, mock2, mock3, mock4, mock5, mock6):
+        user_added = self.database.add_user_to_database("Username", "Password123", "e@epost.com")
+        self.assertEqual(user_added, "Username is invalid")
+
+    @mock.patch("jsondb.JsonDatabase.is_username_valid", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.is_username_taken", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.is_password_valid", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.is_email_valid", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.is_email_taken", return_value=False)
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
+                {
+                    "username": "User1",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }, {
+                    "username": "User2",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }
+            ])
+    def test_add_user_to_database_username_taken(self, mock1, mock2, mock3, mock4, mock5, mock6):
+        user_added = self.database.add_user_to_database("Username", "Password123", "e@epost.com")
+        self.assertEqual(user_added, "Username is already taken")
+
+    @mock.patch("jsondb.JsonDatabase.is_username_valid", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.is_username_taken", return_value=False)
+    @mock.patch("jsondb.JsonDatabase.is_password_valid", return_value=False)
+    @mock.patch("jsondb.JsonDatabase.is_email_valid", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.is_email_taken", return_value=False)
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
+                {
+                    "username": "User1",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }, {
+                    "username": "User2",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }
+            ])
+    def test_add_user_to_database_password_invalid(self, mock1, mock2, mock3, mock4, mock5, mock6):
+        user_added = self.database.add_user_to_database("Username", "Password123", "e@epost.com")
+        self.assertEqual(user_added, "Password is invalid - Password must contain an uppercase letter, a lowercase letter and a number")
+
+    @mock.patch("jsondb.JsonDatabase.is_username_valid", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.is_username_taken", return_value=False)
+    @mock.patch("jsondb.JsonDatabase.is_password_valid", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.is_email_valid", return_value=False)
+    @mock.patch("jsondb.JsonDatabase.is_email_taken", return_value=False)
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
+                {
+                    "username": "User1",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }, {
+                    "username": "User2",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }
+            ])
+    def test_add_user_to_database_username_taken(self, mock1, mock2, mock3, mock4, mock5, mock6):
+        user_added = self.database.add_user_to_database("Username", "Password123", "e@epost.com")
+        self.assertEqual(user_added, "Email is invalid")
+
+    @mock.patch("jsondb.JsonDatabase.is_username_valid", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.is_username_taken", return_value=False)
+    @mock.patch("jsondb.JsonDatabase.is_password_valid", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.is_email_valid", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.is_email_taken", return_value=True)
+    @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
+                {
+                    "username": "User1",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }, {
+                    "username": "User2",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }
+            ])
+    def test_add_user_to_database_username_taken(self, mock1, mock2, mock3, mock4, mock5, mock6):
+        user_added = self.database.add_user_to_database("Username", "Password123", "e@epost.com")
+        self.assertEqual(user_added, "An account with this email adress already exists")
+
+    
     # -------------------------------------------------------------------------------------------
     # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -------------------------------------------------------------------------------------------
@@ -249,35 +360,35 @@ class TestJsonDatabase(unittest.TestCase):
         self.assertEqual(check_index, 0) 
 
     @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
-                    {
-                        "username": "User1",
-                        "password": "password",
-                        "email": "epost@epost.com",
-                        "devices": []
-                    }, {
-                        "username": "User2",
-                        "password": "password",
-                        "email": "epost@epost.com",
-                        "devices": []
-                    }
-                ])
+                {
+                    "username": "User1",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }, {
+                    "username": "User2",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }
+            ])
     def test_find_user_index_1(self, mock):
         check_index = self.database.find_user_index("User2")
         self.assertEqual(check_index, 1) 
 
     @mock.patch("jsondb.JsonDatabase.read_database", return_value=[
-                    {
-                        "username": "User1",
-                        "password": "password",
-                        "email": "epost@epost.com",
-                        "devices": []
-                    }, {
-                        "username": "User2",
-                        "password": "password",
-                        "email": "epost@epost.com",
-                        "devices": []
-                    }
-                ])
+                {
+                    "username": "User1",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }, {
+                    "username": "User2",
+                    "password": "password",
+                    "email": "epost@epost.com",
+                    "devices": []
+                }
+            ])
     def test_find_user_index_not_found(self, mock):
         check_index = self.database.find_user_index("User3")
         self.assertEqual(check_index, -1)   
@@ -656,10 +767,11 @@ class TestJsonDatabase(unittest.TestCase):
         
         device = self.database.recreate_object(device_dict)
         self.assertEqual(device, False)
-
-    
    
 
+    # -------------------------------------------------------------------------------------------
+    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -------------------------------------------------------------------------------------------
 
     def test_cleanup(self):
         path = os.path.join(os.path.dirname(__file__))
@@ -668,9 +780,11 @@ class TestJsonDatabase(unittest.TestCase):
         pathList.append("test.json")
         path = "\\".join(pathList)
         print(path)
-        
+
         if os.path.exists(path):
             os.remove(path)
+                
+        
         
         
 if __name__ == '__main__':

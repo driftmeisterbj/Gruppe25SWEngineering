@@ -5,7 +5,6 @@ class Fridge(Device):
         super().__init__(prod_id, name, brand, "Fridge", on)
         self.temperature = temperature
 
-
     def set_temperature(self, new_temperature):
         if new_temperature == '+':
             if not self.temperature >= 12:

@@ -18,7 +18,6 @@ class Camera(Device):
         elif new_resolution == '-' and current_index > 0:
             self.resolution = valid_resolutions[current_index-1]
 
-
     def activate(self):
         self.status = "Active"
     
